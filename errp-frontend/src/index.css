@@ -1,0 +1,16 @@
+.root a{
+   padding:20px; 
+}
+form{
+    display: inline-block;
+}
+form input{
+    margin:10px;
+}
+form button{
+    margin:10px;
+}
+img{
+    width: 200px;
+    height: 250px;
+}
