@@ -19,20 +19,29 @@ var storage = multer.diskStorage({
 })
 var upload = multer({ storage: storage })
 
+const verifyRetailer=(req,res,next)=>{
+    if(!req?.roles) return res.sendStatus(401)
+    if(!(req.roles===5508)){
+        return res.sendStatus(401)
+    }
+    next()
+}
+
 router.route("/")
     .get(homeController.recommendedProducts);
 
 router.route("/products")
-    .get(productsController.getProducts)
-    .post(productsController.addProduct)
-    
+    .get(verifyRetailer,productsController.getProducts)
+    .post(verifyRetailer,productsController.addProduct)
+router.route("/products/:barcode")
+    .get(verifyRetailer,productsController.getProduct)
 router.route("/products/addNew")
     .post(upload.single("productImg") ,productsController.addNewProduct)
 router.route("/products/addOld")
-    .post(productsController.addOldProduct)
+    .post(verifyRetailer,productsController.addOldProduct)
 
 router.route("/dashboard")
-    .get(dashboardController.getDashboard)
+    .get(verifyRetailer,dashboardController.getDashboard)
 
 router.route('/profile')
     .get(profileController.getProfile)

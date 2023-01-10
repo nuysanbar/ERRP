@@ -1,0 +1,38 @@
+import { useLoaderData,NavLink } from "react-router-dom"
+import axios from "axios"
+export async function loader({params}){
+    const access_token=window.localStorage.getItem('access_token');
+    const apiUrlProduct=`http://localhost:3500/users/${params.username}/products`
+    const res2=await axios.get(apiUrlProduct,{
+        headers:{
+            "Authorization":'Bearer '+access_token
+        }
+    })
+    var response2=res2.data
+    console.log(response2);
+    return response2
+}
+
+export default function LandingPageProducts(){
+    const response2=useLoaderData()
+    const displayProducts=()=>{
+        const row=[]
+        for(let i=0; i<response2.products.length; i++){
+            let container=<NavLink to={`/home/${response2.products[i].retailerUserName}/${response2.products[i].barcode}`} key={i}>
+                <p >{response2.products[i].price}</p>
+                <p >{response2.products[i].barcode}</p>
+                <p >{response2.productInfo[i].brandName}</p>
+                <img src={`http://localhost:3500/products/${response2.productInfo[i].imgUrl}`} alt={response2.productInfo[i].brandName} />
+            </NavLink>
+            row.push(container)
+        }
+        return row;
+    }
+    return (
+        <div>
+            {displayProducts()} 
+        </div>
+             
+            
+    )
+}

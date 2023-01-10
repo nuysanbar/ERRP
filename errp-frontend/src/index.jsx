@@ -9,9 +9,13 @@ import SignUp, {action as signUpAction} from './routes/signup.jsx'
 import LandingPage, {loader as landingPageLoader} from './routes/landingPage.jsx'
 import {loader as logoutLoader} from './routes/logout.jsx'
 import Profile, {loader as profileLoader}from "./routes/profile";
-import Products, {loader as productsLoader, action as productsAction} from "./routes/products";
+import Products, {action as productsAction,loader as productsLoader} from "./routes/products";
+import ProductsList, {loader as productsListLoader} from './routes/productsList';
+import ProductsListSingle, {loader as productsListSingleLoader} from "./routes/productsListSingle";
 import AddNewProduct ,{action as newProductAction} from "./routes/addNewProduct";
 import AddOldProduct ,{action as oldProductAction} from "./routes/addOldProduct";
+import LandingPageSingle, {loader as landingPageSingleLoader,likeAction,dislikeAction} from "./routes/landingPageSingle.jsx";
+import LandingPageProducts, {loader as landingPageProductsLoader} from "./routes/landingPageProducts";
 import Saved, {loader as savedLoader} from "./routes/saved";
 import Dashboard, {loader as dashboardLoader} from "./routes/dashboard";
 import { createBrowserRouter,RouterProvider,Route } from "react-router-dom";
@@ -22,7 +26,6 @@ const router=createBrowserRouter([
         errorElement:<ErrorPage />,
         children:[
             {
-                // path: "signIn/",
                 index:true,
                 element: <SignIn />,
                 action:signInAction
@@ -45,6 +48,60 @@ const router=createBrowserRouter([
                 element:<LandingPage />,
                 loader:landingPageLoader,
                 errorElement:<ErrorPage />,
+                children:[
+                    {
+                        index:true,
+                        element:<LandingPageProducts />,
+                        loader:landingPageProductsLoader
+                    },
+                    {
+                        path:"/home/:username/:barcode",
+                        element:<LandingPageSingle />,
+                        loader:landingPageSingleLoader
+                    },
+                    {
+                        path:"/home/:username/:barcode/like",
+                        action:likeAction
+                    },
+                    {
+                        path:"home/:username/:barcode/dislike",
+                        action:dislikeAction
+                    }
+                ]
+            },
+            
+            {
+                path:"/home/products",
+                element:<Products/>,
+                action:productsAction,
+                loader:productsLoader,
+                children:[
+                    {
+                        index:true,
+                        element:<ProductsList/>,
+                        loader:productsListLoader
+                    },
+                    {
+                        path:"/home/products/:barcode",
+                        element:<ProductsListSingle />,
+                        loader:productsListSingleLoader,
+                    },
+                    {
+                        path:"/home/products/addNew",
+                        element:<AddNewProduct/>,
+                        action:newProductAction,
+                    },
+                    {
+                        path:"/home/products/addOld",
+                        element:<AddOldProduct/>,
+                        action:oldProductAction
+                    },
+                ]
+            },
+            {
+                path:"/home/dashboard",
+                element:<Dashboard />,
+                loader:dashboardLoader,
             },
             {
                 path:"/home/profile",
@@ -52,34 +109,13 @@ const router=createBrowserRouter([
                 loader:profileLoader
             },
             {
-              path:"/home/logout",
-              loader:logoutLoader
-            },
-            {
                 path:"/home/saved",
                 element:<Saved />,
                 loader:savedLoader
             },
             {
-                path:"/home/products",
-                element:<Products/>,
-                loader:productsLoader,
-                action:productsAction
-            },
-            {
-                path:"/home/products/addNew",
-                element:<AddNewProduct/>,
-                action:newProductAction,
-            },
-            {
-                path:"/home/products/addOld",
-                element:<AddOldProduct/>,
-                action:oldProductAction
-            },
-            {
-                path:"/home/dashboard",
-                element:<Dashboard />,
-                loader:dashboardLoader,
+              path:"/home/logout",
+              loader:logoutLoader
             }
         ]
     }

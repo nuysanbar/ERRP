@@ -29,9 +29,10 @@ const getProducts=async(req,res)=>{
     res.json({products,productInfo})
 }
 
-
 const getProduct = async(req,res)=>{
     var productInfo=[]
+    var like=false;
+    var dislike=false;
     if(!req?.params?.username){
         return res.status(400).json({"message":"username is required "})
     }
@@ -39,12 +40,21 @@ const getProduct = async(req,res)=>{
         return res.status(400).json({"message":"barcode is required"})
     }
     const product= await RetailerProduct.findOne({retailerUserName:req.params.username,barcode:req.params.barcode}).exec()
-    var resp=await Product.findOne({barcode:req.params.barcode})
-    productInfo.push(resp)
     if(!product){
         return res.status(204).json({"message":"product is not available"})
     }
-    res.json({product,productInfo})
+    const checkLike=product.likedBy.find((item)=>item===req.username)
+    if(checkLike){
+        like=true;
+    }
+    const checkDisLike=product.disLikedBy.find((item)=>item===req.username)
+    if(checkDisLike){
+        dislike=true;
+    }
+
+    var resp=await Product.findOne({barcode:req.params.barcode})
+    productInfo.push(resp)
+    res.json({product,productInfo,like,dislike})
 }
 const like= async(req,res)=>{
     if(!req?.params?.username){

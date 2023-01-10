@@ -17,6 +17,7 @@ app.use(cookieParser());
 // app.use(credentials);
 app.use(express.json());
 app.use(express.static(path.join(__dirname,'public','uploads')));
+app.use("/products/",express.static(path.join(__dirname,'public','uploads','products')))
 app.use("/register",require('./routes/api/register'));
 app.use("/auth",require('./routes/api/auth'));
 app.use('/refresh',require('./routes/api/refresh'));

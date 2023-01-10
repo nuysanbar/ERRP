@@ -13,7 +13,6 @@ const verifyJWT=(req,res,next)=>{
             req.username=decoded.userInfo.username;
             req.roles=decoded.userInfo.roles;
             next()
-
         }
     )
 }

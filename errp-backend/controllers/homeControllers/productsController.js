@@ -1,9 +1,40 @@
 const Product=require("../../data/Product");
 const RetailerProduct=require("../../data/RetailerProduct")
-const getProducts=(req,res)=>{
-    res.status(200).json({"products":req.username +" products"})
+const getProducts=async(req,res)=>{
+    var productInfo=[];
+    const products= await RetailerProduct.find({retailerUserName:req.username})
+    if(!products){
+        return res.status(204).json({"message":"No products available"})
+    }
+    for(let i=0; i<products.length; i++){
+        var resp=await Product.findOne({barcode:products[i].barcode})
+        productInfo.push(resp)
+    }
+    res.json({products,productInfo})
 }
-
+const getProduct = async(req,res)=>{
+    var productInfo=[]
+    var like=false;
+    var dislike=false;
+    if(!req?.params?.barcode){
+        return res.status(400).json({"message":"barcode is required"})
+    }
+    const product= await RetailerProduct.findOne({retailerUserName:req.username,barcode:req.params.barcode}).exec()
+    if(!product){
+        return res.status(204).json({"message":"product is not available"})
+    }
+    const checkLike=product.likedBy.find((item)=>item===req.username)
+    if(checkLike){
+        like=true;
+    }
+    const checkDisLike=product.disLikedBy.find((item)=>item===req.username)
+    if(checkDisLike){
+        dislike=true;
+    }
+    var resp=await Product.findOne({barcode:req.barcode})
+    productInfo.push(resp)
+    res.json({product,productInfo,like,dislike})
+}
 const addProduct=async(req,res)=>{
     const barcode=req.body.barcode;
     if(!barcode) return res.status(400).json({"message":"barcode is needed"})
@@ -66,4 +97,4 @@ const addOldProduct=async(req,res)=>{
     }
 
 }
-module.exports={getProducts,addProduct,addNewProduct,addOldProduct}
+module.exports={getProducts,getProduct,addProduct,addNewProduct,addOldProduct}

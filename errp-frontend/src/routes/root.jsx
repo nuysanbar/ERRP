@@ -4,9 +4,6 @@ export default function Root() {
     return (
       <>
         <div className="root">
-            <NavLink to={"/signIn"}>
-                signIn
-            </NavLink>
             <NavLink to={"/signUp"}>
                 signUp
             </NavLink>
