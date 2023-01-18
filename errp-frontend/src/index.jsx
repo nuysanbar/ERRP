@@ -9,13 +9,18 @@ import SignUp, {action as signUpAction} from './routes/signup.jsx'
 import LandingPage, {loader as landingPageLoader} from './routes/landingPage.jsx'
 import {loader as logoutLoader} from './routes/logout.jsx'
 import Profile, {loader as profileLoader}from "./routes/profile";
+import ProfileEdit, {action as profileEditAction} from "./routes/profileEdit";
 import Products, {action as productsAction,loader as productsLoader} from "./routes/products";
 import ProductsList, {loader as productsListLoader} from './routes/productsList';
 import ProductsListSingle, {loader as productsListSingleLoader} from "./routes/productsListSingle";
 import AddNewProduct ,{action as newProductAction} from "./routes/addNewProduct";
 import AddOldProduct ,{action as oldProductAction} from "./routes/addOldProduct";
-import LandingPageSingle, {loader as landingPageSingleLoader,likeAction,dislikeAction} from "./routes/landingPageSingle.jsx";
+import LandingPageSingle, {loader as landingPageSingleLoader,reviewAction} from "./routes/landingPageSingle.jsx";
 import LandingPageProducts, {loader as landingPageProductsLoader} from "./routes/landingPageProducts";
+import Favorite,{loader as favoriteLoader} from "./routes/favorites/favorite";
+import FavoritePage from "./routes/favorites/favoritePage";
+import FavoritePageProducts from "./routes/favorites/favoritePageProducts";
+import FavoritePageSingle from "./routes/favorites/favoritePageSingle";
 import Saved, {loader as savedLoader} from "./routes/saved";
 import Dashboard, {loader as dashboardLoader} from "./routes/dashboard";
 import { createBrowserRouter,RouterProvider,Route } from "react-router-dom";
@@ -57,15 +62,8 @@ const router=createBrowserRouter([
                     {
                         path:"/home/:username/:barcode",
                         element:<LandingPageSingle />,
-                        loader:landingPageSingleLoader
-                    },
-                    {
-                        path:"/home/:username/:barcode/like",
-                        action:likeAction
-                    },
-                    {
-                        path:"home/:username/:barcode/dislike",
-                        action:dislikeAction
+                        loader:landingPageSingleLoader,
+                        action:reviewAction
                     }
                 ]
             },
@@ -73,6 +71,7 @@ const router=createBrowserRouter([
             {
                 path:"/home/products",
                 element:<Products/>,
+                errorElement:<ErrorPage />,
                 action:productsAction,
                 loader:productsLoader,
                 children:[
@@ -99,6 +98,37 @@ const router=createBrowserRouter([
                 ]
             },
             {
+                path:"/home/favorites",
+                element:<Favorite />,
+                loader:favoriteLoader,
+                children:[
+                    {
+                        path:"/home/favorites/:username",
+                        element:<FavoritePage/>,
+                        loader:landingPageLoader,
+                        children:[
+                            {
+                                index:true,
+                                element:<FavoritePageProducts />,
+                                loader:landingPageProductsLoader
+                            },
+                            {
+                                path:"/home/favorites/:username/:barcode",
+                                element:<FavoritePageSingle/>,
+                                loader:landingPageSingleLoader,
+                                action:reviewAction
+                            }
+
+                        ]
+
+                    }
+                ]
+            },
+            {
+                path:"/home/lookingFor",
+                element:<div>look for</div>,
+            },
+            {
                 path:"/home/dashboard",
                 element:<Dashboard />,
                 loader:dashboardLoader,
@@ -106,7 +136,15 @@ const router=createBrowserRouter([
             {
                 path:"/home/profile",
                 element:<Profile />,
-                loader:profileLoader
+                loader:profileLoader,
+                children:[
+                    {
+                        path:"/home/profile/edit",
+                        element:<ProfileEdit/>,
+                        loader:profileLoader,
+                        action:profileEditAction
+                    }
+                ]
             },
             {
                 path:"/home/saved",

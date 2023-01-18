@@ -4,6 +4,8 @@ const LandingPageController=require('../../controllers/LandingPageController')
 
 router.route('/:username')
     .get(LandingPageController.getUser)
+router.route('/:username/favorite')
+    .post(LandingPageController.favorite)
 router.route('/:username/products')
     .get(LandingPageController.getProducts)
 router.route('/:username/:barcode')

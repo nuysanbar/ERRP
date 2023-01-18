@@ -18,7 +18,7 @@ const retailerProductSchema=new Schema({
     reviewedBy:String,
     reviewText:String
    }],
-   likedBy:[{likedBy:String}],
-   disLikedBy:[{dislikedBy:String}]
+   likedBy:[],
+   disLikedBy:[]
 });
 module.exports=mongoose.model('RetailerProduct',retailerProductSchema);

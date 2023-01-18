@@ -16,17 +16,17 @@ app.use(express.urlencoded({extended:false}));
 app.use(cookieParser());
 // app.use(credentials);
 app.use(express.json());
+
 app.use(express.static(path.join(__dirname,'public','uploads')));
 app.use("/products/",express.static(path.join(__dirname,'public','uploads','products')))
 app.use("/register",require('./routes/api/register'));
 app.use("/auth",require('./routes/api/auth'));
 app.use('/refresh',require('./routes/api/refresh'));
 app.use('/logout',require('./routes/api/logout'));
-app.use('/groceriesList',require('./routes/api/groceriesList'));
 app.use(verifyJWT);
 app.use('/home',require('./routes/api/home'))
 app.use('/users',require('./routes/api/landingPage'))
-app.use('/employees',require(path.join(__dirname,'routes','api','employees.js')));
+
 mongoose.connection.once('open',()=>{
     console.log('Mongodb is connected');
     app.listen(PORT,()=>{

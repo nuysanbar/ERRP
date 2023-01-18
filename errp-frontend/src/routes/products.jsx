@@ -3,13 +3,14 @@ import axios from "axios";
 
 export async function loader(){
   const access_token=window.localStorage.getItem('access_token')
-  const apiUrl='https://localhost:3500/home/products'
+  const apiUrl='http://localhost:3500/home/products'
   const response=await axios.get(apiUrl,{
     headers:{
       "Authorization":"Bearer " + access_token
     }
   })
   console.log(response)
+  return response
 }
 
 export async function action({request}){

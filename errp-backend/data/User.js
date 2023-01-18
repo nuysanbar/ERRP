@@ -6,6 +6,10 @@ const userSchema=new Schema({
         type:String,
         required:true
     },
+    fullname:{
+        type:String,
+        // required:true
+    },
     roles:{
         type:Number,
         required:true
@@ -19,6 +23,11 @@ const userSchema=new Schema({
         required:true
     },
     refreshToken:String,
-    stars:Number
+    stars:Number,
+    favoredNumber:{
+        type:Number,
+        default:0
+    },
+    favoredBy:[]
 });
 module.exports=mongoose.model('User',userSchema);

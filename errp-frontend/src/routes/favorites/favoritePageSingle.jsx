@@ -3,35 +3,9 @@ import {AiOutlineLike,AiFillLike,AiFillDislike,AiOutlineDislike} from 'react-ico
 import axios from 'axios'
 import { useState } from 'react';
 const access_token=window.localStorage.getItem('access_token');
-export async function loader({params}){
-    var response1;
 
-    const apiUrl=`http://localhost:3500/users/${params.username}/${params.barcode}`
-    const res = await axios.get(apiUrl,{
-        headers: {
-          'Authorization': 'Bearer ' + access_token
-        }
-      })
-    response1=res.data
-    console.log(response1)
-    return response1
-}
 
-export async function reviewAction({request,params}){
-    const formData= await request.formData()
-    const updates=Object.fromEntries(formData)
-    console.log("review action is being called")
-    const apiUrl=`http://localhost:3500/users/${params.username}/${params.barcode}/review`
-    await axios.post(apiUrl,updates,{
-        headers: {
-          'Authorization': 'Bearer ' + access_token
-        }
-      })
-      return 0;
-    // return redirect(`/home/${params.username}/${params.barcode}`)
-}
-
-export default function LandingPageSingle(){
+export default function FavoritePageSingle(){
    const response1=useLoaderData()
    const username=response1.product.retailerUserName
    const barcode=response1.product.barcode
@@ -103,7 +77,6 @@ export default function LandingPageSingle(){
             <textarea name="review" id="" cols="40" rows="3" defaultValue={comment} placeholder='comment here'></textarea>
             <button type='submit'>post</button>
         </Form>
-
         {response1.review.map((comment)=>{
           return (
             <div key={comment.text}>

@@ -4,7 +4,7 @@ export async function action({request}){
     const formData = await request.formData();
     const apiUrl='http://localhost:3500/register/'
     const response=await axios.post(apiUrl,formData)
-    return redirect('../signIn');
+    return redirect('../');
 }
 export default function SignUp(){
     return(
@@ -12,6 +12,8 @@ export default function SignUp(){
             <Form method="post"  encType="multipart/form-data">
                 <label htmlFor="username"></label>
                 <input type="text" name="username" id="username" placeholder="username"/><br />
+                <label htmlFor="username"></label>
+                <input type="text" name="fullname" id="fullname" placeholder="full name"/><br />
                 <label htmlFor="profileImg"></label>
                 <input type="file" name="profileImg" /><br />
                 <label htmlFor="role"></label>

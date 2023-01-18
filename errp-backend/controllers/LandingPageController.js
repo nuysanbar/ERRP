@@ -1,8 +1,10 @@
 const User=require('../data/User');
 const RetailerProduct=require('../data/RetailerProduct')
 const Product=require('../data/Product')
-
+const Saved=require('../data/Saved')
+const Favorite=require('../data/Favorite')
 const getUser=async (req,res)=>{
+    var isFavored=false
     if(!req?.params?.username){
         return res.status(400).json({"message":" username is required"})
     }
@@ -10,7 +12,11 @@ const getUser=async (req,res)=>{
     if(!user){
         return res.status(204).json({"message":"No user matches the username"})
     }
-    res.json(user);
+    const checkFav=user.favoredBy.find((item)=>item===req.username)
+    if(checkFav){
+        isFavored=true
+    }
+    res.status(200).json({user,isFavored});
 };
 
 const getProducts=async(req,res)=>{
@@ -30,9 +36,11 @@ const getProducts=async(req,res)=>{
 }
 
 const getProduct = async(req,res)=>{
-    var productInfo=[]
+    var productInfo;
     var like=false;
     var dislike=false;
+    var review=[];
+    var saved=false;
     if(!req?.params?.username){
         return res.status(400).json({"message":"username is required "})
     }
@@ -51,25 +59,42 @@ const getProduct = async(req,res)=>{
     if(checkDisLike){
         dislike=true;
     }
-
-    var resp=await Product.findOne({barcode:req.params.barcode})
-    productInfo.push(resp)
-    res.json({product,productInfo,like,dislike})
+    const checkSaved=await Saved.findOne({"username":req.username,"retailerUserName":req.params.username,"barcode":req.params.barcode})
+    if(checkSaved){
+        saved=true;
+    }
+    for(let i=0; i<product.reviewed.length; i++){
+        const user=await User.findOne({"username":product.reviewed[i].reviewedBy})
+        const modification={"reviewedBy":product.reviewed[i].reviewedBy,"imgUrl":user.imgUrl, "text":product.reviewed[i].reviewText}
+        review.push(modification)
+    }
+    product.reviewed=[]
+    var productInfo=await Product.findOne({barcode:req.params.barcode})
+    if(!productInfo){
+        return res.status(204).json({"message":"product is not available"})
+    }
+    res.json({product,productInfo,like,dislike,review,saved})
 }
 const like= async(req,res)=>{
+    console.log(req.params.barcode)
     if(!req?.params?.username){
         return res.status(400).json({"message":"username is required "})
     }
     if(!req?.params?.barcode){
         return res.status(400).json({"message":"barcode is required"})
     }
-    const product= await RetailerProduct.findOne({retailerUserName:req.params.username,barcode:req.params.barcode}).exec()
+    const product= await RetailerProduct.findOne({barcode:req.params.barcode,retailerUserName:req.params.username}).exec()
+    
     if(product.likedBy.includes(req.username)){
         product.likedCount=product.likedCount-1
-        product.likedBy.filter((item=>item===req.username))
+        product.likedBy.pop((item=>item===req.username))
     }else{
         product.likedCount=product.likedCount+1
         product.likedBy.push(req.username)
+        if(product.disLikedBy.includes(req.username)){
+            product.disLikedCount=product.disLikedCount-1
+            product.disLikedBy.pop(item=>item===req.username)
+        }
     }
     product.save()
     res.status(200).json({"message":"you like the product"})
@@ -84,11 +109,16 @@ const dislike=async(req,res)=>{
     const product= await RetailerProduct.findOne({retailerUserName:req.params.username,barcode:req.params.barcode}).exec()
     if(product.disLikedBy.includes(req.username)){
         product.disLikedCount=product.disLikedCount-1
-        product.disLikedBy.filter(item=>item===req.username)
+        product.disLikedBy.pop(item=>item===req.username)
     }else{
         product.disLikedCount=product.disLikedCount+1
         product.disLikedBy.push(req.username)
+        if(product.likedBy.includes(req.username)){
+            product.likedCount=product.likedCount-1
+            product.likedBy.pop((item=>item===req.username))
+        }
     }
+    console.log(product)
     product.save()
     res.status(200).json({"message":"you dislike the product"})
 }
@@ -116,7 +146,44 @@ const save=async(req,res)=>{
     if(!req?.params?.barcode){
         return res.status(400).json({"message":"barcode is required"})
     }
-    const product= await RetailerProduct.findOne({retailerUserName:req.params.username,barcode:req.params.barcode}).exec()
+    const duplicate=await Saved.findOne({"username":req.username,"retailerUserName":req.params.username,"barcode":req.params.barcode}).exec()
+    if(duplicate){
+        await Saved.deleteOne({"username":req.username,"retailerUserName":req.params.username,"barcode":req.params.barcode})
+    }else{  
+        await Saved.create({"username":req.username,"retailerUserName":req.params.username,"barcode":req.params.barcode})
+    }
     res.status(200).json({"message":"you saved the product"})
 }
-module.exports={getUser,getProducts,getProduct,like,dislike,review,save}
+const favorite=async(req,res)=>{
+    if(!req?.params?.username){
+        return res.status(400).json({"message":"username is required"})
+    }
+    const favoredUser=await User.findOne({"username":req.params.username}).exec()
+    const user = await Favorite.findOne({"username":req.username}).exec()
+    if(user){
+        if(user.favorites.includes(req.params.username)){
+            favoredUser.favoredNumber-=1;
+            favoredUser.favoredBy.pop((item)=>item===req.username)
+            user.favorites.pop((item)=>item===req.params.username)
+        }
+        else{
+            favoredUser.favoredNumber+=1;
+            favoredUser.favoredBy.push(req.username)
+            user.favorites.push(req.params.username)
+        }
+        user.save()
+    }else{
+        await Favorite.create({"username":req.username,"favorites":[req.params.username]})
+        favoredUser.favoredNumber+=1
+        favoredUser.favoredBy.push(req.username)
+    }
+    favoredUser.save()
+    console.log(user)
+    console.log(favoredUser)
+    res.status(200).json({"message":"favorite backend path is completed"})
+
+}
+
+module.exports={getUser,getProducts,getProduct,like,dislike,review,save,favorite}
+
+

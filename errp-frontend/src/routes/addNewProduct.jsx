@@ -17,7 +17,7 @@ export default function AddNewProduct(){
         <div>
             <Form method="post"  encType="multipart/form-data">
                 <label htmlFor="barcode"></label>
-                <input type="text" name="barcode" id="username" readOnly defaultValue={barcode} placeholder={barcode}/><br />
+                <input type="text" name="barcode"  id="username" readOnly defaultValue={barcode} placeholder={barcode}/><br />
                 <label htmlFor="brandName"></label>
                 <input type="text" name="brandname" id="brandname" placeholder="brand name"/> <br />
                 <label htmlFor="model"></label>

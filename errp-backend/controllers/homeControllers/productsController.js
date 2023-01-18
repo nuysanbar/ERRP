@@ -13,7 +13,6 @@ const getProducts=async(req,res)=>{
     res.json({products,productInfo})
 }
 const getProduct = async(req,res)=>{
-    var productInfo=[]
     var like=false;
     var dislike=false;
     if(!req?.params?.barcode){
@@ -31,8 +30,10 @@ const getProduct = async(req,res)=>{
     if(checkDisLike){
         dislike=true;
     }
-    var resp=await Product.findOne({barcode:req.barcode})
-    productInfo.push(resp)
+    var productInfo=await Product.findOne({barcode:req.params.barcode})
+    if(!productInfo){
+        return res.status(204).json({"message":"product is not available"})
+    }
     res.json({product,productInfo,like,dislike})
 }
 const addProduct=async(req,res)=>{

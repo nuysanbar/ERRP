@@ -22,21 +22,27 @@ export default function Home() {
           <Form >
             <input type="search" placeholder="search" />
           </Form>
+          <NavLink to={"/home/favorites"}>
+                Favorites
+            </NavLink>
+            <NavLink to={"/home/lookingfor"}>
+                Looking For
+            </NavLink>
           {userRole===5508 &&  
           <>
             <NavLink to={"/home/products"}>
-                products
+                MyStore
             </NavLink>
             <NavLink to={"/home/dashboard"}>
-                dashboard
+                Dashboard
             </NavLink>
             </>
            }
-            <NavLink to={"/home/profile"}>
-                profile
+           <NavLink to={"/home/saved"}>
+                Bookmarked
             </NavLink>
-            <NavLink to={"/home/saved"}>
-                saved
+            <NavLink to={"/home/profile"}>
+                Profile
             </NavLink>
             <NavLink to={"/home/logout"}>
                 logout

@@ -1,5 +1,6 @@
 import { useLoaderData,NavLink } from "react-router-dom";
 import axios from "axios";
+
 export async function loader(){
     const access_token=window.localStorage.getItem('access_token');
     const apiUrl=`http://localhost:3500/home/products`
@@ -32,3 +33,4 @@ export default function ProductsList(){
         <div>{displayProducts()} </div>
     )
 }
+

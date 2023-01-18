@@ -24,8 +24,17 @@ export default function ProductsListSingle(){
     const response1=useLoaderData()
    return (
     <div>
-        home products single page
-        {response1.like===false?" false":" true"}
+        <p>{response1.product.availableAmount}</p>
+        <p>{response1.product.likedCount}</p>
+        <p>{response1.product.disLikedCount}</p>
+        <p>{response1.product.price}</p>
+        <p>{response1.productInfo.brandName}</p>
+        <p>{response1.productInfo.modelName}</p>
+        <img src={`http://localhost:3500/products/${response1.productInfo.imgUrl}`}/>
+        <p></p>
+        <button>add up amount</button>
+        <button>lower amount</button>
+        <button>sold out</button>
     </div>
    )
 }
