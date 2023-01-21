@@ -3,6 +3,7 @@ const RetailerProduct=require('../data/RetailerProduct')
 const Product=require('../data/Product')
 const Saved=require('../data/Saved')
 const Favorite=require('../data/Favorite')
+// const { el } = require('date-fns/locale');
 const getUser=async (req,res)=>{
     var isFavored=false
     if(!req?.params?.username){
@@ -51,11 +52,11 @@ const getProduct = async(req,res)=>{
     if(!product){
         return res.status(204).json({"message":"product is not available"})
     }
-    const checkLike=product.likedBy.find((item)=>item===req.username)
+    const checkLike=product.likedBy.find((item)=>item.name===req.username)
     if(checkLike){
         like=true;
     }
-    const checkDisLike=product.disLikedBy.find((item)=>item===req.username)
+    const checkDisLike=product.disLikedBy.find((item)=>item.name===req.username)
     if(checkDisLike){
         dislike=true;
     }
@@ -76,7 +77,6 @@ const getProduct = async(req,res)=>{
     res.json({product,productInfo,like,dislike,review,saved})
 }
 const like= async(req,res)=>{
-    console.log(req.params.barcode)
     if(!req?.params?.username){
         return res.status(400).json({"message":"username is required "})
     }
@@ -84,16 +84,17 @@ const like= async(req,res)=>{
         return res.status(400).json({"message":"barcode is required"})
     }
     const product= await RetailerProduct.findOne({barcode:req.params.barcode,retailerUserName:req.params.username}).exec()
-    
-    if(product.likedBy.includes(req.username)){
+    const exist=product.likedBy.find((item)=>item.name===req.username)
+    if(exist){
         product.likedCount=product.likedCount-1
-        product.likedBy.pop((item=>item===req.username))
+        product.likedBy.pop((item=>item.name===req.username))
     }else{
         product.likedCount=product.likedCount+1
-        product.likedBy.push(req.username)
-        if(product.disLikedBy.includes(req.username)){
+        product.likedBy.push({"name":req.username})
+        const dislikeExists=product.disLikedBy.find((item)=>item.name===req.username)
+        if(dislikeExists){
             product.disLikedCount=product.disLikedCount-1
-            product.disLikedBy.pop(item=>item===req.username)
+            product.disLikedBy.pop(item=>item.name===req.username)
         }
     }
     product.save()
@@ -107,22 +108,23 @@ const dislike=async(req,res)=>{
         return res.status(400).json({"message":"barcode is required"})
     }
     const product= await RetailerProduct.findOne({retailerUserName:req.params.username,barcode:req.params.barcode}).exec()
-    if(product.disLikedBy.includes(req.username)){
+    const exist=product.disLikedBy.find(item=>item.name===req.username)
+    if(exist){
         product.disLikedCount=product.disLikedCount-1
-        product.disLikedBy.pop(item=>item===req.username)
+        product.disLikedBy.pop(item=>item.name===req.username)
     }else{
         product.disLikedCount=product.disLikedCount+1
-        product.disLikedBy.push(req.username)
-        if(product.likedBy.includes(req.username)){
+        product.disLikedBy.push({"name":req.username})
+        const likeExists=product.likedBy.find(item=>item.name===req.username)
+        if(likeExists){
             product.likedCount=product.likedCount-1
-            product.likedBy.pop((item=>item===req.username))
+            product.likedBy.pop((item=>item.name===req.username))
         }
     }
     console.log(product)
     product.save()
     res.status(200).json({"message":"you dislike the product"})
 }
-
 const review=async(req,res)=>{
     if(!req?.params?.username){
         return res.status(400).json({"message":"username is required "})

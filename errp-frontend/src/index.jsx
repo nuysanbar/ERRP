@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM  from "react-dom/client";
 import ErrorPage from "./error-page";
 import './index.css';
-import Root, { loader as rootLoader,action as rootAction} from "./routes/root.jsx";
+import Root from "./routes/root.jsx";
 import Home, {loader as homeLoader} from './routes/home.jsx'
 import SignIn, {action as signInAction} from './routes/signIn.jsx'
 import SignUp, {action as signUpAction} from './routes/signup.jsx'
@@ -12,15 +12,13 @@ import Profile, {loader as profileLoader}from "./routes/profile";
 import ProfileEdit, {action as profileEditAction} from "./routes/profileEdit";
 import Products, {action as productsAction,loader as productsLoader} from "./routes/products";
 import ProductsList, {loader as productsListLoader} from './routes/productsList';
-import ProductsListSingle, {loader as productsListSingleLoader} from "./routes/productsListSingle";
+import ProductsListSingle, {loader as productsListSingleLoader,priceAction,amountAction} from "./routes/productsListSingle";
 import AddNewProduct ,{action as newProductAction} from "./routes/addNewProduct";
 import AddOldProduct ,{action as oldProductAction} from "./routes/addOldProduct";
 import LandingPageSingle, {loader as landingPageSingleLoader,reviewAction} from "./routes/landingPageSingle.jsx";
 import LandingPageProducts, {loader as landingPageProductsLoader} from "./routes/landingPageProducts";
-import Favorite,{loader as favoriteLoader} from "./routes/favorites/favorite";
-import FavoritePage from "./routes/favorites/favoritePage";
-import FavoritePageProducts from "./routes/favorites/favoritePageProducts";
-import FavoritePageSingle from "./routes/favorites/favoritePageSingle";
+import Favorite,{loader as favoriteLoader} from "./routes/favorite";
+import Notification,{loader as notificationLoader} from "./routes/notification"
 import Saved, {loader as savedLoader} from "./routes/saved";
 import Dashboard, {loader as dashboardLoader} from "./routes/dashboard";
 import { createBrowserRouter,RouterProvider,Route } from "react-router-dom";
@@ -50,18 +48,18 @@ const router=createBrowserRouter([
         children:[
             {
                 path:"/home/:username",
-                element:<LandingPage />,
+                element:<LandingPage customPath={""}/>,
                 loader:landingPageLoader,
                 errorElement:<ErrorPage />,
                 children:[
                     {
                         index:true,
-                        element:<LandingPageProducts />,
+                        element:<LandingPageProducts customPath={""}/>,
                         loader:landingPageProductsLoader
                     },
                     {
                         path:"/home/:username/:barcode",
-                        element:<LandingPageSingle />,
+                        element:<LandingPageSingle/>,
                         loader:landingPageSingleLoader,
                         action:reviewAction
                     }
@@ -95,6 +93,14 @@ const router=createBrowserRouter([
                         element:<AddOldProduct/>,
                         action:oldProductAction
                     },
+                    {
+                        path:"/home/products/:barcode/updatePrice",
+                        action:priceAction
+                    },
+                    {
+                        path:"/home/products/:barcode/updateAmount",
+                        action:amountAction
+                    }
                 ]
             },
             {
@@ -104,17 +110,20 @@ const router=createBrowserRouter([
                 children:[
                     {
                         path:"/home/favorites/:username",
-                        element:<FavoritePage/>,
+                        element:<LandingPage customPath={"favorites/"}/>,
+                        // element:<FavoritePage/>,
                         loader:landingPageLoader,
                         children:[
                             {
                                 index:true,
-                                element:<FavoritePageProducts />,
+                                element:<LandingPageProducts customPath={"favorites/"}/>,
+                                // element:<FavoritePageProducts />,
                                 loader:landingPageProductsLoader
                             },
                             {
                                 path:"/home/favorites/:username/:barcode",
-                                element:<FavoritePageSingle/>,
+                                element:<LandingPageSingle />,
+                                // element:<FavoritePageSingle/>,
                                 loader:landingPageSingleLoader,
                                 action:reviewAction
                             }
@@ -127,6 +136,11 @@ const router=createBrowserRouter([
             {
                 path:"/home/lookingFor",
                 element:<div>look for</div>,
+            },
+            {
+                path:"/home/notifications",
+                element:<Notification />,
+                loader:notificationLoader
             },
             {
                 path:"/home/dashboard",

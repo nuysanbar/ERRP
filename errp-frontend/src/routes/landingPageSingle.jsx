@@ -28,7 +28,6 @@ export async function reviewAction({request,params}){
         }
       })
       return 0;
-    // return redirect(`/home/${params.username}/${params.barcode}`)
 }
 
 export default function LandingPageSingle(){

@@ -13,12 +13,12 @@ export async function loader({params}){
     return response2
 }
 
-export default function LandingPageProducts(){
+export default function LandingPageProducts({customPath}){
     const response2=useLoaderData()
     const displayProducts=()=>{
         const row=[]
         for(let i=0; i<response2.products.length; i++){
-            let container=<NavLink to={`/home/${response2.products[i].retailerUserName}/${response2.products[i].barcode}`} key={i}>
+            let container=<NavLink to={`/home/${customPath}${response2.products[i].retailerUserName}/${response2.products[i].barcode}`} key={i}>
                 <p >{response2.products[i].price}</p>
                 <p >{response2.products[i].barcode}</p>
                 <p >{response2.productInfo[i].brandName}</p>

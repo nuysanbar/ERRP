@@ -98,4 +98,22 @@ const addOldProduct=async(req,res)=>{
     }
 
 }
-module.exports={getProducts,getProduct,addProduct,addNewProduct,addOldProduct}
+const soldOne=async(req,res)=>{
+    console.log(req.body)
+    return 0
+}
+const updatePrice=async(req,res)=>{
+    console.log(req.body)
+    return 0
+}
+const updateAmount=async(req,res)=>{
+    console.log(req.body)
+    return 0
+}
+const deleteProduct=async(req,res)=>{
+    console.log(req.body)
+    return 0
+}
+
+
+module.exports={getProducts,getProduct,addProduct,addNewProduct,addOldProduct,soldOne,updateAmount,updatePrice,deleteProduct}

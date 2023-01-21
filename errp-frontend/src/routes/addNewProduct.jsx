@@ -23,7 +23,7 @@ export default function AddNewProduct(){
                 <label htmlFor="model"></label>
                 <input type="text" name="model" id="model" placeholder="model" /> <br />
                 <label htmlFor="price"></label>
-                <input type="text" name="price" id="price" placeholder="price"/> <br />
+                <input type="number" name="price" id="price" placeholder="price"/> <br />
                 <label htmlFor="amount"></label>
                 <input type="number" name="amount" id="amount" placeholder="available amount" /> <br />
                 <label htmlFor="productImg"></label>

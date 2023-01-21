@@ -21,7 +21,7 @@ export async function loader({params}){
     console.log(response1)
     return [userRole,response1]
 }
-export default function LandingPage(){
+export default function LandingPage({customPath}){
     const [userRole,response1]=useLoaderData()
     const username=response1.user.username
     const [isFavorite,setIsFavorite]=useState(response1.isFavored)
@@ -39,7 +39,7 @@ export default function LandingPage(){
     }
     return (
         <div>
-            <NavLink to={`/home/${response1.user.username}`}>
+            <NavLink to={`/home/${customPath}${response1.user.username}`}>
             userRole : {userRole} <br />
             username : {response1.user.username} <br />
             <img src={`http://localhost:3500/${response1.user.imgUrl}`} alt="profileImg" />

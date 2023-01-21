@@ -26,7 +26,7 @@ export default function ProfileEdit(){
                 <label htmlFor="password">password : </label>
                 <input type="text" name="password" id="password" placeholder="password" /><br />
                 <input type="button" onClick={()=>navigate(-1)} value="cancel"/>
-                <button type="submit">Save</button>
+                <button type="submit">apply</button>
             </Form>
         </div> 
     )

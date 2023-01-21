@@ -36,6 +36,9 @@ export default function Home() {
             <NavLink to={"/home/dashboard"}>
                 Dashboard
             </NavLink>
+            <NavLink to={"/home/notifications"}>
+                 Notification
+            </NavLink>
             </>
            }
            <NavLink to={"/home/saved"}>

@@ -20,7 +20,7 @@ export default function AddOldProduct(){
                 <label htmlFor="barcode"></label>
                 <input type="text" name="barcode" id="barcode" readOnly defaultValue={barcode} placeholder={barcode}/><br />
                 <label htmlFor="price"></label>
-                <input type="text" name="price" id="price" placeholder="price"/> <br />
+                <input type="number" name="price" id="price" placeholder="price"/> <br />
                 <label htmlFor="amount"></label>
                 <input type="number" name="amount" id="amount" placeholder="available amount" /> <br />
                 <button type="submit">Add To Products List</button>

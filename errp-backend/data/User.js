@@ -24,6 +24,9 @@ const userSchema=new Schema({
     },
     refreshToken:String,
     stars:Number,
+    notificationCount:Number,
+    lastNotified:Date,
+    bookmarkCount:Number,
     favoredNumber:{
         type:Number,
         default:0
