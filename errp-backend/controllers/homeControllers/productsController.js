@@ -1,5 +1,7 @@
 const Product=require("../../data/Product");
 const RetailerProduct=require("../../data/RetailerProduct")
+const Dashboard=require("../../data/Dashboard")
+const Brands=require("../../data/Brand")
 const getProducts=async(req,res)=>{
     var productInfo=[];
     const products= await RetailerProduct.find({retailerUserName:req.username})
@@ -48,32 +50,33 @@ const addProduct=async(req,res)=>{
     }
 }
 const addNewProduct=async(req,res)=>{
-    const {barcode,brandname,model,price,amount}=req.body
-    if(!barcode || !brandname || !model || !price || !amount ) return res.status(400).json({"message":"fill all the products name appropriately"})
-    const duplicate= await Product.findOne({barcode:barcode}).exec();
-    if(duplicate) return res.sendStatus(409)
-    try{
-        const result=await Product.create({
-            "barcode":barcode,
-            "brandName":brandname,
-            "modelName":model,
-            "imgUrl":req.file.filename
-        })
-        console.log(result);
-        const result2= await RetailerProduct.create({
-            "barcode":barcode,
-            "price":price,
-            "availableAmount":amount,
-            "retailerUserName":req.username,
-            "likedCount":0,
-            "disLikedCount":0,
-        })
-        console.log(result2)
-        res.status(201).json({"success":"new product is created"})
-
-    }catch(err){
-        res.status(500).json({"error":"server problem"})
-    }
+    console.log(req.body)
+    console.log(req.files)
+    // console.log(req.file.filename)
+    // const {barcode,brandname,price,amount}=req.body
+    // if(!barcode || !brandname || !model || !price || !amount ) return res.status(400).json({"message":"fill all the products name appropriately"})
+    // const duplicate= await Product.findOne({barcode:barcode}).exec();
+    // if(duplicate) return res.sendStatus(409)
+    // try{
+    //     const result=await Product.create({
+    //         "barcode":barcode,
+    //         "brandName":brandname,
+    //         "imgUrl":req.file.filename
+    //     })
+    //     console.log(result);
+    //     const result2= await RetailerProduct.create({
+    //         "barcode":barcode,
+    //         "price":price,
+    //         "availableAmount":amount,
+    //         "retailerUserName":req.username,
+    //         "likedCount":0,
+    //         "disLikedCount":0,
+    //     })
+    //     console.log(result2)
+    //     res.status(201).json({"success":"new product is created"})
+    // }catch(err){
+    //     res.status(500).json({"error":"server problem"})
+    // }
 }
 
 const addOldProduct=async(req,res)=>{
@@ -96,24 +99,89 @@ const addOldProduct=async(req,res)=>{
     }catch(err){
         res.status(500).json({"error":"server problem"})
     }
-
 }
+
 const soldOne=async(req,res)=>{
-    console.log(req.body)
-    return 0
+    const {price,amount}=req.body
+    const dashboardRecord=await Dashboard.findOne({"username":req.username}).exec()
+    const date=new Date()
+    const year=date.getFullYear()
+    const month=date.getMonth()+1
+    const day=date.getDate()
+    console.log(year,month,day)
+    console.log(price,amount)
+    if(dashboardRecord){
+        dashboardRecord.sales.push({
+            date:new Date(year,month,day,0,0,0),
+            barcode:req.params.barcode,
+            amount:1,
+            price:parseInt(price)
+        })
+        dashboardRecord.save()
+    }else{
+        await Dashboard.create({
+            username:req.username,
+            sales:[{
+                date:new Date(year,month,day,0,0,0),
+                barcode:req.params.barcode,
+                amount:1,
+                price:price
+            }]
+        })
+    }
+    const retailerProduct=await RetailerProduct.updateOne({"retailerUserName":req.username,"barcode":req.params.barcode},{"availableAmount":amount-1})
+    res.sendStatus(200)
 }
 const updatePrice=async(req,res)=>{
-    console.log(req.body)
+    const {price}=req.body
+    if(!price) return res.sendStatus(400)
+    const retailerProduct=await RetailerProduct.updateOne({"retailerUserName":req.username,"barcode":req.params.barcode},{"price":parseInt(price)})
+    console.log(retailerProduct)
     return 0
 }
 const updateAmount=async(req,res)=>{
-    console.log(req.body)
+    const {amount}=req.body
+    if(!amount) return res.sendStatus(400)
+    const retailerProduct=await RetailerProduct.updateOne({"retailerUserName":req.username,"barcode":req.params.barcode},{"availableAmount":parseInt(amount)})
+    console.log(retailerProduct)
     return 0
 }
 const deleteProduct=async(req,res)=>{
-    console.log(req.body)
+    const {price,amount}=req.body
+    const dashboardRecord=await Dashboard.findOne({"username":req.username}).exec()
+    const date=new Date()
+    const year=date.getFullYear()
+    const month=date.getMonth()+1
+    const day=date.getDate()
+    console.log(year,month,day)
+    console.log(price,amount)
+    if(dashboardRecord){
+        dashboardRecord.sales.push({
+            date:new Date(year,month,day,0,0,0),
+            barcode:req.params.barcode,
+            amount:amount,
+            price:parseInt(price)
+        })
+        dashboardRecord.save()
+    }else{
+        await Dashboard.create({
+            username:req.username,
+            sales:[{
+                date:new Date(year,month,day,0,0,0),
+                barcode:req.params.barcode,
+                amount:amount,
+                price:price
+            }]
+        })
+    }
+    console.log(price,amount)
+    const retailerProduct=await RetailerProduct.deleteOne({"retailerUserName":req.username,"barcode":req.params.barcode})
+    console.log(retailerProduct)
+    res.sendStatus(200)
     return 0
 }
+const getBrands=async(req,res)=>{
+    res.status(200).json(Brands)
+}
 
-
-module.exports={getProducts,getProduct,addProduct,addNewProduct,addOldProduct,soldOne,updateAmount,updatePrice,deleteProduct}
+module.exports={getProducts,getProduct,addProduct,addNewProduct,addOldProduct,soldOne,updateAmount,updatePrice,deleteProduct,getBrands}

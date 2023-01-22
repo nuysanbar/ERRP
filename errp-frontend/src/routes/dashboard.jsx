@@ -9,13 +9,14 @@ export async function loader(){
         }
       })
     const response=res.data
+    console.log(response)
     return response;
 }
 export default function Dashboard(){
     const response=useLoaderData()
     return (
         <>
-        <h1>Dashboard section {response.dashboard}</h1>
+        <h1>Dashboard section </h1>
         </>
     )
 }

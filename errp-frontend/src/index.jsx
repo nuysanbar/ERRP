@@ -13,7 +13,7 @@ import ProfileEdit, {action as profileEditAction} from "./routes/profileEdit";
 import Products, {action as productsAction,loader as productsLoader} from "./routes/products";
 import ProductsList, {loader as productsListLoader} from './routes/productsList';
 import ProductsListSingle, {loader as productsListSingleLoader,priceAction,amountAction} from "./routes/productsListSingle";
-import AddNewProduct ,{action as newProductAction} from "./routes/addNewProduct";
+import AddNewProduct ,{action as newProductAction,loader as brandsLoader} from "./routes/addNewProduct";
 import AddOldProduct ,{action as oldProductAction} from "./routes/addOldProduct";
 import LandingPageSingle, {loader as landingPageSingleLoader,reviewAction} from "./routes/landingPageSingle.jsx";
 import LandingPageProducts, {loader as landingPageProductsLoader} from "./routes/landingPageProducts";
@@ -21,7 +21,7 @@ import Favorite,{loader as favoriteLoader} from "./routes/favorite";
 import Notification,{loader as notificationLoader} from "./routes/notification"
 import Saved, {loader as savedLoader} from "./routes/saved";
 import Dashboard, {loader as dashboardLoader} from "./routes/dashboard";
-import { createBrowserRouter,RouterProvider,Route } from "react-router-dom";
+import { createBrowserRouter,RouterProvider} from "react-router-dom";
 const router=createBrowserRouter([
     {
         path:'/',
@@ -86,6 +86,7 @@ const router=createBrowserRouter([
                     {
                         path:"/home/products/addNew",
                         element:<AddNewProduct/>,
+                        loader:brandsLoader,
                         action:newProductAction,
                     },
                     {

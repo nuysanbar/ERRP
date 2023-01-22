@@ -10,7 +10,7 @@ export async function action({request}){
             "Authorization":"Bearer "+ access_token
         }
     })
-    return redirect('../products');
+    return redirect("/home/products");
 }
 export default function AddOldProduct(){
     const barcode=window.localStorage.getItem('barcode');

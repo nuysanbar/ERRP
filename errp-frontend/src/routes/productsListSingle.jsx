@@ -1,4 +1,4 @@
-import {useLoaderData,Form,redirect} from 'react-router-dom'
+import {useLoaderData,Form,redirect,useNavigate} from 'react-router-dom'
 import axios from 'axios'
 import { useState } from 'react';
 const access_token=window.localStorage.getItem('access_token');
@@ -39,6 +39,7 @@ export const amountAction=async({request,params})=>{
     return redirect(`/home/products/${params.barcode}`)
 }
 export default function ProductsListSingle(){
+    const navigate=useNavigate()
     const response1=useLoaderData()
     const [barcode,setBarcode]=useState(response1.productInfo.barcode)
     const [amount,setAmount]=useState(response1.product.availableAmount)
@@ -48,7 +49,7 @@ export default function ProductsListSingle(){
     const handleAvailableAmount=async()=>{
         setAmount(amount-1)
         const apiUrl=`http://localhost:3500/home/products/${barcode}/soldOne`
-        const res=await axios.post(apiUrl,{"price":price},{
+        const res=await axios.post(apiUrl,{"price":price,"amount":amount},{
             headers:{
                 "Authorization":"Bearer "+ access_token
             }
@@ -57,7 +58,6 @@ export default function ProductsListSingle(){
         return 0
     }
     const handleSoldOut=async()=>{
-        setAmount(0)
         const apiUrl=`http://localhost:3500/home/products/${barcode}/deleteProduct`
         const totalSell=amount*price
         const res=await axios.post(apiUrl,{"amount":amount,"price":totalSell},{
@@ -66,7 +66,8 @@ export default function ProductsListSingle(){
             }
         })
         console.log(res.data)
-        return 0;
+        setAmount(0)
+        return navigate(-1);
     }
    return (
     <div>
@@ -92,7 +93,7 @@ export default function ProductsListSingle(){
         <p>{response1.productInfo.modelName}</p>
         <img src={`http://localhost:3500/products/${response1.productInfo.imgUrl}`} alt={response1.productInfo.brandName}/>
         <p></p>
-        {amount > 0 && <div><button onClick={()=>handleAvailableAmount(-1)}>Sold One</button><br /></div>}
+        {amount >1 && <div><button onClick={()=>handleAvailableAmount(-1)}>Sold One</button><br /></div>}
         <button onClick={handleSoldOut}>Sold Out</button>
     </div>
    )

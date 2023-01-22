@@ -44,12 +44,16 @@ router.route("/")
 router.route("/products")
     .get(verifyRetailer,productsController.getProducts)
     .post(verifyRetailer,productsController.addProduct)
-router.route("/products/:barcode")
-    .get(verifyRetailer,productsController.getProduct)
+router.route("/products/brands")
+    .get(productsController.getBrands)
 router.route("/products/addNew")
-    .post(upload.single("productImg") ,productsController.addNewProduct)
+    // .post(verifyRetailer,productsController.addNewProduct)
+    .post(upload.array("productImg",5) ,productsController.addNewProduct)
+
 router.route("/products/addOld")
     .post(verifyRetailer,productsController.addOldProduct)
+router.route("/products/:barcode")
+    .get(verifyRetailer,productsController.getProduct)
 router.route("/products/:barcode/soldOne")
     .post(verifyRetailer,productsController.soldOne)
 router.route("/products/:barcode/updatePrice")
@@ -62,14 +66,18 @@ router.route("/products/:barcode/deleteProduct")
 
 router.route("/favorites")
     .get(favouriteController.getFavourites)
+
 router.route("/notifications")
     .get(verifyRetailer,notificationController.getNotifications)
+
 router.route("/dashboard")
     .get(verifyRetailer,dashboardController.getDashboard)
+
 router.route('/profile')
     .get(profileController.getProfile)
 router.route('/profile/update')
     .post(upload2.single("profileImg"),profileController.updateProfile)
+    
 router.route("/saved")
     .get(savedController.getSavedProductAndPlace)
 
