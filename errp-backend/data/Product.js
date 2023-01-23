@@ -10,13 +10,16 @@ const productSchema=new Schema({
         type:String,
         required:true
     },
-    modelName:{
+    type:{
         type:String
     },
-    imgUrl:{
-        type:String,
-        required:true
-    }
+    brand:{
+        type:String
+    },
+    details:{
+        type:String
+    },
+    imgUrl:[]
 });
 
 module.exports=mongoose.model('Product',productSchema);

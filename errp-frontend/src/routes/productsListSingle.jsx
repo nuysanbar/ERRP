@@ -91,7 +91,7 @@ export default function ProductsListSingle(){
         }
         <p>{response1.productInfo.brandName}</p>
         <p>{response1.productInfo.modelName}</p>
-        <img src={`http://localhost:3500/products/${response1.productInfo.imgUrl}`} alt={response1.productInfo.brandName}/>
+        <img src={`http://localhost:3500/products/${response1.productInfo.imgUrl[0]}`} alt={response1.productInfo.brandName}/>
         <p></p>
         {amount >1 && <div><button onClick={()=>handleAvailableAmount(-1)}>Sold One</button><br /></div>}
         <button onClick={handleSoldOut}>Sold Out</button>

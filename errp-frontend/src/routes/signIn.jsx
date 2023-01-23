@@ -19,7 +19,7 @@ export default function SignIn(){
                 <label htmlFor="username"></label>
                 <input type="text" name="username" id="username" placeholder="username"/><br />
                 <label htmlFor="password"></label>
-                <input type="text" name="password" id="password" placeholder="password" /><br />
+                <input type="pasword" name="password" id="password" placeholder="password" /><br />
                 <button type="submit">Sign In</button>
             </Form>
         </div>

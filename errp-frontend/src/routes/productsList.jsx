@@ -23,14 +23,14 @@ export default function ProductsList(){
               <p >{response.products[i].price}</p>
               <p >{response.products[i].barcode}</p>
               <p >{response.productInfo[i].brandName}</p>
-              <img src={`http://localhost:3500/products/${response.productInfo[i].imgUrl}`} alt={response.productInfo[i].brandName} />
+              <img src={`http://localhost:3500/products/${response.productInfo[i].imgUrl[0]}`} alt={response.productInfo[i].brandName} />
           </NavLink>
           row.push(container)
       }
       return row;
   }
     return(
-        <div>{displayProducts()} </div>
+        <div>{response && displayProducts()} </div>
     )
 }
 

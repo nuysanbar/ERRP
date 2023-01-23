@@ -22,7 +22,7 @@ export default function LandingPageProducts({customPath}){
                 <p >{response2.products[i].price}</p>
                 <p >{response2.products[i].barcode}</p>
                 <p >{response2.productInfo[i].brandName}</p>
-                <img src={`http://localhost:3500/products/${response2.productInfo[i].imgUrl}`} alt={response2.productInfo[i].brandName} />
+                <img src={`http://localhost:3500/products/${response2.productInfo[i].imgUrl[0]}`} alt={response2.productInfo[i].brandName} />
             </NavLink>
             row.push(container)
         }

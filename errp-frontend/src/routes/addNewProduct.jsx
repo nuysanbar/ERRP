@@ -27,11 +27,11 @@ export async function action({request}){
     })
     const response=res.data
     console.log(response)
-    return redirect('../products');
+    return redirect('../');
 }
 export default function AddNewProduct(){
     const barcode=window.localStorage.getItem('barcode');
-    const [electronics]=useState(useLoaderData()[0])
+    const [electronics]=useState(useLoaderData())
     const [selectedType,setSelectedType]=useState(electronics[0].type)
     const newValue=electronics.find((item)=>item.type===selectedType)
     return(

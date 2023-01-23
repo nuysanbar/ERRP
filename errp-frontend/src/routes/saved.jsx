@@ -17,14 +17,13 @@ export default function Saved(){
     const response = useLoaderData()
     return (
         <>
-        {
-          response.map((save)=>{
+        {response && response.map((save)=>{
             return (
             <NavLink to={`/home/${save.retailer}/${save.barcode}`} key={`${save.barcode}${save.retailer}`}>
               <div>
                 <img src={`http://localhost:3500/${save.retailerImg}`} alt="profilePic"/>
                 <h4>{save.retailer}</h4>
-                <img src={`http://localhost:3500/products/${save.productImg}`} alt="productImg"/>
+                <img src={`http://localhost:3500/products/${save.productImg[0]}`} alt="productImg"/>
                 <h5>{save.brand}</h5>
               </div>
             </NavLink>

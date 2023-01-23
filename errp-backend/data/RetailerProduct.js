@@ -8,6 +8,7 @@ const retailerProductSchema=new Schema({
    },
    price:Number,
    availableAmount:Number,
+   usedOrNew:String,
    retailerUserName:{
     type:String,
     required:true,

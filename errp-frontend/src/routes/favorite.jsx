@@ -18,7 +18,7 @@ export default function Favorite(){
     return (
         <>
             <div>
-                { response.favorites.map((username)=>{
+                { response.favorites && response.favorites.map((username)=>{
                     return (
                         <div key={username}>
                             <NavLink to={"/home/favorites/"+username} >{username}</NavLink> <br/>

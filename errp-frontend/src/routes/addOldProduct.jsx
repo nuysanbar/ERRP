@@ -19,6 +19,10 @@ export default function AddOldProduct(){
             <Form method="post">
                 <label htmlFor="barcode"></label>
                 <input type="text" name="barcode" id="barcode" readOnly defaultValue={barcode} placeholder={barcode}/><br />
+                <select name="usedornew" id="usedornew">
+                    <option value="new">New</option>
+                    <option value="used">Used</option>
+                </select> <br />
                 <label htmlFor="price"></label>
                 <input type="number" name="price" id="price" placeholder="price"/> <br />
                 <label htmlFor="amount"></label>

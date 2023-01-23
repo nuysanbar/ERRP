@@ -88,7 +88,7 @@ export default function LandingPageSingle(){
         <p>{response1.product.price}</p>
         <p>{response1.productInfo.brandName}</p>
         <p>{response1.productInfo.modelName}</p>
-        <img src={`http://localhost:3500/products/${response1.productInfo.imgUrl}`} alt={response1.productInfo.modelName}/> <br />
+        <img src={`http://localhost:3500/products/${response1.productInfo.imgUrl[0]}`} alt={response1.productInfo.modelName}/> <br />
         {like===false? <button onClick={handleLike} ><AiOutlineLike/></button>
         : <button onClick={handleLike}><AiFillLike/></button>}
 

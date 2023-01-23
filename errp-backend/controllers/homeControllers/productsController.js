@@ -1,7 +1,6 @@
 const Product=require("../../data/Product");
 const RetailerProduct=require("../../data/RetailerProduct")
 const Dashboard=require("../../data/Dashboard")
-const Brands=require("../../data/Brand")
 const getProducts=async(req,res)=>{
     var productInfo=[];
     const products= await RetailerProduct.find({retailerUserName:req.username})
@@ -50,38 +49,46 @@ const addProduct=async(req,res)=>{
     }
 }
 const addNewProduct=async(req,res)=>{
+    const pictures=[]
     console.log(req.body)
     console.log(req.files)
-    // console.log(req.file.filename)
-    // const {barcode,brandname,price,amount}=req.body
-    // if(!barcode || !brandname || !model || !price || !amount ) return res.status(400).json({"message":"fill all the products name appropriately"})
-    // const duplicate= await Product.findOne({barcode:barcode}).exec();
-    // if(duplicate) return res.sendStatus(409)
-    // try{
-    //     const result=await Product.create({
-    //         "barcode":barcode,
-    //         "brandName":brandname,
-    //         "imgUrl":req.file.filename
-    //     })
-    //     console.log(result);
-    //     const result2= await RetailerProduct.create({
-    //         "barcode":barcode,
-    //         "price":price,
-    //         "availableAmount":amount,
-    //         "retailerUserName":req.username,
-    //         "likedCount":0,
-    //         "disLikedCount":0,
-    //     })
-    //     console.log(result2)
-    //     res.status(201).json({"success":"new product is created"})
-    // }catch(err){
-    //     res.status(500).json({"error":"server problem"})
-    // }
+    for(let i=0; i<req.files.length; i++){
+        pictures.push(req.files[i].filename)
+    }
+    console.log(pictures)
+    const {barcode,brandname,type,brand,usedornew,details,price,amount}=req.body
+    if(!barcode || !brandname ||!type ||!brand ||!usedornew || !details || !amount ) return res.status(400).json({"message":"fill all the products name appropriately"})
+    const duplicate= await Product.findOne({barcode:barcode}).exec();
+    if(duplicate) return res.sendStatus(409)
+    try{
+        const result=await Product.create({
+            "barcode":barcode,
+            "brandName":brandname,
+            "type":type,
+            "brand":brand,
+            "details":details,
+            "imgUrl":pictures
+        })
+        console.log(result);
+        const result2= await RetailerProduct.create({
+            "barcode":barcode,
+            "price":price,
+            "availableAmount":amount,
+            "retailerUserName":req.username,
+            "usedOrNew":usedornew,
+            "likedCount":0,
+            "disLikedCount":0,
+        })
+        console.log(result2)
+        res.status(201).json({"success":"new product is created"})
+    }catch(err){
+        res.status(500).json({"error":"server problem"})
+    }
 }
 
 const addOldProduct=async(req,res)=>{
-    const {barcode,price,amount}=req.body
-    if(!barcode || !price || !amount ) return res.status(400).json({"message":"fill all the product info appropriately"})
+    const {barcode,price,usedornew,amount}=req.body
+    if(!barcode || !price ||!usedornew || !amount ) return res.status(400).json({"message":"fill all the product info appropriately"})
     const duplicate= await RetailerProduct.findOne({retailerUserName:req.username,barcode:barcode}).exec();
     if(duplicate) return res.sendStatus(409)
     try{
@@ -89,6 +96,7 @@ const addOldProduct=async(req,res)=>{
             "barcode":barcode,
             "price":price,
             "availableAmount":amount,
+            "usedOrNew":usedornew,
             "retailerUserName":req.username,
             "likedCount":0,
             "disLikedCount":0,
@@ -180,8 +188,6 @@ const deleteProduct=async(req,res)=>{
     res.sendStatus(200)
     return 0
 }
-const getBrands=async(req,res)=>{
-    res.status(200).json(Brands)
-}
 
-module.exports={getProducts,getProduct,addProduct,addNewProduct,addOldProduct,soldOne,updateAmount,updatePrice,deleteProduct,getBrands}
+
+module.exports={getProducts,getProduct,addProduct,addNewProduct,addOldProduct,soldOne,updateAmount,updatePrice,deleteProduct}

@@ -18,6 +18,10 @@ import AddOldProduct ,{action as oldProductAction} from "./routes/addOldProduct"
 import LandingPageSingle, {loader as landingPageSingleLoader,reviewAction} from "./routes/landingPageSingle.jsx";
 import LandingPageProducts, {loader as landingPageProductsLoader} from "./routes/landingPageProducts";
 import Favorite,{loader as favoriteLoader} from "./routes/favorite";
+import Brands,{loader as typeLoader } from "./routes/brands/brands";
+import Brand,{loader as brandLoader,singleTypeLoader} from "./routes/brands/brand";
+import SpecificBrand, {loader as SpecificLoader} from "./routes/brands/specificBrands";
+import SpecificStore, {loader as specificStoreLoader} from "./routes/brands/specificStores";
 import Notification,{loader as notificationLoader} from "./routes/notification"
 import Saved, {loader as savedLoader} from "./routes/saved";
 import Dashboard, {loader as dashboardLoader} from "./routes/dashboard";
@@ -46,6 +50,10 @@ const router=createBrowserRouter([
         loader: homeLoader,
         errorElement:<ErrorPage />,
         children:[
+            {
+                index:true,
+                element: <h2>Reccommended products</h2>
+            },
             {
                 path:"/home/:username",
                 element:<LandingPage customPath={""}/>,
@@ -112,19 +120,16 @@ const router=createBrowserRouter([
                     {
                         path:"/home/favorites/:username",
                         element:<LandingPage customPath={"favorites/"}/>,
-                        // element:<FavoritePage/>,
                         loader:landingPageLoader,
                         children:[
                             {
                                 index:true,
                                 element:<LandingPageProducts customPath={"favorites/"}/>,
-                                // element:<FavoritePageProducts />,
                                 loader:landingPageProductsLoader
                             },
                             {
                                 path:"/home/favorites/:username/:barcode",
                                 element:<LandingPageSingle />,
-                                // element:<FavoritePageSingle/>,
                                 loader:landingPageSingleLoader,
                                 action:reviewAction
                             }
@@ -135,8 +140,43 @@ const router=createBrowserRouter([
                 ]
             },
             {
-                path:"/home/lookingFor",
-                element:<div>look for</div>,
+                path:"/home/brands",
+                element:<Brands/>,
+                loader:typeLoader,
+                children:[
+                    {
+                        index:true,
+                        element: <h2>Reccommended products</h2>
+                    }
+                ]
+            },
+            {
+                path:"/home/brands/:type",
+                element: <Brand/>,
+                loader:brandLoader,
+                children:[
+                    {
+                        index:true,
+                        element: <SpecificBrand/>,
+                        loader:singleTypeLoader
+                    },
+                    {
+                        path:"/home/brands/:type/:brand",
+                        element: <SpecificBrand/>,
+                        loader:SpecificLoader
+                    },
+                    {
+                        path:"/home/brands/:type/:brand/:barcode",
+                        element: <SpecificStore/>,
+                        loader:specificStoreLoader
+                    },
+                    {
+                        path:"/home/brands/:type/:brand/:barcode/:username",
+                        element:<LandingPageSingle/>,
+                        loader:landingPageSingleLoader
+
+                    }
+                ]
             },
             {
                 path:"/home/notifications",

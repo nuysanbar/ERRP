@@ -4,6 +4,7 @@ const User=require('../../data/User')
 const getSavedProductAndPlace=async (req,res)=>{
     var saved=[]
     const result=await Saved.find({"username":req.username})
+    if(result===[]) return res.status(400).json({"message":"could not find any bookmarks"})
     for(let i=0; i<result.length; i++){
         const product=await Product.findOne({"barcode":result[i].barcode}).exec()
         const retailer=await User.findOne({"username":result[i].retailerUserName})
@@ -17,5 +18,4 @@ const getSavedProductAndPlace=async (req,res)=>{
     }
     res.json(saved)
 }
-
 module.exports={getSavedProductAndPlace}

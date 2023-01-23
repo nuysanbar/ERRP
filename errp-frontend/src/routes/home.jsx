@@ -25,7 +25,7 @@ export default function Home() {
           <NavLink to={"/home/favorites"}>
                 Favorites
             </NavLink>
-            <NavLink to={"/home/lookingfor"}>
+            <NavLink to={"/home/brands"}>
                 Brands
             </NavLink>
           {userRole===5508 &&  

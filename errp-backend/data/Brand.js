@@ -56,4 +56,4 @@ const Brands=[
         brand:["Other Electronics"]
     }
 ]
-module.exports=[Brands]
+module.exports=Brands
