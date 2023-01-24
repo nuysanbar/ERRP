@@ -5,7 +5,7 @@ const LandingPageController=require('../../controllers/LandingPageController')
 router.route('/:username')
     .get(LandingPageController.getUser)
 router.route('/:username/favorite')
-    .post(LandingPageController.favorite)
+    .get(LandingPageController.favorite)
 router.route('/:username/products')
     .get(LandingPageController.getProducts)
 router.route('/:username/:barcode')
@@ -19,3 +19,5 @@ router.route('/:username/:barcode/review')
 router.route('/:username/:barcode/save')
     .post(LandingPageController.save)
 module.exports=router;
+
+

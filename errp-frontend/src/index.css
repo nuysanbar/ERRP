@@ -11,6 +11,11 @@ form button{
     margin:10px;
 }
 img{
-    width: 100px;
+    width: 120px;
     height: 140px;
+}
+.profileImg{
+    border-radius: 40px;
+    width: 60px;
+    height: 60px;
 }

@@ -1,4 +1,5 @@
 import { useLoaderData,Outlet,NavLink} from "react-router-dom"
+import {AiOutlineStar,AiFillStar} from "react-icons/ai"
 import axios  from "axios";
 import { useState } from "react";
 export async function loader({params}){
@@ -27,14 +28,15 @@ export default function LandingPage({customPath}){
     const [isFavorite,setIsFavorite]=useState(response1.isFavored)
     const access_token=window.localStorage.getItem("access_token")
     const handleFavorite =async()=>{
-        setIsFavorite(!isFavorite)
         console.log("fav action is being called")
         const apiUrl=`http://localhost:3500/users/${username}/favorite`
-        const res=await axios.post(apiUrl,{"username":username},{
+        const res=await axios.get(apiUrl,{
             headers: {
             'Authorization': 'Bearer ' + access_token
             }
         })
+        setIsFavorite(!isFavorite)
+        console.log(res.data)
         return 0;
     }
     return (
@@ -44,9 +46,8 @@ export default function LandingPage({customPath}){
             username : {response1.user.username} <br />
             <img src={`http://localhost:3500/${response1.user.imgUrl}`} alt="profileImg" />
             </NavLink>
-            {userRole==="retailer" && (isFavorite===false?<button onClick={handleFavorite}>Add to favorites</button>:
-                    <button onClick={handleFavorite}>remove from favorites</button>)}
-            {userRole==="retailer" && <button>rate</button>}
+            { userRole==="retailer" && isFavorite===false?<button onClick={handleFavorite}><AiOutlineStar/></button>:
+                        <button onClick={handleFavorite}><AiFillStar /></button>}
             <Outlet />
         </div>
     )}

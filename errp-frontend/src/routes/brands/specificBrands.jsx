@@ -22,12 +22,11 @@ export default function SpecificBrand(){
                     <div key={item.barcode}>
                         <NavLink to={`/home/brands/${item.type}/${item.brand}/${item.barcode}`}>
                             <p>{item.brandName}</p>
-                            <p>{item.details}</p>
-                            <img src={`http://localhost:3500/products/${item.imgUrl[0]}`} alt={item.imgUrl[0]} />
                         </NavLink>
                     </div>
                 )
             })}
+            <Outlet />
         </div>
     )
 }

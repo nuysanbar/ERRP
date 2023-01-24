@@ -5,7 +5,7 @@ const Saved=require('../data/Saved')
 const Favorite=require('../data/Favorite')
 // const { el } = require('date-fns/locale');
 const getUser=async (req,res)=>{
-    var isFavored=false
+    var isFavored;
     if(!req?.params?.username){
         return res.status(400).json({"message":" username is required"})
     }
@@ -13,9 +13,11 @@ const getUser=async (req,res)=>{
     if(!user){
         return res.status(204).json({"message":"No user matches the username"})
     }
-    const checkFav=user.favoredBy.find((item)=>item===req.username)
+    const checkFav=user.favoredBy.find((item)=>req.username)
     if(checkFav){
         isFavored=true
+    }else{
+        isFavored=false
     }
     res.status(200).json({user,isFavored});
 };
@@ -121,7 +123,6 @@ const dislike=async(req,res)=>{
             product.likedBy.pop((item=>item.name===req.username))
         }
     }
-    console.log(product)
     product.save()
     res.status(200).json({"message":"you dislike the product"})
 }
@@ -180,12 +181,8 @@ const favorite=async(req,res)=>{
         favoredUser.favoredBy.push(req.username)
     }
     favoredUser.save()
-    console.log(user)
-    console.log(favoredUser)
     res.status(200).json({"message":"favorite backend path is completed"})
-
 }
-
 module.exports={getUser,getProducts,getProduct,like,dislike,review,save,favorite}
 
 

@@ -1,4 +1,5 @@
 import { useLoaderData,NavLink} from "react-router-dom"
+import Store from "./store"
 import axios from "axios"
 const access_token=window.localStorage.getItem("access_token")
 export async function loader({params}){
@@ -15,32 +16,22 @@ export async function loader({params}){
 }
 export default function SpecificStore(){
     const response=useLoaderData()
-    const displayStores=()=>{
-        const stores=[]
-        for(let i=0; i<response.retailersProducts.length; i++){
-            const container= <div key={`${response.retailersProducts[i].retailerUserName}${response.retailersProducts[i].barcode}`}>
-                <NavLink to={`/home/brands/${response.product.type}/${response.product.brand}/${response.product.barcode}/${response.retailers[i].username}`}>
-                    <div>
-                        <img src={`http://localhost:3500/products/${response.product.imgUrl[0]}`} alt={response.product.imgUrl[0]} />
-                        <p>{response.product.brandName}</p>
-                        <p>{response.retailersProducts[i].price}</p>
-                        <p>{response.retailersProducts[i].likedCount}</p>
-                        <p>{response.retailersProducts[i].disLikedCount}</p>
-                    </div> 
-                    <div>
-                         <img src={`http://localhost:3500/${response.retailers[i].imgUrl}`} alt={response.retailers[i].username} />
-                        <p>{response.retailers[i].username}</p>
-                        <p>{response.retailers[i].favoredNumber}</p>
-                    </div>
-                </NavLink> 
-            </div> 
-            stores.push(container)
-        }
-        return stores
-    }
+    const product=response.product
+    const retailers=response.retailers
     return (
         <div>
-            {response && displayStores()}
+            <div>
+                {product.imgUrl.map((item)=>{
+                    return (
+                        <img src={`http://localhost:3500/products/${item}`} alt={item} key={item}/>
+                    )
+                })}
+                 <p>{product.brandName}</p>
+                 <p>{product.details}</p>
+            </div>
+            {retailers.map((item)=>{
+                return ( <Store retailer={item} barcode={product.barcode} key={item.storeName} />)
+            })}
         </div>
     )
 }

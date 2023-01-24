@@ -142,13 +142,7 @@ const router=createBrowserRouter([
             {
                 path:"/home/brands",
                 element:<Brands/>,
-                loader:typeLoader,
-                children:[
-                    {
-                        index:true,
-                        element: <h2>Reccommended products</h2>
-                    }
-                ]
+                loader:typeLoader
             },
             {
                 path:"/home/brands/:type",
@@ -156,25 +150,16 @@ const router=createBrowserRouter([
                 loader:brandLoader,
                 children:[
                     {
-                        index:true,
-                        element: <SpecificBrand/>,
-                        loader:singleTypeLoader
-                    },
-                    {
                         path:"/home/brands/:type/:brand",
                         element: <SpecificBrand/>,
-                        loader:SpecificLoader
-                    },
-                    {
-                        path:"/home/brands/:type/:brand/:barcode",
-                        element: <SpecificStore/>,
-                        loader:specificStoreLoader
-                    },
-                    {
-                        path:"/home/brands/:type/:brand/:barcode/:username",
-                        element:<LandingPageSingle/>,
-                        loader:landingPageSingleLoader
-
+                        loader:SpecificLoader,
+                        children:[
+                            {
+                                path:"/home/brands/:type/:brand/:barcode",
+                                element: <SpecificStore/>,
+                                loader:specificStoreLoader
+                            }
+                        ]
                     }
                 ]
             },
