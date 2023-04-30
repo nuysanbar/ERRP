@@ -1,12 +1,9 @@
 import {useLoaderData,Form,NavLink } from 'react-router-dom'
-import {AiOutlineLike,AiFillLike,AiFillDislike,AiOutlineDislike} from 'react-icons/ai'
-import {BsBookmark,BsFillBookmarkFill} from 'react-icons/bs'
 import axios from 'axios'
 import { useState } from 'react';
 const access_token=window.localStorage.getItem('access_token');
 export async function loader({params}){
     var response1;
-
     const apiUrl=`http://localhost:3500/users/${params.username}/${params.barcode}`
     const res = await axios.get(apiUrl,{
         headers: {
@@ -35,58 +32,9 @@ export default function LandingPageSingle(){
    const response1=useLoaderData()
    const username=response1.product.retailerUserName
    const barcode=response1.product.barcode
-   const [likeCount,setLikeCount]=useState(response1.product.likedCount)
-   const [disLikeCount,setDisLikeCount]=useState(response1.product.disLikedCount)
-   const [like,setLike]=useState(response1.like)
-   const [dislike,setDisLike]=useState(response1.dislike)
    const [saved,setSaved]=useState(response1.saved)
    const [comment,setComment]=useState('')
-   const addorLowerLike=()=>{
-    if(!like){
-        setLikeCount(likeCount+1)
-    }else{
-        setLikeCount(likeCount-1)
-    }
-}
-    const addorLowerDisLike=()=>{
-        if(!dislike){
-            setDisLikeCount(disLikeCount+1)
-        }else{
-            setDisLikeCount(disLikeCount-1)
-        }
-    }
-    const handleLike=async()=>{
-      setLike(!like)
-      addorLowerLike()
-      if(dislike){
-        setDisLike(!dislike)
-        addorLowerDisLike()
-      }
-      console.log("like action is being called") 
-      const apiUrl=`http://localhost:3500/users/${username}/${barcode}/like`
-      await axios.post(apiUrl,{"username":username},{
-          headers: {
-            'Authorization': 'Bearer ' + access_token
-          }
-        })
-        return 0;
-   }
-   const handleDislike=async()=>{
-      addorLowerDisLike()
-      setDisLike(!dislike)
-      if(like){
-        setLike(!like)
-        addorLowerLike()
-      }
-      console.log("dislike action is being called")
-      const apiUrl=`http://localhost:3500/users/${username}/${barcode}/dislike`
-      await axios.post(apiUrl,{"username":username},{
-          headers: {
-            'Authorization': 'Bearer ' + access_token
-          }
-        })
-      return 0
-   }
+
    const handleSaved=async()=>{
       setSaved(!saved)
       console.log("save action is being called")
@@ -105,17 +53,14 @@ export default function LandingPageSingle(){
 
    return (
     <div>
-        <p>{response1.product.availableAmount} {response1.product.likedCount} {response1.product.disLikedCount}</p>
+        <p>{response1.product.availableAmount}</p>
         <p>{response1.product.price}</p>
         <p>{response1.productInfo.brandName}</p>
         <p>{response1.productInfo.modelName}</p>
         <img src={`http://localhost:3500/products/${response1.productInfo.imgUrl[0]}`} alt={response1.productInfo.modelName}/> <br />
-        {like===false? <button onClick={handleLike} ><span>{likeCount}</span><AiOutlineLike/></button>
-             : <button onClick={handleLike}><span>{likeCount}</span><AiFillLike/></button>}
-        {dislike===false? <button onClick={handleDislike}><span>{disLikeCount}</span><AiOutlineDislike/></button>
-             : <button onClick={handleDislike}><span>{disLikeCount}</span><AiFillDislike/></button>}
-        {saved===false? <button onClick={handleSaved}><BsBookmark /></button>
-             : <button onClick={handleSaved}><BsFillBookmarkFill /></button>}
+        <NavLink to={`/home/${username}/${barcode}/checkout`}>Buy it now</NavLink>
+        {saved===false? <button onClick={handleSaved}>Add to cart</button>
+             : <button onClick={handleSaved}>remove from cart</button>}
 
         <Form method="post"  onSubmit={handleReview}>
             <textarea name="review" id="" cols="40" rows="3" defaultValue={comment} placeholder='comment here'></textarea>

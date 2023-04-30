@@ -25,6 +25,7 @@ app.use('/refresh',require('./routes/api/refresh'));
 app.use('/logout',require('./routes/api/logout'));
 app.use(verifyJWT);
 app.use('/home',require('./routes/api/home'))
+app.use('/order',require('./routes/api/order'))
 app.use('/users',require('./routes/api/landingPage'))
 
 mongoose.connection.once('open',()=>{

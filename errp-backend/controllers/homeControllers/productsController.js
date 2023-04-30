@@ -14,8 +14,6 @@ const getProducts=async(req,res)=>{
     res.json({products,productInfo})
 }
 const getProduct = async(req,res)=>{
-    var like=false;
-    var dislike=false;
     if(!req?.params?.barcode){
         return res.status(400).json({"message":"barcode is required"})
     }
@@ -23,19 +21,11 @@ const getProduct = async(req,res)=>{
     if(!product){
         return res.status(204).json({"message":"product is not available"})
     }
-    const checkLike=product.likedBy.find((item)=>item===req.username)
-    if(checkLike){
-        like=true;
-    }
-    const checkDisLike=product.disLikedBy.find((item)=>item===req.username)
-    if(checkDisLike){
-        dislike=true;
-    }
     var productInfo=await Product.findOne({barcode:req.params.barcode})
     if(!productInfo){
         return res.status(204).json({"message":"product is not available"})
     }
-    res.json({product,productInfo,like,dislike})
+    res.json({product,productInfo})
 }
 const addProduct=async(req,res)=>{
     const barcode=req.body.barcode;
@@ -76,8 +66,6 @@ const addNewProduct=async(req,res)=>{
             "availableAmount":amount,
             "retailerUserName":req.username,
             "usedOrNew":usedornew,
-            "likedCount":0,
-            "disLikedCount":0,
         })
         console.log(result2)
         res.status(201).json({"success":"new product is created"})
@@ -98,8 +86,6 @@ const addOldProduct=async(req,res)=>{
             "availableAmount":amount,
             "usedOrNew":usedornew,
             "retailerUserName":req.username,
-            "likedCount":0,
-            "disLikedCount":0,
         })
         console.log(result2)
         res.status(201).json({"success":"new product is created"})
@@ -188,6 +174,4 @@ const deleteProduct=async(req,res)=>{
     res.sendStatus(200)
     return 0
 }
-
-
 module.exports={getProducts,getProduct,addProduct,addNewProduct,addOldProduct,soldOne,updateAmount,updatePrice,deleteProduct}

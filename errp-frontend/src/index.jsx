@@ -16,6 +16,7 @@ import ProductsListSingle, {loader as productsListSingleLoader,priceAction,amoun
 import AddNewProduct ,{action as newProductAction,loader as brandsLoader} from "./routes/addNewProduct";
 import AddOldProduct ,{action as oldProductAction} from "./routes/addOldProduct";
 import LandingPageSingle, {loader as landingPageSingleLoader,reviewAction} from "./routes/landingPageSingle.jsx";
+import ExpressCheckout, {loader as checkoutLoader, action as checkoutAction} from "./routes/expressCheckout";
 import LandingPageProducts, {loader as landingPageProductsLoader} from "./routes/landingPageProducts";
 import Favorite,{loader as favoriteLoader} from "./routes/favorite";
 import Brands,{loader as typeLoader } from "./routes/brands/brands";
@@ -70,6 +71,12 @@ const router=createBrowserRouter([
                         element:<LandingPageSingle/>,
                         loader:landingPageSingleLoader,
                         action:reviewAction
+                    },
+                    {
+                        path:"/home/:username/:barcode/checkout",
+                        element:<ExpressCheckout/>,
+                        loader:checkoutLoader,
+                        action:checkoutAction
                     }
                 ]
             },

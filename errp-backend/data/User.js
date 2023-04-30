@@ -6,10 +6,12 @@ const userSchema=new Schema({
         type:String,
         required:true
     },
-    fullname:{
-        type:String,
-        // required:true
-    },
+    firstname:String,
+    lastname:String,
+    lat:Number,
+    lon:Number,
+    city:String,
+    subcity:String,
     roles:{
         type:Number,
         required:true
@@ -18,6 +20,8 @@ const userSchema=new Schema({
         type:String,
         required:true
     },
+    email:String,
+    phoneNum:Number,
     imgUrl:{
         type:String,
         required:true

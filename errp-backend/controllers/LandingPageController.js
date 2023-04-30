@@ -40,8 +40,8 @@ const getProducts=async(req,res)=>{
 
 const getProduct = async(req,res)=>{
     var productInfo;
-    var like=false;
-    var dislike=false;
+    // var like=false;
+    // var dislike=false;
     var review=[];
     var saved=false;
     if(!req?.params?.username){
@@ -54,14 +54,14 @@ const getProduct = async(req,res)=>{
     if(!product){
         return res.status(204).json({"message":"product is not available"})
     }
-    const checkLike=product.likedBy.find((item)=>item.name===req.username)
-    if(checkLike){
-        like=true;
-    }
-    const checkDisLike=product.disLikedBy.find((item)=>item.name===req.username)
-    if(checkDisLike){
-        dislike=true;
-    }
+    // const checkLike=product.likedBy.find((item)=>item.name===req.username)
+    // if(checkLike){
+    //     like=true;
+    // }
+    // const checkDisLike=product.disLikedBy.find((item)=>item.name===req.username)
+    // if(checkDisLike){
+    //     dislike=true;
+    // }
     const checkSaved=await Saved.findOne({"username":req.username,"retailerUserName":req.params.username,"barcode":req.params.barcode})
     if(checkSaved){
         saved=true;
@@ -76,56 +76,56 @@ const getProduct = async(req,res)=>{
     if(!productInfo){
         return res.status(204).json({"message":"product is not available"})
     }
-    res.json({product,productInfo,like,dislike,review,saved})
+    res.json({product,productInfo,review,saved})
 }
-const like= async(req,res)=>{
-    if(!req?.params?.username){
-        return res.status(400).json({"message":"username is required "})
-    }
-    if(!req?.params?.barcode){
-        return res.status(400).json({"message":"barcode is required"})
-    }
-    const product= await RetailerProduct.findOne({barcode:req.params.barcode,retailerUserName:req.params.username}).exec()
-    const exist=product.likedBy.find((item)=>item.name===req.username)
-    if(exist){
-        product.likedCount=product.likedCount-1
-        product.likedBy.pop((item=>item.name===req.username))
-    }else{
-        product.likedCount=product.likedCount+1
-        product.likedBy.push({"name":req.username})
-        const dislikeExists=product.disLikedBy.find((item)=>item.name===req.username)
-        if(dislikeExists){
-            product.disLikedCount=product.disLikedCount-1
-            product.disLikedBy.pop(item=>item.name===req.username)
-        }
-    }
-    product.save()
-    res.status(200).json({"message":"you like the product"})
-}
-const dislike=async(req,res)=>{
-    if(!req?.params?.username){
-        return res.status(400).json({"message":"username is required "})
-    }
-    if(!req?.params?.barcode){
-        return res.status(400).json({"message":"barcode is required"})
-    }
-    const product= await RetailerProduct.findOne({retailerUserName:req.params.username,barcode:req.params.barcode}).exec()
-    const exist=product.disLikedBy.find(item=>item.name===req.username)
-    if(exist){
-        product.disLikedCount=product.disLikedCount-1
-        product.disLikedBy.pop(item=>item.name===req.username)
-    }else{
-        product.disLikedCount=product.disLikedCount+1
-        product.disLikedBy.push({"name":req.username})
-        const likeExists=product.likedBy.find(item=>item.name===req.username)
-        if(likeExists){
-            product.likedCount=product.likedCount-1
-            product.likedBy.pop((item=>item.name===req.username))
-        }
-    }
-    product.save()
-    res.status(200).json({"message":"you dislike the product"})
-}
+// const like= async(req,res)=>{
+//     if(!req?.params?.username){
+//         return res.status(400).json({"message":"username is required "})
+//     }
+//     if(!req?.params?.barcode){
+//         return res.status(400).json({"message":"barcode is required"})
+//     }
+//     const product= await RetailerProduct.findOne({barcode:req.params.barcode,retailerUserName:req.params.username}).exec()
+//     const exist=product.likedBy.find((item)=>item.name===req.username)
+//     if(exist){
+//         product.likedCount=product.likedCount-1
+//         product.likedBy.pop((item=>item.name===req.username))
+//     }else{
+//         product.likedCount=product.likedCount+1
+//         product.likedBy.push({"name":req.username})
+//         const dislikeExists=product.disLikedBy.find((item)=>item.name===req.username)
+//         if(dislikeExists){
+//             product.disLikedCount=product.disLikedCount-1
+//             product.disLikedBy.pop(item=>item.name===req.username)
+//         }
+//     }
+//     product.save()
+//     res.status(200).json({"message":"you like the product"})
+// }
+// const dislike=async(req,res)=>{
+//     if(!req?.params?.username){
+//         return res.status(400).json({"message":"username is required "})
+//     }
+//     if(!req?.params?.barcode){
+//         return res.status(400).json({"message":"barcode is required"})
+//     }
+//     const product= await RetailerProduct.findOne({retailerUserName:req.params.username,barcode:req.params.barcode}).exec()
+//     const exist=product.disLikedBy.find(item=>item.name===req.username)
+//     if(exist){
+//         product.disLikedCount=product.disLikedCount-1
+//         product.disLikedBy.pop(item=>item.name===req.username)
+//     }else{
+//         product.disLikedCount=product.disLikedCount+1
+//         product.disLikedBy.push({"name":req.username})
+//         const likeExists=product.likedBy.find(item=>item.name===req.username)
+//         if(likeExists){
+//             product.likedCount=product.likedCount-1
+//             product.likedBy.pop((item=>item.name===req.username))
+//         }
+//     }
+//     product.save()
+//     res.status(200).json({"message":"you dislike the product"})
+// }
 const review=async(req,res)=>{
     if(!req?.params?.username){
         return res.status(400).json({"message":"username is required "})
@@ -183,6 +183,6 @@ const favorite=async(req,res)=>{
     favoredUser.save()
     res.status(200).json({"message":"favorite backend path is completed"})
 }
-module.exports={getUser,getProducts,getProduct,like,dislike,review,save,favorite}
+module.exports={getUser,getProducts,getProduct,review,save,favorite}
 
 

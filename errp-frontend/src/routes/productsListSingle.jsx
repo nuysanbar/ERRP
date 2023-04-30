@@ -79,8 +79,6 @@ export default function ProductsListSingle(){
             <button type='submit'>apply</button>
         </Form>
         }</div>
-        <p>{response1.product.likedCount}</p>
-        <p>{response1.product.disLikedCount}</p>
         <p>{price}</p>
         {changePrice===false?  <button onClick={()=>setChangePrice(true)}>change price</button> :
         <Form method="post" action='updatePrice' onSubmit={()=>setChangePrice(false)}>

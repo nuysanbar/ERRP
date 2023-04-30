@@ -1,4 +1,4 @@
-import { Form,redirect } from "react-router-dom"
+import { Form,redirect ,NavLink} from "react-router-dom"
 import axios from 'axios'
 export async function action({request}){
     const formData = await request.formData();
@@ -22,6 +22,11 @@ export default function SignIn(){
                 <input type="pasword" name="password" id="password" placeholder="password" /><br />
                 <button type="submit">Sign In</button>
             </Form>
+            <p>Don't have an account </p><div className="root">
+            <NavLink to={"/signUp"}>
+                signUp
+            </NavLink>
+        </div>
         </div>
     )
 }

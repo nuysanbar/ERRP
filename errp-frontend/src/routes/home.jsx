@@ -42,7 +42,7 @@ export default function Home() {
             </>
            }
            <NavLink to={"/home/saved"}>
-                Bookmark
+                cart
             </NavLink>
             <NavLink to={"/home/profile"}>
                 Profile

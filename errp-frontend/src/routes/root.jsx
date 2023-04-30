@@ -1,13 +1,8 @@
-import { Outlet,useLoaderData,Form,redirect,NavLink} from "react-router-dom";
+import { Outlet} from "react-router-dom";
 
 export default function Root() {
     return (
       <>
-        <div className="root">
-            <NavLink to={"/signUp"}>
-                signUp
-            </NavLink>
-        </div>
         <div id="detail"><Outlet /></div>
       </>
     );

@@ -13,8 +13,6 @@ const retailerProductSchema=new Schema({
     type:String,
     required:true,
    },
-   likedCount:Number,
-   disLikedCount:Number,
    reviewed:[{
     date:{
       type:Date,
@@ -23,20 +21,6 @@ const retailerProductSchema=new Schema({
     reviewedBy:String,
     reviewText:String
    }],
-   likedBy:[{
-      date:{
-         type:Date,
-         default:new Date()
-       },
-      name:String
-   }],
-   disLikedBy:[{
-      date:{
-         type:Date,
-         default:new Date()
-       },
-      name:String
-   }]
 });
 module.exports=mongoose.model('RetailerProduct',retailerProductSchema);
 
