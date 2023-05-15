@@ -16,16 +16,24 @@ export async function loader({params}){
 export default function SpecificBrand(){
     const response=useLoaderData()
     return (
-        <div>
-           {response && response.map((item)=>{
+        <div className="specificBrands">
+            <div className="specificBrandTitleContainer">
+            {response && response.map((item)=>{
                 return (
-                    <div key={item.barcode}>
-                        <NavLink to={`/home/brands/${item.type}/${item.brand}/${item.barcode}`}>
-                            <p>{item.brandName}</p>
-                        </NavLink>
-                    </div>
+                    <NavLink to={`/home/brands/${item.type}/${item.brand}/${item.barcode}`} key={item.barcode} className={({ isActive, isPending }) =>
+                            isActive
+                            ? "specificBrandTitle active"
+                            : isPending
+                            ? "specificBrandTitle pending"
+                            : "specificBrandTitle"
+                        }>
+                        <img src={`http://localhost:3500/products/${item.imgUrl[0]}`} alt="product image" />
+                        <p>{item.brandName}</p>
+                    </NavLink>
                 )
             })}
+            </div>
+           
             <Outlet />
         </div>
     )

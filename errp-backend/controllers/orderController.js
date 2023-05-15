@@ -4,13 +4,13 @@
 var ypco = require('yenepaysdk');
 
 var sellerCode = "SB2289",
-    successUrlReturn = "http://localhost:3500/Home/PaymentSuccessReturnUrl", //"YOUR_SUCCESS_URL",
-    ipnUrlReturn = "http://localhost:3500/Home/IPNDestination", //"YOUR_IPN_URL",
-    cancelUrlReturn = "", //"YOUR_CANCEL_URL",
-    failureUrlReturn = "", //"YOUR_FAILURE_URL",
+    successUrlReturn = "http://localhost:3000/Home/PaymentSuccessReturnUrl", //"YOUR_SUCCESS_URL",
+    ipnUrlReturn = "http://localhost:3000/Home/IPNDestination", //"YOUR_IPN_URL",
+    cancelUrlReturn = "http://localhost:3000/Home/CheckoutExpress", //"YOUR_CANCEL_URL",
+    failureUrlReturn = "http://localhost:3000/Home/CheckoutExpress", //"YOUR_FAILURE_URL",
     pdtToken = "29FIdkc7t9Xjv8",
     useSandbox = true,
-    currency = "USD";
+    currency = "ETB";
 
 exports.CheckoutExpress = function(req, res) {
   console.log(req.body)
@@ -20,8 +20,7 @@ exports.CheckoutExpress = function(req, res) {
   var checkoutOptions = ypco.checkoutOptions(sellerCode, merchantOrderId, ypco.checkoutType.Express, useSandbox, expiresAfter, successUrlReturn, cancelUrlReturn, ipnUrlReturn, failureUrlReturn, currency);
   var checkoutItem = req.body;
   var url = ypco.checkout.GetCheckoutUrlForExpress(checkoutOptions, checkoutItem);
-  console.log(url)
-  res.redirect(url);
+  res.json({"url":url});
 };
 
 exports.CheckoutCart = function(req, res) {
@@ -69,18 +68,20 @@ exports.PaymentSuccessReturnUrl = function(req, res) {
     if(pdtJson.result == 'SUCCESS') // or `pdtJson.Status == 'Paid'`
     {
       console.log("success url called - Paid");
+      console.log(pdtJson)
       //This means the payment is completed. 
       //You can extract more information of the transaction from the pdtResponse
       //You can now mark the order as "Paid" or "Completed" here and start the delivery process
     }
-    res.redirect('/');
+    res.json({"message":"successful"})
+    // res.redirect('/');
+
   })
   .catch((err) => {
     //This means the pdt request has failed.
 	  //possible reasons are 
       //1. the TransactionId is not valid
       //2. the PDT_Key is incorrect
-
     res.redirect('/');
   });
 };

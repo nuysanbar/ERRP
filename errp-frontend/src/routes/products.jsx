@@ -1,3 +1,4 @@
+
 import { Form,redirect,Outlet } from "react-router-dom";
 import axios from "axios";
 
@@ -36,7 +37,6 @@ export async function action({request}){
     }
     return 0;
 }
-
 export default function Products(){
     return (
         <>

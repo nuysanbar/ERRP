@@ -10,20 +10,21 @@ export async function loader(){
     })
     const response=res.data
     console.log(response)
-    console.log("brands loader is being called")
     return response
 }
 export default function Brands(){
     const response=useLoaderData()
     return (
         <div>
+            <div className="categoryFirstContainer">
             {response && response.map((item)=>{
                 return(
-                    <div key={item.type}>
+                    <div key={item.type} className="categoryFirst">
                         <NavLink to={`/home/brands/${item.type}`}>{item.type}</NavLink> <br />
                     </div>
                 )
             })}
+            </div>
             <Outlet />
         </div>
     )

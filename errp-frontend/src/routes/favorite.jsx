@@ -10,23 +10,33 @@ export async function loader({params}){
     })
     const response=res.data
     console.log(response)
+    console.log("response")
     return response;
 }
 
 export default function Favorite(){
     const response=useLoaderData()
     return (
-        <>
-            <div>
-                { response.favorites && response.favorites.map((username)=>{
+        <div className="favoriteContainer">
+            <div className="favorites">
+                { response && response.map((favored)=>{
                     return (
-                        <div key={username}>
-                            <NavLink to={"/home/favorites/"+username} >{username}</NavLink> <br/>
-                        </div>
+                    <NavLink to={`/home/favorites/${favored.username}`} key={favored.username} className={({ isActive, isPending }) =>
+                    isActive
+                      ? "singleFavorites active"
+                      : isPending
+                      ? "singleFavorites pending"
+                      : "singleFavorites"
+                  }>
+                        <img src={`http://localhost:3500/${favored.imgUrl}`} alt="profileImg" />
+                        <p >{favored.name}</p>
+                     </NavLink>
                     )
                 })}
             </div>
-            <Outlet/>
-        </>
+            <div className="favoritesDetail">
+                <Outlet/>
+            </div>
+        </div>
     )
 }

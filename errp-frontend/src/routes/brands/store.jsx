@@ -1,5 +1,9 @@
-import {AiOutlineStar,AiFillStar} from 'react-icons/ai'
 import { useState } from "react"
+import { NavLink } from 'react-router-dom'
+import {FaCartPlus} from 'react-icons/fa'
+import {AiOutlineStar,AiFillStar} from 'react-icons/ai'
+import {IoArrowForward} from 'react-icons/io5'
+import {BsCartDashFill,BsCheck2Square} from 'react-icons/bs'
 import axios from 'axios'
 const access_token=window.localStorage.getItem("access_token")
 export default function Store({retailer,barcode}){
@@ -40,21 +44,27 @@ export default function Store({retailer,barcode}){
         return 0;
     }
     return (
-        <div>
-            <div>
-                <img src={`http://localhost:3500/${retailer.storeImg}`} alt={retailer.storeImg} className="profileImg"/>
-                <p>{retailer.storeName}</p>
-                <p>Favored by {favoredAmount}</p>
-                {isFavorite===false?<button onClick={handleFavorite}><AiOutlineStar/></button>:
-                        <button onClick={handleFavorite}><AiFillStar /></button>}
+        <>
+            <div className="storeInfo">
+                <NavLink to={`/home/${username}/${barcode}`}>
+                    <img src={`http://localhost:3500/${retailer.storeImg}`} alt={retailer.storeImg} className="profileImg"/>
+                    <span className="storeName">{retailer.firstname} {retailer.lastname}</span>
+                </NavLink>
+                <div className="storeFavorite">
+                    {isFavorite===false?<AiOutlineStar onClick={handleFavorite}/>:
+                            <AiFillStar onClick={handleFavorite}/>} <br />
+                    <span>{retailer.favoredAmount}</span>
+                </div>
             </div>
-            <p>price: {retailer.price}</p>
-            <p>{retailer.usedOrNew}</p>
-            <p>availableAmount: {retailer.availableAmount}</p>
-            <button>Buy now</button>
-            {saved===false? <button onClick={handleSaved}>Add to Cart</button>
-             : <button onClick={handleSaved}>remove from Cart</button>}
-             <button>review</button>
-        </div>
+            <div className='storeProductInformation'>
+                 <span className='price'><BsCheck2Square/> {retailer.price} ETB</span> <br />
+                <span className='availableAmount'><BsCheck2Square/> {retailer.availableAmount} in stock</span> <br />
+                <span className='usedOrNew'>{retailer.usedOrNew}!</span>
+                <NavLink to={`/home/${username}/${barcode}/checkout`} className="buyItNow">Buy It Now <IoArrowForward /></NavLink> <br />
+                {saved===false? <button onClick={handleSaved} className='toFromCart plus'><span><FaCartPlus/></span> Add To Cart</button>
+                    : <button onClick={handleSaved} className='toFromCart minus'>Remove From <span><BsCartDashFill/></span></button>}
+                <button className="comments"><NavLink to={`/home/${username}/${barcode}`}><span>{retailer.review.length}</span>  comments</NavLink></button>
+            </div>
+        </>
     )
 }

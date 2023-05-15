@@ -1,4 +1,9 @@
 import {useLoaderData,Form,redirect,useNavigate} from 'react-router-dom'
+import {TiTick} from 'react-icons/ti'
+import {BiEdit} from 'react-icons/bi'
+import {GiCancel} from 'react-icons/gi'
+import {FcApproval} from 'react-icons/fc'
+import {MdDelete} from 'react-icons/md'
 import axios from 'axios'
 import { useState } from 'react';
 const access_token=window.localStorage.getItem('access_token');
@@ -41,22 +46,13 @@ export const amountAction=async({request,params})=>{
 export default function ProductsListSingle(){
     const navigate=useNavigate()
     const response1=useLoaderData()
-    const [barcode,setBarcode]=useState(response1.productInfo.barcode)
+    const barcode=response1.productInfo.barcode
+    const details=response1.productInfo.details.split(",")
     const [amount,setAmount]=useState(response1.product.availableAmount)
     const [price,setPrice]=useState(response1.product.price)
     const [changePrice,setChangePrice]=useState(false)
     const [changeAmount,setChangeAmount]=useState(false)
-    const handleAvailableAmount=async()=>{
-        setAmount(amount-1)
-        const apiUrl=`http://localhost:3500/home/products/${barcode}/soldOne`
-        const res=await axios.post(apiUrl,{"price":price,"amount":amount},{
-            headers:{
-                "Authorization":"Bearer "+ access_token
-            }
-        })
-        console.log(res.data)
-        return 0
-    }
+    const [imageUrl,setImageUrl]=useState(`http://localhost:3500/products/${response1.productInfo.imgUrl[0]}`)
     const handleSoldOut=async()=>{
         const apiUrl=`http://localhost:3500/home/products/${barcode}/deleteProduct`
         const totalSell=amount*price
@@ -69,30 +65,50 @@ export default function ProductsListSingle(){
         setAmount(0)
         return navigate(-1);
     }
+    const handlePriceCancel=()=>{
+        setChangePrice(false)
+        setPrice(response1.product.price)
+    }
+    const handleAmountCancel=()=>{
+        setChangeAmount(false)
+        setAmount(response1.product.availableAmount)
+    }
    return (
-    <div>
-        <div> <p>{amount}</p>
-        {changeAmount===false? <button onClick={()=>setChangeAmount(true)}>Change Amount</button>:
-        <Form method="post" action="updateAmount" onSubmit={()=>setChangeAmount(false)}>
-            <input type="number"  name='amount' placeholder='put in amount' onChange={(e)=>setAmount(parseInt(e.currentTarget.value))}/>
-            <button onClick={()=>setChangeAmount(false)}>cancel</button>
-            <button type='submit'>apply</button>
-        </Form>
-        }</div>
-        <p>{price}</p>
-        {changePrice===false?  <button onClick={()=>setChangePrice(true)}>change price</button> :
-        <Form method="post" action='updatePrice' onSubmit={()=>setChangePrice(false)}>
-            <input type="number" name='price' placeholder='put in price' onChange={(e)=>setPrice(parseInt(e.currentTarget.value))}/>
-            <button onClick={()=>setChangePrice(false)}>cancel</button>
-            <button type="submit">apply</button>
-        </Form>
-        }
-        <p>{response1.productInfo.brandName}</p>
-        <p>{response1.productInfo.modelName}</p>
-        <img src={`http://localhost:3500/products/${response1.productInfo.imgUrl[0]}`} alt={response1.productInfo.brandName}/>
-        <p></p>
-        {amount >1 && <div><button onClick={()=>handleAvailableAmount(-1)}>Sold One</button><br /></div>}
-        <button onClick={handleSoldOut}>Sold Out</button>
+    <div className='myStoreSpecificProduct'>
+        <div className='imageContainer'>
+        <div  className="smallerImage">
+          {
+          response1.productInfo.imgUrl.map((img)=>{
+            return <img src={`http://localhost:3500/products/${img}`} alt={response1.productInfo.modelName} onMouseOver={(e)=>setImageUrl(e.target.src)} key={`http://localhost:3500/products/${img}`}/>
+          })
+          }
+        </div>
+        <div className='largerImage'>
+            <img src={imageUrl} alt={response1.productInfo.modelName} />
+        </div>
+      </div>
+      <div className='productInformation'>
+        <p className='brandName'>{response1.productInfo.brandName}</p>
+          {details.map((detail)=>{
+            return <p key={detail} className='detail'><span><TiTick/></span>{detail}</p>
+          })}
+          <p className='usedOrNew'>{response1.product.usedOrNew}!</p> <br />
+          <span className='availableAmount'>{amount} in stock</span>
+            {changeAmount===false? <BiEdit onClick={()=>setChangeAmount(true)} className="edit"/>:
+            <Form method="post" action="updateAmount" onSubmit={()=>setChangeAmount(false)}>
+                <input type="number"  name='amount' placeholder={amount} onChange={(e)=>setAmount(parseInt(e.currentTarget.value))}/>
+                <GiCancel onClick={handleAmountCancel} className='cancel'/>
+                <button><FcApproval className='apply'/></button>
+            </Form>} <br />
+          <span className='price'>{price} ETB</span>
+          {changePrice===false?  <BiEdit onClick={()=>setChangePrice(true)} className='edit'/>:
+            <Form method="post" action='updatePrice' onSubmit={()=>setChangePrice(false)}>
+                <input type="number" name='price' placeholder={price} onChange={(e)=>setPrice(parseInt(e.currentTarget.value))}/>
+                <GiCancel onClick={handlePriceCancel} className='cancel'/>
+                <button><FcApproval className='apply'/></button>
+            </Form>} <br />
+          <button onClick={handleSoldOut} className='delete'><MdDelete/>Delete</button>
+      </div>
     </div>
    )
 }

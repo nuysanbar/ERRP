@@ -19,6 +19,7 @@ const getUser=async (req,res)=>{
     }else{
         isFavored=false
     }
+    user.password="";
     res.status(200).json({user,isFavored});
 };
 
@@ -40,8 +41,6 @@ const getProducts=async(req,res)=>{
 
 const getProduct = async(req,res)=>{
     var productInfo;
-    // var like=false;
-    // var dislike=false;
     var review=[];
     var saved=false;
     if(!req?.params?.username){
@@ -54,21 +53,13 @@ const getProduct = async(req,res)=>{
     if(!product){
         return res.status(204).json({"message":"product is not available"})
     }
-    // const checkLike=product.likedBy.find((item)=>item.name===req.username)
-    // if(checkLike){
-    //     like=true;
-    // }
-    // const checkDisLike=product.disLikedBy.find((item)=>item.name===req.username)
-    // if(checkDisLike){
-    //     dislike=true;
-    // }
     const checkSaved=await Saved.findOne({"username":req.username,"retailerUserName":req.params.username,"barcode":req.params.barcode})
     if(checkSaved){
         saved=true;
     }
     for(let i=0; i<product.reviewed.length; i++){
         const user=await User.findOne({"username":product.reviewed[i].reviewedBy})
-        const modification={"reviewedBy":product.reviewed[i].reviewedBy,"imgUrl":user.imgUrl, "text":product.reviewed[i].reviewText}
+        const modification={"reviewedBy":product.reviewed[i].reviewedBy,"imgUrl":user.imgUrl, "text":product.reviewed[i].reviewText,"name":user.firstname+" "+ user.lastname}
         review.push(modification)
     }
     product.reviewed=[]
@@ -78,54 +69,6 @@ const getProduct = async(req,res)=>{
     }
     res.json({product,productInfo,review,saved})
 }
-// const like= async(req,res)=>{
-//     if(!req?.params?.username){
-//         return res.status(400).json({"message":"username is required "})
-//     }
-//     if(!req?.params?.barcode){
-//         return res.status(400).json({"message":"barcode is required"})
-//     }
-//     const product= await RetailerProduct.findOne({barcode:req.params.barcode,retailerUserName:req.params.username}).exec()
-//     const exist=product.likedBy.find((item)=>item.name===req.username)
-//     if(exist){
-//         product.likedCount=product.likedCount-1
-//         product.likedBy.pop((item=>item.name===req.username))
-//     }else{
-//         product.likedCount=product.likedCount+1
-//         product.likedBy.push({"name":req.username})
-//         const dislikeExists=product.disLikedBy.find((item)=>item.name===req.username)
-//         if(dislikeExists){
-//             product.disLikedCount=product.disLikedCount-1
-//             product.disLikedBy.pop(item=>item.name===req.username)
-//         }
-//     }
-//     product.save()
-//     res.status(200).json({"message":"you like the product"})
-// }
-// const dislike=async(req,res)=>{
-//     if(!req?.params?.username){
-//         return res.status(400).json({"message":"username is required "})
-//     }
-//     if(!req?.params?.barcode){
-//         return res.status(400).json({"message":"barcode is required"})
-//     }
-//     const product= await RetailerProduct.findOne({retailerUserName:req.params.username,barcode:req.params.barcode}).exec()
-//     const exist=product.disLikedBy.find(item=>item.name===req.username)
-//     if(exist){
-//         product.disLikedCount=product.disLikedCount-1
-//         product.disLikedBy.pop(item=>item.name===req.username)
-//     }else{
-//         product.disLikedCount=product.disLikedCount+1
-//         product.disLikedBy.push({"name":req.username})
-//         const likeExists=product.likedBy.find(item=>item.name===req.username)
-//         if(likeExists){
-//             product.likedCount=product.likedCount-1
-//             product.likedBy.pop((item=>item.name===req.username))
-//         }
-//     }
-//     product.save()
-//     res.status(200).json({"message":"you dislike the product"})
-// }
 const review=async(req,res)=>{
     if(!req?.params?.username){
         return res.status(400).json({"message":"username is required "})

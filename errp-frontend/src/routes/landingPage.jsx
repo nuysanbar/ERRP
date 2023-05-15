@@ -1,5 +1,6 @@
-import { useLoaderData,Outlet,NavLink} from "react-router-dom"
-import {AiOutlineStar,AiFillStar} from "react-icons/ai"
+import { useLoaderData,Outlet, NavLink} from "react-router-dom"
+import {AiOutlineStar,AiFillStar,AiOutlinePhone,AiOutlineMail} from "react-icons/ai"
+import {GoLocation} from "react-icons/go"
 import axios  from "axios";
 import { useState } from "react";
 export async function loader({params}){
@@ -40,14 +41,32 @@ export default function LandingPage({customPath}){
         return 0;
     }
     return (
-        <div>
-            <NavLink to={`/home/${customPath}${response1.user.username}`}>
-            userRole : {userRole} <br />
-            username : {response1.user.username} <br />
-            <img src={`http://localhost:3500/${response1.user.imgUrl}`} alt="profileImg" />
+        <div >
+            <div className="personalInfoContainer">
+            <div className="personalInfo">
+            <div className="sensitiveInfo">
+            <NavLink to={`/home/${response1.user.username}`} className="personalName">
+                <img src={`http://localhost:3500/${response1.user.imgUrl}`} alt="profileImg" />
+                <span>{response1.user.firstname} {response1.user.lastname}</span>
             </NavLink>
-            { userRole==="retailer" && isFavorite===false?<button onClick={handleFavorite}><AiOutlineStar/></button>:
-                        <button onClick={handleFavorite}><AiFillStar /></button>}
+            { userRole==="retailer" && <div className="contact"> 
+            <div>
+               <span><AiOutlinePhone/></span> <span>{response1.user.phoneNum}</span>
+            </div>
+            <div>
+             <span><span><AiOutlineMail/> </span>{response1.user.email}</span>
+            </div>
+            <div>
+                <span><GoLocation/></span> <span>{response1.user.subcity}</span>, <span>{response1.user.city}</span>
+            </div>
+            </div>}
+            </div>
+            <div className="favorite">
+                    { userRole==="retailer" && isFavorite===false?<AiOutlineStar onClick={handleFavorite}/>:
+                        <AiFillStar onClick={handleFavorite}/>} <br /><span>{response1.user.favoredNumber}</span>
+            </div>
+            </div>
+            </div>
             <Outlet />
         </div>
     )}

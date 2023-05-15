@@ -1,4 +1,5 @@
 import { useLoaderData, Outlet,NavLink} from "react-router-dom"
+import "../../index.css"
 import axios from "axios"
 const access_token=window.localStorage.getItem("access_token")
 export async function loader({params}){
@@ -22,23 +23,32 @@ export async function singleTypeLoader({params}){
     })
     const response=res.data
     console.log(response)
-    console.log("specific brands loader is being called")
     return response
 }
 
 export default function Brand(){
     const response=useLoaderData()
     return (
-        <div>
-            {response && <h4>{response.type}</h4> }
-            {response && response.brand.map((item)=>{
-                return (
-                    <div key={item}>
-                        <NavLink to={`/home/brands/${response.type}/${item}`}>{item}</NavLink> <br />
-                    </div>
-                )
-            })}
-            <Outlet/>
+        <div className="brandContainer">
+            <div className="brand">
+            {response && <p className="type">{response.type}</p> }
+                {response && response.brand.map((item)=>{
+                   return (
+                        <NavLink to={`/home/brands/${response.type}/${item}`} key={item} className={({ isActive, isPending }) =>
+                            isActive
+                            ? "singleBrand active"
+                            : isPending
+                            ? "singleBrand pending"
+                            : "singleBrand"
+                        }>
+                        <p >{item}</p>
+                     </NavLink>
+                    )
+                })}
+            </div>
+            <div className="brandDetail">
+                <Outlet/>
+            </div>
         </div>
     )
 }

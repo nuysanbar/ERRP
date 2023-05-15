@@ -6,8 +6,13 @@ export async function action({request}){
     const apiUrl='http://localhost:3500/auth/'
     const response = await axios.post(apiUrl,updates)
     console.log(response)
+    const basicData={
+        image:response.data.foundUser.imgUrl,
+        firstName:response.data.foundUser.firstname
+    }
     if(response.statusText==="OK"){
         window.localStorage.setItem('access_token',response.data.access_token)
+        window.localStorage.setItem('basic_data',JSON.stringify(basicData))
         return redirect('/home/')
     }
     return 0;

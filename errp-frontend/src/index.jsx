@@ -17,6 +17,7 @@ import AddNewProduct ,{action as newProductAction,loader as brandsLoader} from "
 import AddOldProduct ,{action as oldProductAction} from "./routes/addOldProduct";
 import LandingPageSingle, {loader as landingPageSingleLoader,reviewAction} from "./routes/landingPageSingle.jsx";
 import ExpressCheckout, {loader as checkoutLoader, action as checkoutAction} from "./routes/expressCheckout";
+import { paymentSuccessLoader } from "./routes/expressCheckout";
 import LandingPageProducts, {loader as landingPageProductsLoader} from "./routes/landingPageProducts";
 import Favorite,{loader as favoriteLoader} from "./routes/favorite";
 import Brands,{loader as typeLoader } from "./routes/brands/brands";
@@ -54,6 +55,11 @@ const router=createBrowserRouter([
             {
                 index:true,
                 element: <h2>Reccommended products</h2>
+            },
+            {
+                path:"/home/PaymentSuccessReturnUrl",
+                element:<h1>Payment success</h1>,
+                loader:paymentSuccessLoader
             },
             {
                 path:"/home/:username",

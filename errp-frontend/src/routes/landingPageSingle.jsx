@@ -1,4 +1,9 @@
 import {useLoaderData,Form,NavLink } from 'react-router-dom'
+import {TiTick} from 'react-icons/ti'
+import {FaCartPlus} from 'react-icons/fa'
+import {IoArrowForward} from 'react-icons/io5'
+import {IoIosSend} from 'react-icons/io'
+import {BsCartDashFill} from 'react-icons/bs'
 import axios from 'axios'
 import { useState } from 'react';
 const access_token=window.localStorage.getItem('access_token');
@@ -25,15 +30,17 @@ export async function reviewAction({request,params}){
           'Authorization': 'Bearer ' + access_token
         }
       })
-      return 0;
+    return 0;
 }
 
 export default function LandingPageSingle(){
    const response1=useLoaderData()
    const username=response1.product.retailerUserName
    const barcode=response1.product.barcode
+   const details=response1.productInfo.details.split(",")
    const [saved,setSaved]=useState(response1.saved)
    const [comment,setComment]=useState('')
+   const [imageUrl,setImageUrl]=useState(`http://localhost:3500/products/${response1.productInfo.imgUrl[0]}`)
 
    const handleSaved=async()=>{
       setSaved(!saved)
@@ -50,28 +57,42 @@ export default function LandingPageSingle(){
      setComment('')
      e.currentTarget=''
    }
-
    return (
-    <div>
-        <p>{response1.product.availableAmount}</p>
-        <p>{response1.product.price}</p>
-        <p>{response1.productInfo.brandName}</p>
-        <p>{response1.productInfo.modelName}</p>
-        <img src={`http://localhost:3500/products/${response1.productInfo.imgUrl[0]}`} alt={response1.productInfo.modelName}/> <br />
-        <NavLink to={`/home/${username}/${barcode}/checkout`}>Buy it now</NavLink>
-        {saved===false? <button onClick={handleSaved}>Add to cart</button>
-             : <button onClick={handleSaved}>remove from cart</button>}
-
+    <div className='landingPageSingle'>
+      <div className='imageContainer'>
+        <div  className="smallerImage">
+          {
+          response1.productInfo.imgUrl.map((img)=>{
+            return <img src={`http://localhost:3500/products/${img}`} alt={response1.productInfo.modelName} onClick={(e)=>setImageUrl(e.target.src)} key={`http://localhost:3500/products/${img}`}/>
+          })
+          }
+        </div>
+        <div className='largerImage'>
+            <img src={imageUrl} alt={response1.productInfo.modelName} />
+        </div>
+      </div>
+      <div className='productInformation'>
+        <p className='brandName'>{response1.productInfo.brandName}</p>
+          {details.map((detail)=>{
+            return <p key={detail} className='detail'><span><TiTick/></span>{detail}</p>
+          })}
+          <p className='availableAmount'><span>{response1.product.availableAmount} </span> in stock</p>
+          <p className='price'>{response1.product.price} ETB</p>
+          <p className='usedOrNew'>{response1.product.usedOrNew}!</p> <br />
+          <NavLink to={`/home/${username}/${barcode}/checkout`}>Buy It Now <IoArrowForward /></NavLink>
+          {saved===false? <button onClick={handleSaved} className='toFromCart plus'><span><FaCartPlus/></span> Add To Cart</button>
+              : <button onClick={handleSaved} className='toFromCart minus'>Remove From <span><BsCartDashFill/></span></button>}
+      </div><br />
         <Form method="post"  onSubmit={handleReview}>
             <textarea name="review" id="" cols="40" rows="3" defaultValue={comment} placeholder='comment here'></textarea>
-            <button type='submit'>post</button>
+            <button type='submit'><span><IoIosSend /></span></button>
         </Form>
 
         {response1.review.map((comment)=>{
           return (
-            <div key={comment.text}>
+            <div key={comment.text} className='commentContainer'>
               <img src={`http://localhost:3500/${comment.imgUrl}`} alt="profileImg" />
-              <NavLink to={`/home/${comment.reviewedBy}`}><h4>{comment.reviewedBy}</h4></NavLink>
+              <NavLink to={`/home/${comment.reviewedBy}`}>{comment.name}</NavLink>
               <p>{comment.text}</p>
             </div>
           )
