@@ -87,7 +87,6 @@ export default function LandingPageSingle(){
             <textarea name="review" id="" cols="40" rows="3" defaultValue={comment} placeholder='comment here'></textarea>
             <button type='submit'><span><IoIosSend /></span></button>
         </Form>
-
         {response1.review.map((comment)=>{
           return (
             <div key={comment.text} className='commentContainer'>

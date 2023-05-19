@@ -1,0 +1,39 @@
+.form-box {
+    padding: 40px;
+  }
+
+.form-box .input-box {
+    position: relative;
+  }
+  
+  .form-box .input-box input {
+    width: 70%;
+    padding: 15px;
+    font-size: 16px;
+    color: var(--bl);
+    margin-bottom: 20px;
+    border: 1px solid var(--bl);
+    border-radius: 5px;
+    outline: none;
+    background-color: transparent;
+  }
+  .form-box .input-box label {
+    position: absolute;
+    top:5px;
+    left: 15px;
+    padding: 5px;
+    font-size: 16px;
+    color: var(--bl);
+    background-color: var(--wh);
+    pointer-events: none;
+    transition: .5s;
+  }
+
+  .form-box .input-box  input:focus ~ label,
+  .form-box .input-box  input:valid ~ label{
+    top: -5px;
+    left: 20px;
+    color:rgb(74, 117, 131);
+    font-size: 14px;
+  }
+ 

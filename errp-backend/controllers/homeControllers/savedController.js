@@ -10,8 +10,10 @@ const getSavedProductAndPlace=async (req,res)=>{
         const retailer=await User.findOne({"username":result[i].retailerUserName})
         const singleSave={"retailerImg":retailer.imgUrl,
                           'retailer':retailer.username,
+                          "firstname":retailer.firstname,
+                          "lastname":retailer.lastname,
                           "productImg":product.imgUrl,
-                          "brand":product.brandName,
+                          "brandname":product.brandName,
                           "barcode":product.barcode
                         }
         saved.push(singleSave)

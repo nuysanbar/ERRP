@@ -1,6 +1,6 @@
 import { useLoaderData,NavLink } from "react-router-dom";
 import axios from "axios";
-
+import {IoArrowForward} from 'react-icons/io5'
 export async function loader(){
     const access_token=window.localStorage.getItem('access_token');
     const apiUrl=`http://localhost:3500/home/saved`
@@ -19,14 +19,17 @@ export default function Saved(){
         <>
         {response && response.map((save)=>{
             return (
-            <NavLink to={`/home/${save.retailer}/${save.barcode}`} key={`${save.barcode}${save.retailer}`}>
+            <div className="cart" key={`${save.barcode}${save.retailer}`}>
+            <NavLink to={`/home/${save.retailer}/${save.barcode}`}  className="eachDetail">
               <div>
-                <img src={`http://localhost:3500/${save.retailerImg}`} alt="profilePic"/>
-                <h4>{save.retailer}</h4>
-                <img src={`http://localhost:3500/products/${save.productImg[0]}`} alt="productImg"/>
-                <h5>{save.brand}</h5>
+                <img src={`http://localhost:3500/${save.retailerImg}`} alt="profilePic" className="profileImg"/>
+                <p className="storeName"> {save.firstname} {save.lastname} </p>
+                <img src={`http://localhost:3500/products/${save.productImg[0]}`} alt="productImg" className="productImg"/>
+                <p className="productName">{save.brandname}</p>
               </div>
             </NavLink>
+            <NavLink to={`/home/${save.retailer}/${save.barcode}/checkout`} className="buyItNow">Buy It Now <IoArrowForward /></NavLink>
+            </div>
             )
           })
         }

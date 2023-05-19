@@ -33,6 +33,7 @@ export default function Home() {
    }
     return (
       <>
+      <div className="rootContainer">
         <div className="root">
           <span>- - - - - ERRP LOGO - - - - - - </span>
           <Form >
@@ -89,6 +90,7 @@ export default function Home() {
             </div>
         </div>
         <div id="detail"><Outlet /></div>
+        </div>
         <div className="company"><h1>Company Services</h1></div>
       </>
     );

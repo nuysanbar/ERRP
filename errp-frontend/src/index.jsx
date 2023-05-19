@@ -1,8 +1,9 @@
 import React from "react";
 import ReactDOM  from "react-dom/client";
 import ErrorPage from "./error-page";
-import './index.css';
-import Root from "./routes/root.jsx";
+import './index.css'
+import './index2.css'
+import Root from "./routes/root.jsx"
 import Home, {loader as homeLoader} from './routes/home.jsx'
 import SignIn, {action as signInAction} from './routes/signIn.jsx'
 import SignUp, {action as signUpAction} from './routes/signup.jsx'

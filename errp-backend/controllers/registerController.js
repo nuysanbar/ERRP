@@ -1,3 +1,4 @@
+
 const bcrypt=require('bcrypt')
 const User=require('../data/User')
 const handleNewUser=async(req,res)=>{

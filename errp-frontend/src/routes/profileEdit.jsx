@@ -17,16 +17,46 @@ export default function ProfileEdit(){
     const response=useLoaderData()
     const navigate=useNavigate()
     return (
-        <div>
+        <div className="form-box">
             <Form method="post"  encType="multipart/form-data" >
-                <label htmlFor="full name">full-name</label> 
-                <input type="text" name="fullname" id="full-name" placeholder={response.username} /><br />
-                <label htmlFor="profileImg">profile pic : </label>
-                <input type="file" name="profileImg" /><br />
-                <label htmlFor="password">password : </label>
-                <input type="text" name="password" id="password" placeholder="password" /><br />
+                <div className="input-box">
+                    <input type="text" name="firstname" />
+                    <label htmlFor="firstname">{response.firstname}</label>
+                </div>
+                <div className="input-box">
+                    <input type="text" name="lastname" id="lastname" />
+                    <label htmlFor="lastname">{response.lastname}</label>
+                </div>
+                <div className="input-box">
+                    <input type="text" name="city" id="city" />
+                    <label htmlFor="city">{response.city}</label>
+                </div>
+                <div className="input-box">
+                    <input type="text" name="subcity" id="subcity" />
+                    <label htmlFor="subcity">{response.subcity}</label>
+                </div>
+                <div className="input-box">
+                    <input type="number" name="phone" id="phone" />
+                    <label htmlFor="phone">{response.phoneNum}</label>
+                </div>
+                <div className="input-box">
+                    <input type="email" name="email" id="email" />
+                    <label htmlFor="email">{response.email}</label>
+                </div>
+                <div className="input-box">
+                    <input type="password" name="password" id="password" />
+                    <label htmlFor="password">password</label>
+                </div>
+                <label htmlFor="profileImg">change picture</label>
+                <input type="file" name="profileImg" /> <br />
                 <input type="button" onClick={()=>navigate(-1)} value="cancel"/>
-                <button type="submit">apply</button>
+                <button type="submit" className="submitBtn">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                    apply
+                </button>
             </Form>
         </div> 
     )
