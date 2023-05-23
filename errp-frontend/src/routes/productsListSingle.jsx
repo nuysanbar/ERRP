@@ -80,8 +80,7 @@ export default function ProductsListSingle(){
           {
           response1.productInfo.imgUrl.map((img)=>{
             return <img src={`http://localhost:3500/products/${img}`} alt={response1.productInfo.modelName} onMouseOver={(e)=>setImageUrl(e.target.src)} key={`http://localhost:3500/products/${img}`}/>
-          })
-          }
+          })}
         </div>
         <div className='largerImage'>
             <img src={imageUrl} alt={response1.productInfo.modelName} />

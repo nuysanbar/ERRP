@@ -8,6 +8,7 @@ const savedController=require("../../controllers/homeControllers/savedController
 const favouriteController=require("../../controllers/homeControllers/favouriteController")
 const notificationController=require("../../controllers/homeControllers/notificationController")
 const brandsController=require("../../controllers/homeControllers/brandsController")
+const searchController= require("../../controllers/homeControllers/searchController")
 const multer=require('multer')
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -41,6 +42,8 @@ const verifyRetailer=(req,res,next)=>{
 
 router.route("/")
     .get(homeController.recommendedProducts);
+router.route("/search")
+    .get(searchController.getSearch)
 
 router.route("/products")
     .get(verifyRetailer,productsController.getProducts)
@@ -54,7 +57,7 @@ router.route("/products/brands/:type/products")
     .get(brandsController.getTypeProducts)
 router.route("/products/brands/:type/:brand")
     .get(brandsController.getSpecificBrand)
-router.route("/products/brands/:type/:brand/:barcode")
+router.route("/products/:barcode")
     .get(brandsController.getBrandStores)
 router.route("/products/addNew")
     .post(verifyRetailer,upload.array("productImg",5) ,productsController.addNewProduct)
@@ -88,5 +91,4 @@ router.route('/profile/update')
     
 router.route("/saved")
     .get(savedController.getSavedProductAndPlace)
-
 module.exports=router;

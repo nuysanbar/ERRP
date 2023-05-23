@@ -20,6 +20,9 @@ export async function loader(){
     const userRole=user.userInfo.roles
     return {userRole}
 }
+export async function searchLoader(){
+
+}
 export default function Home() {
    const {userRole}=useLoaderData()
    const [classValue,setClassValue]=useState(null)
@@ -36,9 +39,9 @@ export default function Home() {
       <div className="rootContainer">
         <div className="root">
           <span>- - - - - ERRP LOGO - - - - - - </span>
-          <Form >
-            <label htmlFor="search" className="searchIcon"><AiOutlineSearch/></label>
+          <Form method="get" action="search">
             <input type="search" placeholder="search" id="search" name="search"/>
+            <button className="searchIcon"><AiOutlineSearch/></button>
           </Form>
           <NavLink to={"/home/favorites"}  className={({ isActive, isPending }) =>
                       isActive

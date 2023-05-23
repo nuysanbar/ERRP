@@ -1,4 +1,4 @@
-import { useLoaderData,NavLink} from "react-router-dom"
+import { useLoaderData} from "react-router-dom"
 import {TiTick} from 'react-icons/ti'
 import { useState,useEffect } from "react"
 import Store from "./store"
@@ -6,7 +6,7 @@ import SimpleMap from "./simpleMap"
 import axios from "axios"
 const access_token=window.localStorage.getItem("access_token")
 export async function loader({params}){
-    const apiUrl=`http://localhost:3500/home/products/brands/${params.type}/${params.brand}/${params.barcode}`
+    const apiUrl=`http://localhost:3500/home/products/${params.barcode}`
     const res= await axios.get(apiUrl,{
         headers:{
             "Authorization":"Bearer "+ access_token

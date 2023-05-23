@@ -13,14 +13,15 @@ export async function loader({params}){
     console.log("brands loader is being called")
     return response
 }
-export default function SpecificBrand(){
+export default function SpecificBrand({isSearch}){
     const response=useLoaderData()
     return (
         <div className="specificBrands">
             <div className="specificBrandTitleContainer">
             {response && response.map((item)=>{
+                const path=isSearch===false?`/brands/${item.type}/${item.brand}`:"/search";
                 return (
-                    <NavLink to={`/home/brands/${item.type}/${item.brand}/${item.barcode}`} key={item.barcode} className={({ isActive, isPending }) =>
+                    <NavLink to={`/home${path}/${item.barcode}`} key={item.barcode} className={({ isActive, isPending }) =>
                             isActive
                             ? "specificBrandTitle active"
                             : isPending
@@ -33,7 +34,6 @@ export default function SpecificBrand(){
                 )
             })}
             </div>
-           
             <Outlet />
         </div>
     )

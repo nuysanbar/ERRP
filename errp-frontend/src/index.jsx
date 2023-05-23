@@ -23,6 +23,7 @@ import LandingPageProducts, {loader as landingPageProductsLoader} from "./routes
 import Favorite,{loader as favoriteLoader} from "./routes/favorite";
 import Brands,{loader as typeLoader } from "./routes/brands/brands";
 import Brand,{loader as brandLoader,singleTypeLoader} from "./routes/brands/brand";
+import Search,{searchLoader,searchAction} from "./routes/search"
 import SpecificBrand, {loader as SpecificLoader} from "./routes/brands/specificBrands";
 import SpecificStore, {loader as specificStoreLoader} from "./routes/brands/specificStores";
 import Notification,{loader as notificationLoader} from "./routes/notification"
@@ -56,6 +57,16 @@ const router=createBrowserRouter([
             {
                 index:true,
                 element: <h2>Reccommended products</h2>
+            },
+            {
+                path:"/home/search",
+                element:<Search/>,
+                loader:searchLoader,
+            },
+            {
+                path:'/home/search/:barcode',
+                element:<SpecificStore />,
+                loader:specificStoreLoader
             },
             {
                 path:"/home/PaymentSuccessReturnUrl",
@@ -147,9 +158,7 @@ const router=createBrowserRouter([
                                 loader:landingPageSingleLoader,
                                 action:reviewAction
                             }
-
                         ]
-
                     }
                 ]
             },
@@ -165,7 +174,7 @@ const router=createBrowserRouter([
                 children:[
                     {
                         path:"/home/brands/:type/:brand",
-                        element: <SpecificBrand/>,
+                        element: <SpecificBrand isSearch={false} />,
                         loader:SpecificLoader,
                         children:[
                             {
