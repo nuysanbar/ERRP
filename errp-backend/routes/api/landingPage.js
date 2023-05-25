@@ -4,6 +4,8 @@ const LandingPageController=require('../../controllers/LandingPageController')
 
 router.route('/:username')
     .get(LandingPageController.getUser)
+router.route('/merchantSecret/:username')
+    .get(LandingPageController.getMerchantSecret)
 router.route('/:username/favorite')
     .get(LandingPageController.favorite)
 router.route('/:username/products')

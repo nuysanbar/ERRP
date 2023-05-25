@@ -9,6 +9,7 @@ const getFavourites=async(req,res)=>{
     }
     for(let i=0; i<favourites.length; i++){
         const user=await User.findOne({"username":favourites[i]}).exec()
+        console.log(favourites[i])
         const modification={"username":favourites[i],"imgUrl":user.imgUrl,"name":user.firstname+" "+ user.lastname}
         allFavoritesListed.push(modification)
     }

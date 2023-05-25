@@ -15,7 +15,6 @@ const updateProfile=async (req,res)=>{
         const hashedPwd= await bcrypt.hash(password,10);
         user.password=hashedPwd
     }
-
     console.log(user)
     res.sendStatus(200)
 }

@@ -1,6 +1,5 @@
 const Product=require("../../data/Product");
 const RetailerProduct=require("../../data/RetailerProduct")
-const Dashboard=require("../../data/Dashboard")
 const getProducts=async(req,res)=>{
     var productInfo=[];
     const products= await RetailerProduct.find({retailerUserName:req.username})
@@ -94,38 +93,6 @@ const addOldProduct=async(req,res)=>{
         res.status(500).json({"error":"server problem"})
     }
 }
-
-const soldOne=async(req,res)=>{
-    const {price,amount}=req.body
-    const dashboardRecord=await Dashboard.findOne({"username":req.username}).exec()
-    const date=new Date()
-    const year=date.getFullYear()
-    const month=date.getMonth()+1
-    const day=date.getDate()
-    console.log(year,month,day)
-    console.log(price,amount)
-    if(dashboardRecord){
-        dashboardRecord.sales.push({
-            date:new Date(year,month,day,0,0,0),
-            barcode:req.params.barcode,
-            amount:1,
-            price:parseInt(price)
-        })
-        dashboardRecord.save()
-    }else{
-        await Dashboard.create({
-            username:req.username,
-            sales:[{
-                date:new Date(year,month,day,0,0,0),
-                barcode:req.params.barcode,
-                amount:1,
-                price:price
-            }]
-        })
-    }
-    const retailerProduct=await RetailerProduct.updateOne({"retailerUserName":req.username,"barcode":req.params.barcode},{"availableAmount":amount-1})
-    res.sendStatus(200)
-}
 const updatePrice=async(req,res)=>{
     const {price}=req.body
     if(!price) return res.sendStatus(400)
@@ -141,37 +108,9 @@ const updateAmount=async(req,res)=>{
     return 0
 }
 const deleteProduct=async(req,res)=>{
-    const {price,amount}=req.body
-    const dashboardRecord=await Dashboard.findOne({"username":req.username}).exec()
-    const date=new Date()
-    const year=date.getFullYear()
-    const month=date.getMonth()+1
-    const day=date.getDate()
-    console.log(year,month,day)
-    console.log(price,amount)
-    if(dashboardRecord){
-        dashboardRecord.sales.push({
-            date:new Date(year,month,day,0,0,0),
-            barcode:req.params.barcode,
-            amount:amount,
-            price:parseInt(price)
-        })
-        dashboardRecord.save()
-    }else{
-        await Dashboard.create({
-            username:req.username,
-            sales:[{
-                date:new Date(year,month,day,0,0,0),
-                barcode:req.params.barcode,
-                amount:amount,
-                price:price
-            }]
-        })
-    }
-    console.log(price,amount)
     const retailerProduct=await RetailerProduct.deleteOne({"retailerUserName":req.username,"barcode":req.params.barcode})
     console.log(retailerProduct)
     res.sendStatus(200)
     return 0
 }
-module.exports={getProducts,getProduct,addProduct,addNewProduct,addOldProduct,soldOne,updateAmount,updatePrice,deleteProduct}
+module.exports={getProducts,getProduct,addProduct,addNewProduct,addOldProduct,updateAmount,updatePrice,deleteProduct}

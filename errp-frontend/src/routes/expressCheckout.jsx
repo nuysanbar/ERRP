@@ -17,16 +17,22 @@ export async function paymentSuccessLoader({request}){
     return response1
 }
 export async function loader({params}){
-    var response1;
+    var response1,response2;
     const apiUrl=`http://localhost:3500/users/${params.username}/${params.barcode}`
     const res = await axios.get(apiUrl,{
         headers: {
           'Authorization': 'Bearer ' + access_token
         }
       })
+    const merchantUrl=`http://localhost:3500/users/merchantSecret/${params.username}`
+    const res2 = await axios.get(merchantUrl,{
+      headers: {
+        'Authorization': 'Bearer ' + access_token
+      }
+    })
     response1=res.data
-    console.log(response1)
-    return response1
+    response2=res2.data
+    return {response1,response2}
 }
 
 export async function action({request}){
@@ -42,7 +48,7 @@ export async function action({request}){
 }
 
 export default function ExpressCheckout(){
-   const response1=useLoaderData()
+   const {response1,response2}=useLoaderData()
    const username=response1.product.retailerUserName
    const barcode=response1.product.barcode
    return (
@@ -53,6 +59,8 @@ export default function ExpressCheckout(){
         <Form method="post" >
             <input type="hidden" name='barcode' value={barcode} readOnly={true}/>
             <input type="hidden" name='retailer' value={username} readOnly={true}/>
+            <input type="hidden" name='merchantCode' value={response2.sellerCode} readOnly={true}/>
+            <input type="hidden" name='pdToken' value={response2.pdtToken} readOnly={true}/>
             <input type="hidden" name="ItemName" value={response1.productInfo.brandName} readOnly={true}/>
             <input type="hidden" name="UnitPrice" value={10} readOnly={true}/>
             <input type="hidden" name="DeliveryFee" value="5" readOnly={true}/>

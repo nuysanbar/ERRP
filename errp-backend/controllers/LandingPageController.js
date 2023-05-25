@@ -3,6 +3,7 @@ const RetailerProduct=require('../data/RetailerProduct')
 const Product=require('../data/Product')
 const Saved=require('../data/Saved')
 const Favorite=require('../data/Favorite')
+const Merchant=require('../data/merchant')
 // const { el } = require('date-fns/locale');
 const getUser=async (req,res)=>{
     var isFavored;
@@ -126,6 +127,17 @@ const favorite=async(req,res)=>{
     favoredUser.save()
     res.status(200).json({"message":"favorite backend path is completed"})
 }
-module.exports={getUser,getProducts,getProduct,review,save,favorite}
+const getMerchantSecret = async (req,res)=>{
+    if(!req?.params?.username){
+        return res.status(400).json({"message":"username is required"})
+    }
+    const merchantSecret=await Merchant.findOne({"username":req.params.username}).exec()
+    if(merchantSecret){
+        res.status(200).json(merchantSecret)
+    }else{
+        res.sendStatus(401)
+    }
+}
+module.exports={getUser,getProducts,getProduct,review,save,favorite,getMerchantSecret}
 
 

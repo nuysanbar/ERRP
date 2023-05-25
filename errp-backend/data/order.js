@@ -1,0 +1,62 @@
+const mongoose=require('mongoose');
+const Schema=mongoose.Schema;
+
+const orderSchema=new Schema({
+    orderId:{
+        type:String,
+        required:true
+    },
+    pdtToken:{
+        type:String,
+        required:true
+    },
+    retailerUserName:{
+        type:String,
+        required:true
+    },
+    costumerUserName:{
+        type:String,
+        required:true
+    },
+    barcode:{
+        type:String,
+        required:true
+    },
+    ItemName:String,
+    UnitPrice:{
+        type:Number,
+        required:true
+    },
+    DeliveryFee:{
+        type:Number,
+        required:true
+    },
+    Tax:{
+        type:Number,
+        required:true
+    },
+    Quantity:{
+        type:Number,
+        requied:true
+    },
+    TotalAmount:{
+        type:Number,
+        required:true
+    },
+    status:{
+        type:String,
+        required:true
+    },
+    currency:{
+        type:String,
+        requied:true
+    },
+    TransactionId:{
+        type:String,
+    },
+    date:{
+        type:Date,
+        default:new Date()
+    }
+});
+module.exports=mongoose.model('Order',orderSchema);

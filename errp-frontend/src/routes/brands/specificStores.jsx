@@ -6,7 +6,7 @@ import SimpleMap from "./simpleMap"
 import axios from "axios"
 const access_token=window.localStorage.getItem("access_token")
 export async function loader({params}){
-    const apiUrl=`http://localhost:3500/home/products/${params.barcode}`
+    const apiUrl=`http://localhost:3500/home/product/${params.barcode}`
     const res= await axios.get(apiUrl,{
         headers:{
             "Authorization":"Bearer "+ access_token
