@@ -18,17 +18,20 @@ import AddNewProduct ,{action as newProductAction,loader as brandsLoader} from "
 import AddOldProduct ,{action as oldProductAction} from "./routes/addOldProduct";
 import LandingPageSingle, {loader as landingPageSingleLoader,reviewAction} from "./routes/landingPageSingle.jsx";
 import ExpressCheckout, {loader as checkoutLoader, action as checkoutAction} from "./routes/expressCheckout";
-import { paymentSuccessLoader } from "./routes/expressCheckout";
+import PaymentSuccessfull, { paymentSuccessLoader } from "./routes/paymentSuccess";
 import LandingPageProducts, {loader as landingPageProductsLoader} from "./routes/landingPageProducts";
 import Favorite,{loader as favoriteLoader} from "./routes/favorite";
 import Brands,{loader as typeLoader } from "./routes/brands/brands";
 import Brand,{loader as brandLoader,singleTypeLoader} from "./routes/brands/brand";
-import Search,{searchLoader,searchAction} from "./routes/search"
+import Search,{searchLoader} from "./routes/search"
+import Purchases , {loader as purchasesLoader} from "./routes/purchases";
 import SpecificBrand, {loader as SpecificLoader} from "./routes/brands/specificBrands";
 import SpecificStore, {loader as specificStoreLoader} from "./routes/brands/specificStores";
 import Notification,{loader as notificationLoader} from "./routes/notification"
 import Saved, {loader as savedLoader} from "./routes/saved";
 import Dashboard, {loader as dashboardLoader} from "./routes/dashboard";
+import Admin from "./routes/Admin/adminHome"
+import Delivery from "./routes/Delivery/deliveryHome"
 import { createBrowserRouter,RouterProvider} from "react-router-dom";
 const router=createBrowserRouter([
     {
@@ -47,6 +50,52 @@ const router=createBrowserRouter([
                 action:signUpAction
             }
         ]
+    },{
+        path:"/admin",
+        element:<Admin />,
+        children:[
+            {
+                path:"/admin/profile",
+                element:<Profile role={3030} />,
+                loader:profileLoader,
+                children:[
+                    {
+                        path:"/admin/profile/edit",
+                        element:<ProfileEdit/>,
+                        loader:profileLoader,
+                        action:profileEditAction
+                    }
+                ]
+            },
+            {
+                path:"/admin/logout",
+                loader:logoutLoader
+            }
+        ]
+    },
+    {
+        path:"/delivery",
+        element:<Delivery />,
+        children:[
+            {
+                path:"/delivery/profile",
+                element:<Profile role={3011} />,
+                loader:profileLoader,
+                children:[
+                    {
+                        path:"/delivery/profile/edit",
+                        element:<ProfileEdit/>,
+                        loader:profileLoader,
+                        action:profileEditAction
+                    }
+                ]
+            },
+            {
+                path:"/delivery/logout",
+                loader:logoutLoader
+            }
+        ]
+        
     },
     {
         path:"/home",
@@ -58,6 +107,7 @@ const router=createBrowserRouter([
                 index:true,
                 element: <h2>Reccommended products</h2>
             },
+         
             {
                 path:"/home/search",
                 element:<Search/>,
@@ -70,7 +120,7 @@ const router=createBrowserRouter([
             },
             {
                 path:"/home/PaymentSuccessReturnUrl",
-                element:<h1>Payment success</h1>,
+                element:<PaymentSuccessfull />,
                 loader:paymentSuccessLoader
             },
             {
@@ -198,7 +248,7 @@ const router=createBrowserRouter([
             },
             {
                 path:"/home/profile",
-                element:<Profile />,
+                element:<Profile user={2001}/>,
                 loader:profileLoader,
                 children:[
                     {
@@ -208,6 +258,11 @@ const router=createBrowserRouter([
                         action:profileEditAction
                     }
                 ]
+            },
+            {
+                path:"/home/purchases",
+                element:<Purchases />,
+                loader:purchasesLoader,
             },
             {
                 path:"/home/saved",

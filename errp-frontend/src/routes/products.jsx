@@ -1,9 +1,8 @@
 
 import { Form,redirect,Outlet } from "react-router-dom";
 import axios from "axios";
-
+const access_token=window.localStorage.getItem('access_token')
 export async function loader(){
-  const access_token=window.localStorage.getItem('access_token')
   const apiUrl='http://localhost:3500/home/products'
   const response=await axios.get(apiUrl,{
     headers:{
@@ -17,7 +16,6 @@ export async function loader(){
 export async function action({request}){
     const formData = await request.formData();
     const updates = Object.fromEntries(formData);
-    const access_token=window.localStorage.getItem('access_token')
     const apiUrl='http://localhost:3500/home/products'
     const response = await axios.post(apiUrl,updates,
       {

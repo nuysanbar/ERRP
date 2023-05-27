@@ -77,11 +77,11 @@ router.route("/favorites")
     .get(favouriteController.getFavourites)
 
 router.route("/notifications")
-    .get(verifyRetailer,notificationController.getNotifications)
-
+    .get(notificationController.getNotifications)
 router.route("/dashboard")
     .get(verifyRetailer,dashboardController.getDashboard)
-
+router.route("/purchases")
+    .get(dashboardController.getPurchases)
 router.route('/profile')
     .get(profileController.getProfile)
 router.route('/profile/update')

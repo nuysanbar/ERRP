@@ -2,7 +2,7 @@ import { Outlet,useLoaderData,Form,NavLink} from "react-router-dom";
 import { useState } from "react";
 import {AiOutlineShoppingCart,AiOutlineStar,AiOutlineSearch,AiOutlineSetting} from "react-icons/ai"
 import {IoIosNotificationsOutline} from "react-icons/io"
-import {BiCategory,BiLogOut} from "react-icons/bi"
+import {BiCategory,BiLogOut,BiPackage,BiPurchaseTag} from "react-icons/bi"
 import {BsCaretDown,BsGraphUp} from "react-icons/bs"
 import {FaStore} from "react-icons/fa"
 import axios  from "axios"; 
@@ -19,9 +19,6 @@ export async function loader(){
     const user=jwt(access_token);
     const userRole=user.userInfo.roles
     return {userRole}
-}
-export async function searchLoader(){
-
 }
 export default function Home() {
    const {userRole}=useLoaderData()
@@ -83,6 +80,9 @@ export default function Home() {
                     </NavLink>
                     </>
                   }
+                  <NavLink to={"/home/purchases"}>
+                     <BiPurchaseTag/> purchases
+                  </NavLink>
                   <NavLink to={"/home/profile"}>
                      <AiOutlineSetting/> Settings
                   </NavLink>

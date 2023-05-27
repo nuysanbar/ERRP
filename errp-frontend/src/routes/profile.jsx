@@ -16,8 +16,17 @@ export async function loader(){
     console.log(response)
     return response;
 }
-export default function Profile(){
+export default function Profile({role}){
     const response=useLoaderData()
+    var page;
+    if(role==3030){
+        page="/admin"
+    }
+    else if(role==3011){
+        page="/delivery"
+    }else{
+        page="/home"
+    }
     return (
         <>
            <div className="personalInfoContainer">
@@ -40,7 +49,7 @@ export default function Profile(){
             </div>
             </div>
             <div className="favorite"><AiFillStar /><br /><span>{response.favoredNumber}</span></div>
-            <NavLink to={`/home/profile/edit`} className="updateProfile"><BiEdit/>update profile</NavLink>
+            <NavLink to={`${page}/profile/edit`} className="updateProfile"><BiEdit/>update profile</NavLink>
             </div>
             <Outlet />
             </div>

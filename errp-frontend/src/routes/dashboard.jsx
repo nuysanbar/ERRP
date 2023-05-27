@@ -28,7 +28,6 @@ export default function Dashboard(){
         </>
     )
 }
-
 const Graph=({totalAmount,date})=>{
 
   const [graphData, setGraphData]=useState({

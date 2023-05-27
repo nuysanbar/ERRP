@@ -36,4 +36,39 @@
     color:rgb(74, 117, 131);
     font-size: 14px;
   }
- 
+ /* express checkout  */
+ .expressCheckout{
+  min-width: 360px;
+  width: 80%;
+  margin:30px auto;
+ }
+ .expressCheckout img{
+  width: 200px;
+  border-radius: 10px;
+ }
+ .expressCheckout button{
+  all:unset;
+  background-color: var(--bl);
+  color:var(--wh);
+  padding:5px 40px;
+  border-radius: 5px;
+  transition: background-color 0.5s;
+ }
+ .expressCheckout button:hover{
+  background-color: var(--wh);
+  color:var(--bl);
+  border:1px solid var(--bl)
+ }
+ .expressCheckout input{
+  width: 50px;
+  outline:none;
+ }
+ .expressCheckout div{
+  display: inline-block;
+  vertical-align: top;
+  font-weight: bold;
+  min-width: 240px;
+ }
+ .expressCheckout .checkoutInfo .total{
+  color:green;
+ }

@@ -1,5 +1,6 @@
 import { Form,redirect ,NavLink} from "react-router-dom"
 import axios from 'axios'
+import jwt from 'jwt-decode'
 export async function action({request}){
     const formData = await request.formData();
     const updates = Object.fromEntries(formData);
@@ -13,7 +14,17 @@ export async function action({request}){
     if(response.statusText==="OK"){
         window.localStorage.setItem('access_token',response.data.access_token)
         window.localStorage.setItem('basic_data',JSON.stringify(basicData))
-        return redirect('/home/')
+        const user=jwt(response.data.access_token);
+        const userRole=user.userInfo.roles
+        if(userRole=="3011"){
+            return redirect('/delivery/')
+        }
+        else if (userRole=="3030"){
+            return redirect('/admin/')
+        }
+        else{
+            return redirect('/home/')
+        }
     }
     return 0;
 }

@@ -57,6 +57,14 @@ const orderSchema=new Schema({
     date:{
         type:Date,
         default:new Date()
+    },
+    delivered:{
+        type:Boolean,
+        default:false
+    },
+    refund:{
+        type:Boolean,
+        default:false
     }
 });
 module.exports=mongoose.model('Order',orderSchema);
