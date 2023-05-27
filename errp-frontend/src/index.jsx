@@ -53,6 +53,7 @@ const router=createBrowserRouter([
     },{
         path:"/admin",
         element:<Admin />,
+        errorElement:<ErrorPage />,
         children:[
             {
                 path:"/admin/profile",
@@ -76,6 +77,7 @@ const router=createBrowserRouter([
     {
         path:"/delivery",
         element:<Delivery />,
+        errorElement:<ErrorPage />,
         children:[
             {
                 path:"/delivery/profile",

@@ -1,5 +1,6 @@
 import { Form,redirect,useLoaderData,useNavigate } from "react-router-dom";
 import axios from "axios";
+import jwt from 'jwt-decode'
 export async function action({request}){
     const formData = await request.formData();
     const access_token=window.localStorage.getItem('access_token')
@@ -11,7 +12,17 @@ export async function action({request}){
     })
     console.log(response.data)
     console.log("Profile edit save button action called")
-    return redirect('/home/profile')
+    const user=jwt(access_token);
+    const userRole=user.userInfo.roles
+    if(userRole=="3011"){
+        return redirect('/delivery/profile')
+    }
+    else if (userRole=="3030"){
+        return redirect('/admin/profile')
+    }
+    else{
+        return redirect('/home/profile')
+    }
 }
 export default function ProfileEdit(){
     const response=useLoaderData()
