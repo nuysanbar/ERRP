@@ -1,4 +1,4 @@
-import { useLoaderData } from "react-router-dom";
+import { useLoaderData,NavLink } from "react-router-dom";
 import React, {useState} from "react";
 import ReactApexChart from "react-apexcharts"
 import axios from "axios";
@@ -16,16 +16,29 @@ export async function loader(){
       totalAmount.push(item.TotalAmount);
       date.push(item.date)
     })
-
-    console.log(totalAmount,date)
+    console.log(response)
     return {response,totalAmount,date};
 }
 export default function Dashboard(){
     const {response, totalAmount,date}=useLoaderData()
     return (
-        <>
+        <div className="dashboard">
          <Graph totalAmount={totalAmount} date={date}/>
-        </>
+        <div className="orders">
+          <h3>Recent orders </h3>
+          <ul>
+            {
+              response.map((item)=>{
+                return(
+                  <li key={item.date}>
+                    <NavLink to={`/home/products/${item.barcode}`}>{item.ItemName} with {item.TotalAmount} on {item.date}</NavLink>
+                  </li>
+                )
+              })
+            }
+          </ul>
+        </div>
+        </div>
     )
 }
 const Graph=({totalAmount,date})=>{
@@ -58,7 +71,18 @@ const Graph=({totalAmount,date})=>{
     },
   })
   return (
-    <div id="chart">
-    <ReactApexChart options={graphData.options} series={graphData.series} type="area" height={350} />
+    <div id="chart" className="chart">
+      <div>
+           <ReactApexChart options={graphData.options} series={graphData.series} type="area" height={350} />
+           <div className="chartInfo">
+           <p>x-axis : date || y-axis : change of value</p>
+           </div>
+      </div>
+      <div>
+      <ReactApexChart options={graphData.options} series={graphData.series} type="bar" height={350} />
+        <div className="chartInfo">
+            <p>x-axis : date || y-axis : value of the sold product</p>
+        </div>
+      </div>
     </div>)
 }

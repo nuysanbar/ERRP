@@ -1,7 +1,8 @@
-import {useLoaderData } from 'react-router-dom'
+import {useLoaderData,NavLink } from 'react-router-dom'
+import {IoArrowForward} from 'react-icons/io5'
 import axios from 'axios'
+import { Alert,AlertTitle} from '@mui/material';
 const access_token=window.localStorage.getItem('access_token');
-
 export async function paymentSuccessLoader({request}){
     var response1;
     const url = new URL(request.url);
@@ -17,9 +18,32 @@ export async function paymentSuccessLoader({request}){
 }
 
 export default function PaymentSuccessfull(){
+    const {costumer,order,product,retailer}=useLoaderData()
+
     return(
-        <div>
-            <h1>payment success modified</h1>
+        <div className='paymentSuccess'>
+            <div>
+            <Alert severity="success">
+                <AlertTitle>Successfully Ordered</AlertTitle>
+                This product will reach you in — <strong>2 days</strong>
+            </Alert>
+            </div>
+            <div className='paymentSuccessInfo'>
+            <div className='SuccessProductInfo'>
+                <NavLink to={`/home/${retailer.username}/${product.barcode}`}>
+                    <img src={`http://localhost:3500/products/${product.imgUrl[0]}`} alt="productImage" />
+                </NavLink >
+            </div>
+            <div >
+                <NavLink to={`/home/${retailer.username}/${product.barcode}`}>
+                    <p>{product.brandName} <IoArrowForward/> </p> 
+                </NavLink >
+                <h3>Shipped to </h3>
+                <p>{costumer.subcity}, {costumer.city}</p>
+                <NavLink to="/home/profile/edit"> change address <IoArrowForward/></NavLink>
+                <p>check in your <NavLink to={'/home/purchases'}>purchases <IoArrowForward/></NavLink></p>
+            </div>
+            </div>
         </div>
     )
 }

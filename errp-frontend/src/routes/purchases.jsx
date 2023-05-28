@@ -21,23 +21,25 @@ export default function Purchases(){
     const [isDelivered,setIsDelivered]=useState(orderData.delivered);
     const refundAsked=orderData.refund;
     return(
-        <div>
+        <div className="purchases">
             {orderData.map((item)=>{
                 return (
-                    <div key={item.retailerUserName+item.barcode+item.date}>
-                        <div>
-                            <NavLink to={`/home/${item.retailerUserName}/${item.barcode}`} >Brand: {item.ItemName} </NavLink>
-                            <p>Quantity :{item.Quantity}</p>
-                            <p>Delivery fee : {item.DeliveryFee}</p>
+                    <div className="singlePurchaseContainer"  key={item.retailerUserName+item.barcode+item.date} >
+                        <div className="singlePurchase">
+                            <div className="purchaseInfo">
+                                <NavLink to={`/home/${item.retailerUserName}/${item.barcode}`} >Brand: {item.ItemName} </NavLink>
+                                <p>Quantity :{item.Quantity}</p>
+                                <p>Delivery fee : {item.DeliveryFee}</p>
+                            </div>
+                            <div >
                             <p>refund amount :{item.UnitPrice*item.Quantity}</p>
+                                <p>Total : {item.TotalAmount}</p>
+                                <p>ordered on :{item.date}</p>
+                            </div>
                         </div>
-                      
-                        <div>
-                            <p>Total : {item.TotalAmount}</p>
-                            <p>ordered on :{item.date}</p>
-                            {!isDelivered && <input type="checkbox" value={isDelivered} />}
-                            <span>Accept product</span>
-                            {!refundAsked && <button>Ask Refund</button> }
+                        <div className="purchaseAction">
+                            {!isDelivered && <button className="accept">AcceptProduct</button> }
+                            {!refundAsked && <button className="refund">Ask Refund</button> }
                         </div>
                     </div>
                 )})}

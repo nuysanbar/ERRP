@@ -1,4 +1,7 @@
 import {redirect, Form,useNavigate } from "react-router-dom"
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
 import axios from 'axios'
 import {useState} from 'react'
 import { useEffect } from "react";
@@ -42,42 +45,88 @@ export default function SignUp(){
         return redirect('./');
     }
     return(
-        <div>
-            <h2>Sign up</h2>
-            <Form method="post"  encType="multipart/form-data" onSubmit={handleSubmit}>
-            {progressPage===0 && <div>
-                <label htmlFor="username"></label>
-                <input type="text" name="username" value={values.username} id="username" placeholder="username" onChange={(e)=>setValues({...values,"username":e.currentTarget.value})}/><br />
-                <label htmlFor="firstname"></label>
-                <input type="text" name="firstname" value={values.firstname} id="firstname" placeholder="first name" onChange={(e)=>setValues({...values,"firstname":e.currentTarget.value})}/><br />
-                <label htmlFor="lastname"></label>
-                <input type="text" name="lastname" value={values.lastname} id="lastname" placeholder="last name" onChange={(e)=>setValues({...values,"lastname":e.currentTarget.value})}/> <br />
-                <label htmlFor="password"></label>
-                <input type="text" name="password" value={values.password} id="password" placeholder="password" onChange={(e)=>setValues({...values,"password":e.currentTarget.value})}/><br />
-            </div> }
-            {progressPage===1 && <div>
-                <label htmlFor="role" value={values.role}></label>
-                <input type="radio" name="role" value={2001} id="costumer" onChange={(e)=>setValues({...values,"role":e.currentTarget.value})}/>Consumer <br />
-                <input type="radio" name="role" value={5508} id="retailer" onChange={(e)=>setValues({...values,"role":e.currentTarget.value})}/>Retailer <br />
-                <label htmlFor="subcity"></label>
-                <input type="text" name="subcity" value={values.subcity} id="subcity" placeholder="address" onChange={(e)=>setValues({...values,"subcity":e.currentTarget.value})}/> <br />
-                <label htmlFor="city"></label>
-                <input type="text" name="city" value={values.city} id="city" placeholder="city" onChange={(e)=>setValues({...values,"city":e.currentTarget.value})}/>
-            </div>}
-            {progressPage===2 && <div>
-                <label htmlFor="phoneNum"></label>
-                <input type="number" name="phoneNum" value={values.phoneNum} id="phoneNum" placeholder="phoneNum" onChange={(e)=>setValues({...values,"phoneNum":e.currentTarget.value})} /> <br />
+        <div className="signUpContainer">
+        <div className="signUp">
+            <Typography component="h1" variant="h5" style={{textAlign:"center"}}>
+                Sign up
+            </Typography>
+            <Form   encType="multipart/form-data" onSubmit={handleSubmit}>
+            <TextField margin="normal"
+              required
+              id="username"
+              label="username"
+              name="username"
+              autoFocus variant="outlined"
+              value={values.username}
+              onChange={(e)=>setValues({...values,"username":e.currentTarget.value})}/> <br />
+              <TextField margin="normal"
+              required
+              id="firstname"
+              label="First Name"
+              name="firstname"
+              variant="outlined"
+              value={values.firstname}
+              onChange={(e)=>setValues({...values,"firstname":e.currentTarget.value})}/> <br />
+              <TextField margin="normal"
+              required
+              id="lastname"
+              label="Middle Name"
+              name="lastname"
+              variant="outlined"
+              value={values.lastname}
+              onChange={(e)=>setValues({...values,"lastname":e.currentTarget.value})}/> <br />
+              <TextField margin="normal"
+              required
+              id="password"
+              label="password"
+              name="password"
+              variant="outlined"
+              type="password"
+              value={values.password}
+              onChange={(e)=>setValues({...values,"password":e.currentTarget.value})}/> <br />
+              {/*  after */}
+              <input type="hidden" name="role" value={2001} id="costumer" onChange={(e)=>setValues({...values,"role":e.currentTarget.value})}/>
+                <TextField margin="normal"
+                required
+                id="subcity"
+                label="sub city"
+                name="subcity"
+                variant="outlined"
+                value={values.subcity}
+                onChange={(e)=>setValues({...values,"subcity":e.currentTarget.value})}/> <br />
+              <TextField margin="normal"
+                required
+                id="city"
+                label="city"
+                name="city"
+                variant="outlined"
+                value={values.city}
+                onChange={(e)=>setValues({...values,"city":e.currentTarget.value})}/> <br />
+                <TextField margin="normal"
+                required
+                id="phoneNum"
+                label="Phone number"
+                name="phoneNum"
+                variant="outlined"
+                type="number"
+                value={values.phoneNum}
+                onChange={(e)=>setValues({...values,"phoneNum":e.currentTarget.value})}/> <br />
+                <TextField margin="normal"
+                required
+                id="email"
+                label="email"
+                name="email"
+                variant="outlined"
+                type="email"
+                value={values.emailsubcity}
+                onChange={(e)=>setValues({...values,"email":e.currentTarget.value})}/> <br />
                 <label htmlFor="email"></label>
-                <input type="text" name="email" value={values.email} id="email" placeholder="email" onChange={(e)=>setValues({...values,"email":e.currentTarget.value})}/> <br />
                 <label htmlFor="profileImg" ></label>
                 <input type="file" name="profileImg"  onChange={(e)=>setValues({...values,"profileImg":e.currentTarget.files[0]})}/><br />
-                <input type="submit" placeholder="submit"/>
-                </div>
-                }
+                <Button type="submit" variant="contained" style={{backgroundColor:"var(--bl)",width:"100px",textAlign:"center",margin:"10px"}}>submit</Button>
             </Form>
             <br />
-            {progressPage<3 && progressPage>0 && <button onClick={()=>setProgressPage(progressPage-1)}>previous</button>}
-            {progressPage<2 && progressPage >=0 && <button onClick={()=>setProgressPage(progressPage+1)}>next</button>}
+        </div>
         </div>
     )
 }

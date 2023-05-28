@@ -1,5 +1,11 @@
 import { Form,redirect } from "react-router-dom"
 import axios from 'axios'
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
+import InputLabel from "@mui/material/InputLabel";
+import FormControl from "@mui/material/FormControl";
+import Select  from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
 export async function action({request}){
     const formData = await request.formData();
     const updates = Object.fromEntries(formData)
@@ -17,17 +23,38 @@ export default function AddOldProduct(){
     return(
         <div>
             <Form method="post">
-                <label htmlFor="barcode"></label>
-                <input type="text" name="barcode" id="barcode" readOnly defaultValue={barcode} placeholder={barcode}/><br />
-                <select name="usedornew" id="usedornew">
-                    <option value="new">New</option>
-                    <option value="used">Used</option>
-                </select> <br />
-                <label htmlFor="price"></label>
-                <input type="number" name="price" id="price" placeholder="price"/> <br />
-                <label htmlFor="amount"></label>
-                <input type="number" name="amount" id="amount" placeholder="available amount" /> <br />
-                <button type="submit">Add To Products List</button>
+                <TextField margin="normal"
+                required
+                id="barcode"
+                label="barcode"
+                name="barcode"
+                variant="outlined"
+                defaultValue={barcode}/> <br />
+                <FormControl>
+                    <InputLabel id="demo-simple-select-label">used or new</InputLabel>
+                    <Select name="usedornew" id="usedornew" required style={{width:"250px"}} label="usedornew">
+                        <MenuItem value="">none</MenuItem>
+                            <MenuItem value="new">New</MenuItem>
+                        <MenuItem value="used">Used</MenuItem>
+                    </Select> 
+               </FormControl><br />
+               <TextField
+                margin="normal"
+                required
+                id="price"
+                label="price"
+                name="price"
+                type="number"
+                /> <br />
+                <TextField
+                margin="normal"
+                required
+                id="amount"
+                label="amount available"
+                name="amount"
+                type="number"
+                /> <br />
+                <Button type="submit" variant="contained" style={{backgroundColor:"var(--bl)"}}>Add To Products List</Button>
             </Form>
         </div>
     )

@@ -1,4 +1,5 @@
 import {useLoaderData,Form,redirect } from 'react-router-dom'
+import {IoArrowForward} from 'react-icons/io5'
 import axios from 'axios'
 import { useState } from 'react';
 const access_token=window.localStorage.getItem('access_token');
@@ -57,15 +58,15 @@ export default function ExpressCheckout(){
               <input type="hidden" name="Tax2" value="0" readOnly={true}/>
               <input type="hidden" name="HandlingFee" value="0" readOnly={true}/>
               <span>Qty : <input type="number" value={quantity} name="Quantity" onChange={(e)=>setQuantity(e.target.value)}/></span> <br />
-              <button type='submit'>Pay with YenePay</button>
+              <button type='submit'>Pay with YenePay <IoArrowForward/></button>
           </Form>
         </div>
         <div className='checkoutInfo'>
           <p>{response1.productInfo.brandName}</p>
             <p>price : {price}</p> 
-            <p>delivery : 100 ETB</p>
+            <p>delivery : 100</p>
             <p>Tax : {tax} </p> 
-            <p className="total">Total : {tax + 100+(quantity*price)} </p>
+            <p className="total">Total : {tax + 100+(quantity*price)} ETB </p>
         </div>
     </div>
    )

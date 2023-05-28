@@ -72,3 +72,153 @@
  .expressCheckout .checkoutInfo .total{
   color:green;
  }
+
+ /* payment successfull page */
+ .paymentSuccess{
+  max-width: 900px;
+  min-height: 50vh;
+  margin:20px auto;
+  padding:2%;
+  background-color: var(--wh);
+ }
+ .paymentSuccess div{
+  margin:20px 0;
+ }
+ .paymentSuccess .paymentSuccessInfo div{
+  display: inline-block;
+  vertical-align: top;
+  min-width: 350px;
+ }
+ .paymentSuccessInfo a{
+  font-weight: bold;
+  text-decoration: none;
+  color:var(--bl);
+ }
+ .paymentSuccessInfo a:hover{
+  text-decoration: underline;
+ }
+ .paymentSuccessInfo img{
+  border-radius: 10px;
+  width: 180px;
+  height: 180px;
+ }
+
+ /* dashboard styling */
+ .dashboard{
+  background-color: white;
+  min-height: 80vh;
+ }
+ .chart{
+  padding-top: 50px;
+ }
+.chart>div{
+  display:inline-block;
+  width: 50%;
+  min-width: 390px;
+}
+.chart .chartInfo p{
+  padding:20px;
+  font-size: small;
+}
+.dashboard .orders a{
+  color:var(--bl);
+  text-decoration: none;
+}
+.dashboard .orders{
+  width: 80%;
+  margin:30px auto 0;
+  min-width: 350px;
+}
+.dashboard .orders a:hover{
+  text-decoration: underline;
+}
+.dashboard ul{
+  list-style-type: none;  
+  text-align: center;
+  font-weight: 550;
+}
+.dashboard .orders ul li{
+  padding: 20px 0;
+  background-color: var(--lbl);
+  border-radius: 5px;
+  margin:5px;
+}
+.dashboard h3{
+  text-align: center;
+}
+
+/* styling purchases */
+.purchases{
+  width: 80%;
+  min-width:390px;
+  margin:20px auto;
+}
+.singlePurchaseContainer{
+  background-color: var(--wh);
+  margin:20px 0;
+  padding:10px;
+  background-color: var(--wh);
+}
+.purchases .singlePurchase div{
+  display: inline-block;
+  min-width: 390px;
+  width: 50%;
+}
+.purchases .singlePurchase a{
+  text-decoration: none;
+}
+.purchases .singlePurchase a:hover{
+  text-decoration: underline;
+}
+.purchases .purchaseAction{
+  width: 90%;
+  min-width:500px;
+  margin: 0 auto;
+}
+.purchases .purchaseAction button{
+  all:unset;
+  display: inline-block;
+  width: 43%;
+  margin: 2%;
+  min-width: 300px;
+  padding:7px 0;
+  font-weight: bold;
+  background-color: var(--tbl);
+  text-align: center;
+  border-radius: 5px;
+}
+.purchases .purchaseAction .accept{
+  background-color: var(--bl);
+  color:var(--wh);
+}
+.purchases .purchaseAction .accept:hover{
+  border:1px solid var(--bl);
+  background-color: var(--wh);
+  color:var(--bl);
+}
+.purchases .purchaseAction .refund{
+  border:1px solid var(--bl);
+  background-color: var(--wh);
+  color:var(--bl);
+}
+.purchases .purchaseAction .refund:hover{
+  background-color: var(--bl);
+  color:var(--wh);
+}
+/* sign up page styling */
+.signUp{
+  min-width: 350px;
+  width:25%;
+  margin:30px auto;
+  padding: 10px;
+  border-radius: 10px;
+  background-color:var(--wh);
+}
+.signUp form input{
+  width: 300px;
+}
+.signUpContainer{
+  background-color: var(--bl);
+  padding:30px 0;
+}
+/* add new product form */

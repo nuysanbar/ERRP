@@ -5,7 +5,7 @@ import './index.css'
 import './index2.css'
 import Root from "./routes/root.jsx"
 import Home, {loader as homeLoader} from './routes/home.jsx'
-import SignIn, {action as signInAction} from './routes/signIn.jsx'
+// import SignInOld, {action as signInAction} from './routes/signIn.jsx'
 import SignUp, {action as signUpAction} from './routes/signup.jsx'
 import LandingPage, {loader as landingPageLoader} from './routes/landingPage.jsx'
 import {loader as logoutLoader} from './routes/logout.jsx'
@@ -32,6 +32,7 @@ import Saved, {loader as savedLoader} from "./routes/saved";
 import Dashboard, {loader as dashboardLoader} from "./routes/dashboard";
 import Admin from "./routes/Admin/adminHome"
 import Delivery from "./routes/Delivery/deliveryHome"
+import SignIn, {action as signInAction} from "./routes/newSignIn"
 import { createBrowserRouter,RouterProvider} from "react-router-dom";
 const router=createBrowserRouter([
     {
@@ -41,7 +42,7 @@ const router=createBrowserRouter([
         children:[
             {
                 index:true,
-                element: <SignIn />,
+                element: <SignIn/>,
                 action:signInAction
             },
             {
@@ -67,6 +68,9 @@ const router=createBrowserRouter([
                         action:profileEditAction
                     }
                 ]
+            },
+            {
+                
             },
             {
                 path:"/admin/logout",
