@@ -1,6 +1,8 @@
 import { Form,redirect,useLoaderData,useNavigate } from "react-router-dom";
 import axios from "axios";
 import jwt from 'jwt-decode'
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
 export async function action({request}){
     const formData = await request.formData();
     const access_token=window.localStorage.getItem('access_token')
@@ -30,44 +32,51 @@ export default function ProfileEdit(){
     return (
         <div className="form-box">
             <Form method="post"  encType="multipart/form-data" >
-                <div className="input-box">
-                    <input type="text" name="firstname" />
-                    <label htmlFor="firstname">{response.firstname}</label>
-                </div>
-                <div className="input-box">
-                    <input type="text" name="lastname" id="lastname" />
-                    <label htmlFor="lastname">{response.lastname}</label>
-                </div>
-                <div className="input-box">
-                    <input type="text" name="city" id="city" />
-                    <label htmlFor="city">{response.city}</label>
-                </div>
-                <div className="input-box">
-                    <input type="text" name="subcity" id="subcity" />
-                    <label htmlFor="subcity">{response.subcity}</label>
-                </div>
-                <div className="input-box">
-                    <input type="number" name="phone" id="phone" />
-                    <label htmlFor="phone">{response.phoneNum}</label>
-                </div>
-                <div className="input-box">
-                    <input type="email" name="email" id="email" />
-                    <label htmlFor="email">{response.email}</label>
-                </div>
-                <div className="input-box">
-                    <input type="password" name="password" id="password" />
-                    <label htmlFor="password">password</label>
-                </div>
-                <label htmlFor="profileImg">change picture</label>
-                <input type="file" name="profileImg" /> <br />
-                <input type="button" onClick={()=>navigate(-1)} value="cancel"/>
-                <button type="submit" className="submitBtn">
-                <span></span>
-                <span></span>
-                <span></span>
-                <span></span>
-                    apply
-                </button>
+                <TextField margin="normal"
+                id="firstname"
+                label={response.firstname}
+                name="firstname"
+                variant="outlined"/><br />
+                <TextField margin="normal"
+                    id="middlename"
+                    label={response.lastname}
+                    name="lastname"
+                    variant="outlined"/><br />
+                <TextField margin="normal"
+                    id="city"
+                    label={response.city}
+                    name="city"
+                    variant="outlined"/><br />
+                <TextField margin="normal"
+                    id="subcity"
+                    label={response.subcity}
+                    name="subcity"
+                    variant="outlined"/><br />
+                <TextField margin="normal"
+                    id="phone"
+                    label={response.phoneNum}
+                    name="phone"
+                    type="number"
+                    variant="outlined"/><br />
+                <TextField margin="normal"
+                    id="email"
+                    label={response.email}
+                    name="email"
+                    type="email"
+                    variant="outlined"/><br />
+                <TextField margin="normal"
+                    id="password"
+                    label="password"
+                    name="password"
+                    type="password"
+                    variant="outlined"/><br />
+                <TextField margin="normal"
+                    id="profileImg"
+                    name="profileImg"
+                    type="file"
+                    variant="outlined"/><br />
+                <Button variant="outlined" style={{color:"var(--bl)"}} onClick={()=>navigate(-1)}>cancel</Button>   
+                <Button type="submit" variant="contained" style={{backgroundColor:"var(--bl)"}}>apply</Button>
             </Form>
         </div> 
     )

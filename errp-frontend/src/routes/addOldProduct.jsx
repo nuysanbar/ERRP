@@ -32,7 +32,7 @@ export default function AddOldProduct(){
                 defaultValue={barcode}/> <br />
                 <FormControl>
                     <InputLabel id="demo-simple-select-label">used or new</InputLabel>
-                    <Select name="usedornew" id="usedornew" required style={{width:"250px"}} label="usedornew">
+                    <Select name="usedornew" id="usedornew" required style={{width:"210px"}} label="usedornew">
                         <MenuItem value="">none</MenuItem>
                             <MenuItem value="new">New</MenuItem>
                         <MenuItem value="used">Used</MenuItem>
