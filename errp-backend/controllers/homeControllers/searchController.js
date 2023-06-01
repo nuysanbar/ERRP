@@ -1,23 +1,27 @@
 const Product=require('../../data/Product')
-var g = require('ger')
-var esm = new g.MemESM()
-var ger = new g.GER(esm);
-ger.initialize_namespace('products')
-
-const getSearch=async (req,res)=>{
+var recombee=require("recombee-api-client")
+var rqs = recombee.requests;
+var privateToken="dnd6Tav4GksaTyatcBgaO3VTsWwhhYLr6Tws4iIM877BZNcyK3GduLySqXMjFdB0"
+var client = new recombee.ApiClient("astu-dev",privateToken,{region:'us-west'})
+const getSearch= async (req,res)=>{
     var params = req.query;
     var search=params.search;
-    const results= await ger.add_event({
-        namespace: 'products',
-        person: req.username,
-        action: 'searches',
-        thing: search,
-        expires_at: '2023-11-10'
-      })
-    console.log(results)
+
     const cursor = await Product.find({"brandName" : {$regex : search}},{"barcode":true,"brandName":true,"imgUrl":true});
     console.log(cursor)
     if(cursor){
+     var length=cursor.length;
+     for(let i=0; i<length; i++){
+        var rqst= new rqs.AddDetailView(req.username,cursor[i].barcode,{cascadeCreate:true})
+        rqst.timeout=10000;
+        client.send(rqst ,(err,response)=>{
+            if(err){
+                console.log(err)
+            }else{
+                console.log(response)
+            }
+         })
+     }
        return res.status(200).json(cursor)
     }
     else{

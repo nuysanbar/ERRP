@@ -72,7 +72,7 @@ export default function SignIn() {
             alignItems: 'center',
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+          <Avatar sx={{ m: 1, bgcolor: 'var(--bl)' }}>
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
@@ -110,12 +110,12 @@ export default function SignIn() {
             </Button>
             <Grid container>
               <Grid item xs>
-                <NavLink href="#" variant="body2">
+                <NavLink href="#" variant="body2" style={{color:"var(--bl)"}}>
                   Forgot password?
                 </NavLink>
               </Grid>
               <Grid item>
-                <NavLink to={'/signUp'} variant="body2">
+                <NavLink to={'/signUp'} variant="body2"style={{color:"var(--bl)"}}>
                   {"Don't have an account? Sign Up"}
                 </NavLink>
               </Grid>

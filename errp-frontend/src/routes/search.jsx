@@ -14,11 +14,22 @@ export async function searchLoader({request}){
     console.log(res.data)
     return res.data;
 }
+export async function recommendationLoader(){
+    const apiUrl = `http://localhost:3500/home/`
+    const res = await axios.get(apiUrl,{
+        headers:{
+            "Authorization":'Bearer ' + access_token
+        }
+    })
+    console.log(res.data)
+    return res.data
+}
 export default function Search(){
     const data=useLoaderData()
     return (
         <div>
-            <SpecificBrand isSearch={true} />
+           {data &&  <SpecificBrand isSearch={true} />}
+           {!data && <>no recommended items yet</>}
         </div>
     )
 }

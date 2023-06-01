@@ -54,7 +54,22 @@ export default function Home() {
               <span><BiCategory /></span> <br />
                 categories
             </NavLink>
-            
+            {userRole===5508 &&  
+                  <>
+                    <NavLink to={"/home/products"} className="combineSymbolText">
+                      <span> <FaStore/> </span> <br />
+                     my store
+                    </NavLink>
+                    <NavLink to={"/home/dashboard"} className="combineSymbolText">
+                      <span><BsGraphUp/></span> <br />
+                        dashboard
+                    </NavLink>
+                    </>
+                }
+              <NavLink to={"/home/purchases"} className="combineSymbolText">
+                <span><BiPurchaseTag/></span><br />
+                purchases
+              </NavLink>
             <div className="rightIcons">
               <NavLink to={"/home/saved"}>
                   <AiOutlineShoppingCart/>
@@ -63,26 +78,12 @@ export default function Home() {
                   <IoIosNotificationsOutline />
               </NavLink>
             </div>
-    
             <div className="menu">
               <div onClick={changeClassName} className="toggle">
                   <img src={`http://localhost:3500/${basicData.image}`} alt="profileImg" /> <br />
                   <span>me<BsCaretDown className="drop"/></span>
               </div>
               <div className={`hiddenOptions ${classValue}`} onClick={changeClassName}>
-                  {userRole===5508 &&  
-                  <>
-                    <NavLink to={"/home/products"} >
-                      <FaStore/> my store
-                    </NavLink>
-                    <NavLink to={"/home/dashboard"}>
-                       <BsGraphUp/> dashboard
-                    </NavLink>
-                    </>
-                  }
-                  <NavLink to={"/home/purchases"}>
-                     <BiPurchaseTag/> purchases
-                  </NavLink>
                   <NavLink to={"/home/profile"}>
                      <AiOutlineSetting/> Settings
                   </NavLink>

@@ -23,7 +23,7 @@ import LandingPageProducts, {loader as landingPageProductsLoader} from "./routes
 import Favorite,{loader as favoriteLoader} from "./routes/favorite";
 import Brands,{loader as typeLoader } from "./routes/brands/brands";
 import Brand,{loader as brandLoader,singleTypeLoader} from "./routes/brands/brand";
-import Search,{searchLoader} from "./routes/search"
+import Search,{searchLoader,recommendationLoader} from "./routes/search"
 import Purchases , {loader as purchasesLoader} from "./routes/purchases";
 import SpecificBrand, {loader as SpecificLoader} from "./routes/brands/specificBrands";
 import SpecificStore, {loader as specificStoreLoader} from "./routes/brands/specificStores";
@@ -111,7 +111,8 @@ const router=createBrowserRouter([
         children:[
             {
                 index:true,
-                element: <h2>Reccommended products</h2>
+                element: <Search />,
+                loader:recommendationLoader
             },
          
             {

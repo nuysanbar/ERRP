@@ -15,8 +15,8 @@ app.use(cors(corsOptionsDelegate));
 app.use(express.urlencoded({extended:false}));
 app.use(cookieParser());
 // app.use(credentials);
-app.use(express.json());
 
+app.use(express.json());
 app.use(express.static(path.join(__dirname,'public','uploads')));
 app.use("/products/",express.static(path.join(__dirname,'public','uploads','products')))
 app.use("/register",require('./routes/api/register'));

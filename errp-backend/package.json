@@ -20,6 +20,9 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.7.2",
     "multer": "^1.4.5-lts.1",
+    "recombee-api-client": "^4.1.0",
+    "redis": "^4.6.6",
+    "redis-server": "^1.2.2",
     "request": "^2.88.2",
     "uuid": "^9.0.0",
     "yenepaysdk": "^1.2.0"
