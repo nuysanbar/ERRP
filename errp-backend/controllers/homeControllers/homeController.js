@@ -5,7 +5,7 @@ var privateToken="dnd6Tav4GksaTyatcBgaO3VTsWwhhYLr6Tws4iIM877BZNcyK3GduLySqXMjFd
 var client = new recombee.ApiClient("astu-dev",privateToken,{region:'us-west'})
 
 const recommendedProducts=async (req,res)=>{
-    var rqst=new rqs.RecommendItemsToUser(req.username, 2)
+    var rqst=new rqs.RecommendItemsToUser(req.username, 4)
     rqst.timeout=10000;
     client.send(rqst,
     async(err, response) => {

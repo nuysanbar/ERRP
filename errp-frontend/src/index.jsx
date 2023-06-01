@@ -112,7 +112,7 @@ const router=createBrowserRouter([
             {
                 index:true,
                 element: <Search />,
-                loader:recommendationLoader
+                loader:recommendationLoader,
             },
          
             {

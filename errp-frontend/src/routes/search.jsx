@@ -19,7 +19,7 @@ export async function recommendationLoader(){
     const res = await axios.get(apiUrl,{
         headers:{
             "Authorization":'Bearer ' + access_token
-        }
+        }  
     })
     console.log(res.data)
     return res.data

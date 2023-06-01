@@ -550,7 +550,7 @@ body{
 .store .storeProductInformation .buyItNow{
     display: inline-block;
     font-weight: bolder;
-    color:blue;
+    color:blue;   
 }
 .store .storeProductInformation .buyItNow:hover{
     color:rgb(0, 0, 255,0.5);
@@ -589,7 +589,7 @@ body{
 .myStore .myStoreProduct{
     text-decoration: none;
     display: inline-block;
-    margin-right: 20px;
+    margin: 20px 10px;
     background-color: var(--wh);
 }
 .myStore .myStoreProduct p{
