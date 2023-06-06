@@ -2,7 +2,7 @@ import { useLoaderData} from "react-router-dom"
 import {TiTick} from 'react-icons/ti'
 import { useState,useEffect } from "react"
 import Store from "./store"
-import SimpleMap from "./simpleMap"
+import Map from "./simpleMap"
 import axios from "axios"
 const access_token=window.localStorage.getItem("access_token")
 export async function loader({params}){
@@ -19,6 +19,7 @@ export async function loader({params}){
 }
 export default function SpecificStore(){
     const response=useLoaderData()
+    var markers=[]
     const product=response.product
     const retailers=response.retailers
     const details=product.details.split(",")
@@ -26,6 +27,7 @@ export default function SpecificStore(){
     useEffect(()=>setImageUrl(`http://localhost:3500/products/${response.product.imgUrl[0]}`),[])
     return (
         <div className="specificStores">
+            <div>
             <div className='imageContainer'>
             <div  className="smallerImage">
                 { product.imgUrl.map((img)=>{
@@ -43,12 +45,14 @@ export default function SpecificStore(){
                 })}</div>
             <div>
                 {retailers.map((item)=>{
+                    markers.push({address:`${item.firstname} ${item.lastname}`, lat:parseFloat(item.lat), lng:parseFloat(item.lon)})
                     return ( <div  key={item.storeName} className='store'>
                                 <Store retailer={item} barcode={product.barcode} />
                             </div>)
                 })}
             </div>
-            <SimpleMap />
+            </div>
+            <Map markers={markers}/>
             </div>
     )
 }

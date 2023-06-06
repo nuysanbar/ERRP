@@ -6,8 +6,7 @@ var client = new recombee.ApiClient("astu-dev",privateToken,{region:'us-west'})
 const getSearch= async (req,res)=>{
     var params = req.query;
     var search=params.search;
-
-    const cursor = await Product.find({"brandName" : {$regex : search}},{"barcode":true,"brandName":true,"imgUrl":true});
+    const cursor = await Product.find({"brandName" : {$regex : search}});
     console.log(cursor)
     if(cursor){
      var length=cursor.length;

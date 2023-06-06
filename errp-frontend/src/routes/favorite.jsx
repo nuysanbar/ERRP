@@ -1,4 +1,5 @@
 import { useLoaderData,NavLink,Outlet } from "react-router-dom";
+import SimpleDialogDemo from "./dialog";
 import axios from "axios"
 export async function loader({params}){
     const access_token=window.localStorage.getItem("access_token")
@@ -18,6 +19,9 @@ export default function Favorite(){
     const response=useLoaderData()
     return (
         <div className="favoriteContainer">
+            <div className="favoriteContainerDialog">
+                <SimpleDialogDemo response={response}/>
+            </div>
             <div className="favorites">
                 { response && response.map((favored)=>{
                     return (

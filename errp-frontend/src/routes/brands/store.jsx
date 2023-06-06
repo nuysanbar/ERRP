@@ -63,7 +63,7 @@ export default function Store({retailer,barcode}){
                 <NavLink to={`/home/${username}/${barcode}/checkout`} className="buyItNow">Buy It Now <IoArrowForward /></NavLink> <br />
                 {saved===false? <button onClick={handleSaved} className='toFromCart plus'><span><FaCartPlus/></span> Add To Cart</button>
                     : <button onClick={handleSaved} className='toFromCart minus'>Remove From <span><BsCartDashFill/></span></button>}
-                <button className="comments"><NavLink to={`/home/${username}/${barcode}`}><span>{retailer.review.length}</span>  comments</NavLink></button>
+                <button className="comments"><NavLink to={`/home/${username}/${barcode}`}><span>{retailer.review.length}</span>  reviews</NavLink></button>
             </div>
         </>
     )

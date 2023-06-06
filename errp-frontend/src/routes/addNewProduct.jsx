@@ -92,9 +92,11 @@ function EmptyTextarea() {
   return (
     <StyledTextarea
       maxRows={4}
+      style={{width:"220px"}}
       aria-label="maximum height"
-      placeholder="Details with comma eg resolution 4k, screen size 5'8"
+      placeholder="Details with comma example resolution 4k, screen size 5'8"
       name="details"
+      required
     />
   );
 }
@@ -104,7 +106,7 @@ export default function AddNewProduct(){
     const [selectedType,setSelectedType]=useState(electronics[0].type)
     const newValue=electronics.find((item)=>item.type===selectedType)
     return(
-        <div>
+        <div style={{margin:"20px 0 20px 50px"}}>
             <Form method="post"  encType="multipart/form-data">
             <TextField margin="normal"
               required
@@ -164,7 +166,7 @@ export default function AddNewProduct(){
                 </Select><br />
              </FormControl>
              <br />
-               <EmptyTextarea/> <br /> <br />
+               <EmptyTextarea /> <br /> <br />
                <FormControl>
                <InputLabel id="demo-simple-select-label">used or new</InputLabel>
                <Select name="usedornew" id="usedornew" required style={{width:"210px"}} label="usedornew">
@@ -190,7 +192,7 @@ export default function AddNewProduct(){
                 type="number"
                 /> <br />
                 <label htmlFor="productImg"></label>
-                <input type="file" accept="image/*" name="productImg" multiple/><br />
+                <input type="file" accept="image/*" name="productImg" multiple required/><br />
                 <Button type="submit" variant="contained" style={{backgroundColor:"var(--bl)"}}>Add To Products List</Button>
             </Form>
         </div>

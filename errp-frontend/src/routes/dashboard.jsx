@@ -1,4 +1,5 @@
 import { useLoaderData,NavLink } from "react-router-dom";
+import {formatDate} from "./purchases"
 import React, {useState} from "react";
 import ReactApexChart from "react-apexcharts"
 import axios from "axios";
@@ -30,9 +31,9 @@ export default function Dashboard(){
             {
               response.map((item)=>{
                 return(
-                  <li key={item.date}>
-                    <NavLink to={`/home/products/${item.barcode}`}>{item.ItemName} with {item.TotalAmount} on {item.date}</NavLink>
-                  </li>
+                  <li key={item._id}>
+                    <NavLink to={`/home/products/${item.barcode}`}>{item.ItemName} with {item.TotalAmount} on {formatDate(item.date)}</NavLink>
+              </li>
                 )
               })
             }

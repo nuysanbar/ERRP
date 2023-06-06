@@ -113,7 +113,7 @@
 /* styling purchases */
 .purchases{
   width: 80%;
-  min-width:390px;
+  min-width:340px;
   margin:20px auto;
 }
 .singlePurchaseContainer{
@@ -124,7 +124,7 @@
 }
 .purchases .singlePurchase div{
   display: inline-block;
-  min-width: 390px;
+  min-width: 300px;
   width: 50%;
 }
 .purchases .singlePurchase a{
@@ -135,7 +135,7 @@
 }
 .purchases .purchaseAction{
   width: 90%;
-  min-width:500px;
+  min-width:300px;
   margin: 0 auto;
 }
 .purchases .purchaseAction button{

@@ -1,33 +1,73 @@
 /* global google */
+import {
+  GoogleMap,
+  InfoWindow,
+  MarkerF,
+  useLoadScript,
+} from "@react-google-maps/api";
+import { useState } from "react";
 
-import React from 'react'
-import { GoogleMap, LoadScript,Marker } from '@react-google-maps/api';
+const Map = ({markers}) => {
+  const { isLoaded } = useLoadScript({
+    googleMapsApiKey: "AIzaSyDeEMjTVR6WpHrtDXOfbzLAoJ5l2GY-4wU",
+  });
+  const [mapRef, setMapRef] = useState();
+  const [isOpen, setIsOpen] = useState(false);
+  const [infoWindowData, setInfoWindowData] = useState();
+  // const markers = [
+  //   { address: "Address1", lat: 18.5204, lng: 73.8567 },
+  //   { address: "Address2", lat: 18.5314, lng: 73.8446 },
+  //   { address: "Address3", lat: 18.5642, lng: 73.7769 },
+  // ];
 
-const containerStyle = {
-  width: '100%',
-  height: '600px'
-};
+  const onMapLoad = (map) => {
+    setMapRef(map);
+    const bounds = new google.maps.LatLngBounds();
+    markers?.forEach(({ lat, lng }) => bounds.extend({ lat, lng }));
+    map.fitBounds(bounds);
+  };
 
-const center = {
-  lat: 8.745,
-  lng: 40.523
-};
+  const handleMarkerClick = (id, lat, lng, address) => {
+    mapRef?.panTo({ lat, lng });
+    setInfoWindowData({ id, address });
+    setIsOpen(true);
+  };
 
-function SimpleMap() {
   return (
-    <LoadScript
-      googleMapsApiKey="AIzaSyABKNBV9xJdT4LM5QP_gwkDCqWTmU-5O7I"
-    >
-      <GoogleMap
-        mapContainerStyle={containerStyle}
-        center={center}
-        zoom={10}
-      >
-        { /* Child components, such as markers, info windows, etc. */ }
-        <Marker position={center}></Marker>
-      </GoogleMap>
-    </LoadScript>
-  )
-}
+    <div className="App" style={{width:"93%",height:"50vh",padding:"10px"}}>
+      {!isLoaded ? (
+        <h1>Loading...</h1>
+      ) : (
+        <GoogleMap
+          mapContainerClassName="map-container"
+          onLoad={onMapLoad}
+          style={{height:"100%",width:"100%"}}
+          onClick={() => setIsOpen(false)}
+        >
+          {markers.map(({ address, lat, lng }, ind) => (
+            <MarkerF
+              key={ind}
+              style={{backgroundColor:"blue"}}
+              position={{ lat, lng }}
+              onClick={() => {
+                handleMarkerClick(ind, lat, lng, address);
+              }}
+            >
+              {isOpen && infoWindowData?.id === ind && (
+                <InfoWindow
+                  onCloseClick={() => {
+                    setIsOpen(false);
+                  }}
+                >
+                  <h3>{infoWindowData.address}</h3>
+                </InfoWindow>
+              )}
+            </MarkerF>
+          ))}
+        </GoogleMap>
+      )}
+    </div>
+  );
+};
 
-export default React.memo(SimpleMap)
+export default Map;

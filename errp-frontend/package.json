@@ -15,6 +15,7 @@
     "axios": "^1.2.1",
     "html5-qrcode": "^2.3.8",
     "jwt-decode": "^3.1.2",
+    "quagga": "^0.12.1",
     "react": "^18.2.0",
     "react-apexcharts": "^1.4.0",
     "react-dom": "^18.2.0",

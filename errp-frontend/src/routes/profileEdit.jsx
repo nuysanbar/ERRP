@@ -30,7 +30,7 @@ export default function ProfileEdit(){
     const response=useLoaderData()
     const navigate=useNavigate()
     return (
-        <div className="form-box">
+        <div className="form-box" style={{margin:"20px 0 20px 50px"}}>
             <Form method="post"  encType="multipart/form-data" >
                 <TextField margin="normal"
                 id="firstname"
@@ -74,8 +74,9 @@ export default function ProfileEdit(){
                     id="profileImg"
                     name="profileImg"
                     type="file"
+                    style={{width:"250px"}}
                     variant="outlined"/><br />
-                <Button variant="outlined" style={{color:"var(--bl)"}} onClick={()=>navigate(-1)}>cancel</Button>   
+                <Button variant="outlined" style={{color:"var(--bl)",marginRight:"10px",borderColor:"var(--bl)"}} onClick={()=>navigate(-1)}>cancel</Button>   
                 <Button type="submit" variant="contained" style={{backgroundColor:"var(--bl)"}}>apply</Button>
             </Form>
         </div> 

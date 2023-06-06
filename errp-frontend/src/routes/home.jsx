@@ -1,5 +1,6 @@
-import { Outlet,useLoaderData,Form,NavLink} from "react-router-dom";
+import { Outlet,useLoaderData,Form,NavLink,Link} from "react-router-dom";
 import { useState } from "react";
+import TemporaryDrawer from "./drawer";
 import {AiOutlineShoppingCart,AiOutlineStar,AiOutlineSearch,AiOutlineSetting} from "react-icons/ai"
 import {IoIosNotificationsOutline} from "react-icons/io"
 import {BiCategory,BiLogOut,BiPackage,BiPurchaseTag} from "react-icons/bi"
@@ -34,8 +35,10 @@ export default function Home() {
     return (
       <>
       <div className="rootContainer">
-        <div className="root">
-          <span>- - - - - ERRP LOGO - - - - - - </span>
+        <div className="root" >
+          <Link to="/home">
+                <span>- - - - - ERRP LOGO - - - - - - </span>
+          </Link>
           <Form method="get" action="search">
             <input type="search" placeholder="search" id="search" name="search"/>
             <button className="searchIcon"><AiOutlineSearch/></button>
@@ -85,13 +88,16 @@ export default function Home() {
               </div>
               <div className={`hiddenOptions ${classValue}`} onClick={changeClassName}>
                   <NavLink to={"/home/profile"}>
-                     <AiOutlineSetting/> Settings
+                     <AiOutlineSetting/> settings
                   </NavLink>
                   <NavLink to={"/home/logout"}>
                       <BiLogOut/> Logout
                   </NavLink>
               </div>
             </div>
+        </div>
+        <div className="drawer" >
+          <TemporaryDrawer basicData={basicData} userRole={userRole} />
         </div>
         <div id="detail"><Outlet /></div>
         </div>

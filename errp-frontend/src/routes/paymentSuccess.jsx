@@ -2,6 +2,7 @@ import {useLoaderData,NavLink } from 'react-router-dom'
 import {IoArrowForward} from 'react-icons/io5'
 import axios from 'axios'
 import { Alert,AlertTitle} from '@mui/material';
+
 const access_token=window.localStorage.getItem('access_token');
 export async function paymentSuccessLoader({request}){
     var response1;

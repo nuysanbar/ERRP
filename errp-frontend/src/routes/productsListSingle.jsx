@@ -1,4 +1,5 @@
 import {useLoaderData,Form,redirect,useNavigate} from 'react-router-dom'
+import AlertDialog from './customAlertConfirm'
 import {TiTick} from 'react-icons/ti'
 import {BiEdit} from 'react-icons/bi'
 import {GiCancel} from 'react-icons/gi'
@@ -52,7 +53,16 @@ export default function ProductsListSingle(){
     const [price,setPrice]=useState(response1.product.price)
     const [changePrice,setChangePrice]=useState(false)
     const [changeAmount,setChangeAmount]=useState(false)
+    const [open,setOpen]=useState(false)
+    const deleteTitle="Are you sure you want to remove this?"
+    const deleteContent="Click agree if you really want to delete this product from your store"
     const [imageUrl,setImageUrl]=useState(`http://localhost:3500/products/${response1.productInfo.imgUrl[0]}`)
+    const handleDisAgree = () => {
+      setOpen(false);
+    };
+    const handleClickOpen = () => {
+      setOpen(true);
+    };
     const handleSoldOut=async()=>{
         const apiUrl=`http://localhost:3500/home/products/${barcode}/deleteProduct`
         const totalSell=amount*price
@@ -106,8 +116,9 @@ export default function ProductsListSingle(){
                 <GiCancel onClick={handlePriceCancel} className='cancel'/>
                 <button><FcApproval className='apply'/></button>
             </Form>} <br />
-          <button onClick={handleSoldOut} className='delete'><MdDelete/>Delete</button>
+          <button onClick={handleClickOpen} className='delete'><MdDelete/>Delete</button>
       </div>
+      <AlertDialog open={open} handleAgree={handleSoldOut} handleDisAgree={handleDisAgree} title={deleteTitle} content={deleteContent}/>
     </div>
    )
 }

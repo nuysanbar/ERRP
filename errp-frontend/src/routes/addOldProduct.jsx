@@ -21,7 +21,7 @@ export async function action({request}){
 export default function AddOldProduct(){
     const barcode=window.localStorage.getItem('barcode');
     return(
-        <div>
+        <div style={{margin:"20px 0 20px 50px"}}>
             <Form method="post">
                 <TextField margin="normal"
                 required

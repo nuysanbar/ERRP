@@ -3,7 +3,8 @@
 :root{
     /* --bl:rgb(74, 117, 131); */
     --bl:rgb(4, 24, 66);
-    --tbl:rgb(74, 117, 131,0.5);
+    --tbl:rgba(74, 117, 131,0.5);
+    /* --tbl:rgba(4,24,66,0.5) */
     --wh:#ffffff;
     --lbl:rgb(231, 238, 240);
 }
@@ -24,6 +25,17 @@ body{
 }
 .rootContainer{
     min-height: 90vh;
+}
+.rootContainer .drawer{
+    display: none;
+}
+@media screen and (max-width: 1080px){
+    .rootContainer .drawer{
+            display: block;
+    }
+    .root{
+        display: none;
+    }
 }
 .root a{
     padding:0 10px 5px;
@@ -104,7 +116,7 @@ body{
 .combineSymbolText{
     display: inline-block;
     vertical-align: middle;
-    width: 70px;
+    width: 62px;
     padding-left:20px ;
 }
 .combineSymbolText span{
@@ -418,6 +430,18 @@ body{
 .favoriteContainer .singleFavorites:hover{
     background-color: rgb(74, 117, 131,0.5);
 }
+.favoriteContainer .favoriteContainerDialog{
+    display: none;
+}
+@media screen and (max-width: 500px){
+    .favoriteContainer .favorites{
+        display:none;
+    }
+    .favoriteContainer .favoriteContainerDialog{
+        margin: 0 auto;
+        display:block;
+    }
+}
 
 /* Brand in categories styling */
 .brandContainer .brand{
@@ -487,10 +511,34 @@ body{
     background-color: rgb(74, 117, 131,0.5);;
 }
 .specificBrands .specificBrandTitle:hover{
-    background-color: rgb(74, 117, 131,0.5);;
-
+    background-color: rgb(74, 117, 131,0.5);
 }
-
+.specificBrands .searchComponent{ 
+    display: inline-block;
+    text-decoration: none;
+    margin:20px;
+    padding:10px;
+    border-radius: 10px;
+    background-color: var(--wh);
+    color:var(--bl)
+}
+.specificBrands .searchComponent:hover{   
+    box-shadow: 0px 0px 10px var(--bl);
+  /* background-color: var(--bl); */
+  /* color:var(--wh); */
+}
+.specificBrands .searchComponent img{   
+    width: 300px;
+    height: 300px;
+    border-radius: 10px;
+}
+.specificBrands .searchComponent h3{   
+    text-align: center;
+}
+.App .map-container{
+    width:100%;
+    height:100%
+}
 /* Styling Specific store */
 .store{
     display: inline-block;
@@ -521,7 +569,7 @@ body{
     color:var(--bl);
 }
 .store .storeInfo .storeName:hover{
-    color:var(--tbl)
+    text-decoration: underline;
 }
 .storeInfo .storeFavorite{
     display: inline-block;
@@ -553,7 +601,7 @@ body{
     color:blue;   
 }
 .store .storeProductInformation .buyItNow:hover{
-    color:rgb(0, 0, 255,0.5);
+    text-decoration: underline;
 }
 .store .storeProductInformation button{
     background-color: var(--wh);
@@ -581,6 +629,7 @@ body{
     color: var(--tbl);
     border-color: var(--tbl);
 }
+
 /* styling my store */
 .myStore{
     width: 75%;
@@ -701,12 +750,6 @@ body{
     font-weight: bold;
     color:green;
 }
-
-
-
-
-
-
 
 img{
     width: 120px;

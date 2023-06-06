@@ -1,6 +1,6 @@
-
 import { Form,redirect,Outlet } from "react-router-dom";
 import axios from "axios";
+import Scanner from "./barcodeScanner";
 const access_token=window.localStorage.getItem('access_token')
 export async function loader(){
   const apiUrl='http://localhost:3500/home/products'
@@ -38,6 +38,7 @@ export async function action({request}){
 export default function Products(){
     return (
         <>
+        {/* <Scanner /> */}
         <Form method="post">
           <input type="text" name="barcode" placeholder="barcode"/>
           <button type="submit">add</button>
