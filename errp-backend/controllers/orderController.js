@@ -1,5 +1,6 @@
 // 'use strict';
 const Product=require("../data/Product");
+const RetailerProduct = require("../data/RetailerProduct")
 const User=require('../data/User');
 const Order=require('../data/order');
 var ypco = require('yenepaysdk');
@@ -7,8 +8,8 @@ var ypco = require('yenepaysdk');
 var sellerCode,
     successUrlReturn = "http://localhost:3000/Home/PaymentSuccessReturnUrl", //"YOUR_SUCCESS_URL",
     ipnUrlReturn = "http://localhost:3000/Home/IPNDestination", //"YOUR_IPN_URL",
-    cancelUrlReturn = "http://localhost:3000/Home/CheckoutExpress", //"YOUR_CANCEL_URL",
-    failureUrlReturn = "http://localhost:3000/Home/CheckoutExpress", //"YOUR_FAILURE_URL",
+    cancelUrlReturn = "http://localhost:3000/Home/", //"YOUR_CANCEL_URL",
+    failureUrlReturn = "http://localhost:3000/Home/", //"YOUR_FAILURE_URL",
     pdtToken,
     useSandbox = true,
     currency = "ETB";
@@ -91,6 +92,7 @@ exports.PaymentSuccessReturnUrl =async (req, res)=>{
   const order=await Order.findOne({'orderId':params.MerchantOrderId}).exec();
   pdtToken=order.pdtToken;
   const product= await Product.findOne({"barcode":order.barcode}).exec();
+  const retailerProduct= await RetailerProduct.findOne({"barcode":order.barcode,'username':order.retailerUserName}).exec();
   const costumer= await User.findOne({"username":order.costumerUserName},{"password":false,"favoredBy":false,"favoredNumber":false,"refreshToken":false}).exec();
   const retailer =await User.findOne({'username':order.retailerUserName},{"password":false,"favoredBy":false,"favoredNumber":false,"refreshToken":false}).exec();
   var pdtRequestModel = new ypco.pdtRequestModel(pdtToken, params.TransactionId, params.MerchantOrderId, useSandbox);
@@ -101,9 +103,12 @@ exports.PaymentSuccessReturnUrl =async (req, res)=>{
       console.log("success url called - Paid");
       order.status=pdtJson.Status;
       order.TransactionId=pdtJson.TransactionId;
+      retailerProduct.availableAmount=retailerProduct.availableAmount-parseInt(order.Quantity);
+      console.log(order.Quantity)
+      retailerProduct.save()
+      console.log(retailerProduct)
       order.save()
       console.log("after save order Value")
-      console.log(order, product,costumer,retailer)
       //This means the payment is completed. 
       //You can extract more information of the transaction from the pdtResponse
       //You can now mark the order as "Paid" or "Completed" here and start the delivery process

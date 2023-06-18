@@ -27,7 +27,7 @@ app.use(verifyJWT);
 app.use('/home',require('./routes/api/home'))
 app.use('/order',require('./routes/api/order'))
 app.use('/users',require('./routes/api/landingPage'))
-
+app.use('/admin',require('./routes/api/admin'))
 mongoose.connection.once('open',()=>{
     console.log('Mongodb is connected');
     app.listen(PORT,()=>{

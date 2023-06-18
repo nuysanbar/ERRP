@@ -42,7 +42,7 @@ export default function SignUp(){
             }
         })
         console.log("before redirect ")
-        return redirect('./');
+        return redirect('../');
     }
     return(
         <div className="signUpContainer">
@@ -85,7 +85,7 @@ export default function SignUp(){
               value={values.password}
               onChange={(e)=>setValues({...values,"password":e.currentTarget.value})}/> <br />
               {/*  after */}
-              <input type="hidden" name="role" value={2001} id="costumer" onChange={(e)=>setValues({...values,"role":e.currentTarget.value})}/>
+              <input type="hidden" name="role" value={values.role=2001} id="costumer" onChange={(e)=>setValues({...values,"role":e.currentTarget.value})}/>
                 <TextField margin="normal"
                 required
                 id="subcity"

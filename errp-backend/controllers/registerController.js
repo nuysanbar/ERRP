@@ -3,7 +3,8 @@ const bcrypt=require('bcrypt')
 const User=require('../data/User')
 const handleNewUser=async(req,res)=>{
     const {username,firstname,lastname,password,role,subcity,city,lat,lon,phoneNum,email}=req.body;
-    if(!username || !password|| !role || !firstname || !lastname || !subcity) return res.status(400).json({"message":"username and password required"})
+    console.log(req.body)
+    if(!username || !password|| !role || !firstname || !lastname || !subcity) return res.status(400).json({"message":"bad request"})
     const duplicate= await User.findOne({username:username}).exec();
     if(duplicate) return res.sendStatus(409);
     try{

@@ -1,4 +1,5 @@
-import { useLoaderData,NavLink,Outlet } from "react-router-dom";
+import { useLoaderData,NavLink,Outlet,Form } from "react-router-dom";
+import {AiOutlineSearch} from 'react-icons/ai'
 import SimpleDialogDemo from "./dialog";
 import axios from "axios"
 export async function loader({params}){
@@ -10,8 +11,6 @@ export async function loader({params}){
         }
     })
     const response=res.data
-    console.log(response)
-    console.log("response")
     return response;
 }
 
@@ -23,6 +22,9 @@ export default function Favorite(){
                 <SimpleDialogDemo response={response}/>
             </div>
             <div className="favorites">
+                <Form method="get" action="search" style={{display:"block",textAlign:"center"}}>
+                    <input type="search" placeholder="search retailers" id="search" name="search" style={{height:"30px", padding:"10px", color:"var(--bl)",outline:"none",border:"2px solid var(--bl)",borderRadius:"5px"}}/>
+                </Form>
                 { response && response.map((favored)=>{
                     return (
                     <NavLink to={`/home/favorites/${favored.username}`} key={favored.username} className={({ isActive, isPending }) =>

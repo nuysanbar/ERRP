@@ -26,7 +26,6 @@ export async function loader(){
 
 export async function action({request}){
     const formData = await request.formData();
-    // const updates=Object.fromEntries(formData)
     const apiUrl='http://localhost:3500/home/products/addNew'
     const res=await axios.post(apiUrl,formData,{
         headers:{
@@ -103,8 +102,14 @@ function EmptyTextarea() {
 export default function AddNewProduct(){
     const barcode=window.localStorage.getItem('barcode');
     const [electronics]=useState(useLoaderData())
-    const [selectedType,setSelectedType]=useState(electronics[0].type)
-    const newValue=electronics.find((item)=>item.type===selectedType)
+    const [selectedType,setSelectedType]=useState("")
+    const [newValue,setNewValue]=useState(electronics[0])
+    const [brand,setBrand]=useState("")
+    const [usedNew,setUsedNew]=useState("new")
+    const handleChange=(e)=>{
+      setSelectedType(e.target.value)
+      setNewValue(electronics.find((item)=>item.type==e.target.value))
+    }
     return(
         <div style={{margin:"20px 0 20px 50px"}}>
             <Form method="post"  encType="multipart/form-data">
@@ -113,7 +118,7 @@ export default function AddNewProduct(){
               id="barcode"
               label="barcode"
               name="barcode"
-             variant="outlined"
+              variant="outlined"
               defaultValue={barcode}/> <br />
             <TextField margin="normal"
               required
@@ -131,11 +136,9 @@ export default function AddNewProduct(){
                 id="demo-simple-select-required"
                 label="select categories"
                 style={{width:"210px"}}
-                onChange={(e)=>setSelectedType(e.currentTarget.value)} 
+                value={selectedType}
+                onChange={handleChange} 
                 className="select"> 
-            <MenuItem value="">
-                <em>none</em>
-            </MenuItem>
             {electronics.map((item)=>{
                 return (
                     <MenuItem value={item.type} key={item.type}>{item.type}</MenuItem>
@@ -153,11 +156,9 @@ export default function AddNewProduct(){
                     id="demo-simple-select-required"
                     label="select type"
                     style={{width:"210px"}}
-                    onChange={(e)=>setSelectedType(e.currentTarget.value)} 
+                    value={brand}
+                    onChange={(e)=>setBrand(e.target.value)} 
                     className="select">
-                <MenuItem value="">
-                    <em>none</em>
-                </MenuItem>
                 {newValue.brand.map((item)=>{
                     return (
                         <MenuItem value={item} key={item}>{item}</MenuItem>
@@ -169,8 +170,7 @@ export default function AddNewProduct(){
                <EmptyTextarea /> <br /> <br />
                <FormControl>
                <InputLabel id="demo-simple-select-label">used or new</InputLabel>
-               <Select name="usedornew" id="usedornew" required style={{width:"210px"}} label="usedornew">
-                <MenuItem value="">none</MenuItem>
+               <Select name="usedornew" id="usedornew" required style={{width:"210px"}} value={usedNew} label="usedornew" onChange={(event)=>setUsedNew(event.currentTarget.value)}>
                     <MenuItem value="new">New</MenuItem>
                     <MenuItem value="used">Used</MenuItem>
                 </Select> 

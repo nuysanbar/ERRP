@@ -42,8 +42,11 @@ const verifyRetailer=(req,res,next)=>{
 
 router.route("/")
     .get(homeController.recommendedProducts);
+
 router.route("/search")
     .get(searchController.getSearch)
+router.route("/searchRetailers")
+    .get(searchController.getRetailers)
 
 router.route("/products")
     .get(verifyRetailer,productsController.getProducts)

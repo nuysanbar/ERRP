@@ -1,10 +1,9 @@
 import { Outlet,NavLink} from "react-router-dom";
 import { useState } from "react";
 import {AiOutlineSetting} from "react-icons/ai"
-
 import {BiLogOut} from "react-icons/bi"
 import {BsCaretDown} from "react-icons/bs"
-
+import { BiCategory } from "react-icons/bi";
 export default function Admin() {
    const [classValue,setClassValue]=useState(null)
    const basicData=JSON.parse(window.localStorage.getItem('basic_data'));
@@ -19,7 +18,19 @@ export default function Admin() {
       <>
       <div className="rootContainer">
         <div className="root">
-          <span>- - - - - ERRP LOGO - - - - - - </span> 
+          <span>- ERRP LOGO -</span> 
+          <NavLink to={"/admin/app"} className="combineSymbolText">
+              <span><BiCategory /></span> <br />
+                dashboard
+            </NavLink>
+          <NavLink to={"/admin/users"} className="combineSymbolText">
+              <span><BiCategory /></span> <br />
+                users
+            </NavLink>
+            <NavLink to={"/admin/products"} className="combineSymbolText">
+              <span><BiCategory /></span> <br />
+                products
+            </NavLink>
             <div className="menu">
               <div onClick={changeClassName} className="toggle">
                   <img src={`http://localhost:3500/${basicData.image}`} alt="profileImg" /> <br />

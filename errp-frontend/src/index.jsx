@@ -4,7 +4,7 @@ import ErrorPage from "./error-page";
 import './index.css'
 import './index2.css'
 import Root from "./routes/root.jsx"
-import Home, {loader as homeLoader} from './routes/home.jsx'
+import Home from './routes/home.jsx'
 // import SignInOld, {action as signInAction} from './routes/signIn.jsx'
 import SignUp, {action as signUpAction} from './routes/signup.jsx'
 import LandingPage, {loader as landingPageLoader} from './routes/landingPage.jsx'
@@ -30,10 +30,19 @@ import SpecificStore, {loader as specificStoreLoader} from "./routes/brands/spec
 import Notification,{loader as notificationLoader} from "./routes/notification"
 import Saved, {loader as savedLoader} from "./routes/saved";
 import Dashboard, {loader as dashboardLoader} from "./routes/dashboard";
-import Admin from "./routes/Admin/adminHome"
+import Admin  from "./routes/Admin/adminHome"
+// import App from "./routes/Admin/App"
 import Delivery from "./routes/Delivery/deliveryHome"
 import SignIn, {action as signInAction} from "./routes/newSignIn"
 import { createBrowserRouter,RouterProvider} from "react-router-dom";
+import Retailers, {loader as searchRetailerLoader} from "./routes/retailers";
+import UserPage from './routes/Admin/pages/UserPage';
+import ProductsPage from './routes/Admin/pages/ProductsPage';
+import DashboardAppPage from './routes/Admin/pages/DashboardAppPage';
+import { usersLoader,productsAdminLoader,memberAddAction,editProductAction } from "./routes/Admin/adminLA";
+import AddMember from "./routes/Admin/pages/addMember";
+import EditMember from "./routes/Admin/pages/editMember";
+import EditProduct from "./routes/Admin/pages/editProduct";
 const router=createBrowserRouter([
     {
         path:'/',
@@ -51,11 +60,40 @@ const router=createBrowserRouter([
                 action:signUpAction
             }
         ]
-    },{
+    },
+    {
         path:"/admin",
         element:<Admin />,
         errorElement:<ErrorPage />,
         children:[
+            {
+                index:true,
+                path:"/admin/app",
+                element:<DashboardAppPage />
+            },
+            {
+                path:'/admin/users',
+                element:<UserPage />,
+                loader:usersLoader
+            },
+            {
+                path:'/admin/users/addMember',
+                element: <AddMember />
+            },
+            {
+                path:'/admin/users/edit/:id',
+                element:<EditMember />
+            },
+            {
+                path:"/admin/products",
+                element:<ProductsPage/>,
+                loader:productsAdminLoader
+            },
+            {
+                path:"/admin/products/edit/:id",
+                element:<EditProduct/>,
+                loader:brandsLoader
+            },
             {
                 path:"/admin/profile",
                 element:<Profile role={3030} />,
@@ -106,7 +144,7 @@ const router=createBrowserRouter([
     {
         path:"/home",
         element: <Home />,
-        loader: homeLoader,
+        // loader: homeLoader,
         errorElement:<ErrorPage />,
         children:[
             {
@@ -216,6 +254,11 @@ const router=createBrowserRouter([
                                 action:reviewAction
                             }
                         ]
+                    },
+                    {
+                        path:"/home/favorites/search",
+                        element:<Retailers/>,
+                        loader:searchRetailerLoader,
                     }
                 ]
             },
@@ -285,7 +328,5 @@ const router=createBrowserRouter([
 ])
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-    <React.StrictMode>
       <RouterProvider router={router} />
-    </React.StrictMode>
   );

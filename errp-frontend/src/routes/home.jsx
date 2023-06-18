@@ -6,24 +6,24 @@ import {IoIosNotificationsOutline} from "react-icons/io"
 import {BiCategory,BiLogOut,BiPackage,BiPurchaseTag} from "react-icons/bi"
 import {BsCaretDown,BsGraphUp} from "react-icons/bs"
 import {FaStore} from "react-icons/fa"
-import axios  from "axios"; 
 import jwt from 'jwt-decode'
 
-export async function loader(){
-    const access_token=window.localStorage.getItem('access_token');
-    const apiUrl=`http://localhost:3500/home/`
-    const res = await axios.get(apiUrl,{
-        headers: {
-          'Authorization': 'Bearer ' + access_token
-        }
-      })
-    const user=jwt(access_token);
-    const userRole=user.userInfo.roles
-    return {userRole}
-}
+const access_token=window.localStorage.getItem('access_token');
+// export async function loader(){
+//     // const apiUrl=`http://localhost:3500/home/`
+//     // const res = await axios.get(apiUrl,{
+//     //     headers: {
+//     //       'Authorization': 'Bearer ' + access_token
+//     //     }
+//     //   })
+//     const userRole=user.userInfo.roles
+//     return {userRole}
+// }
 export default function Home() {
-   const {userRole}=useLoaderData()
+   const user=jwt(access_token);
+   const {userRole}=useState(user.userInfo.roles)
    const [classValue,setClassValue]=useState(null)
+   const [searchType,setSearchType]=useState("byname")
    const basicData=JSON.parse(window.localStorage.getItem('basic_data'));
    function changeClassName(){
     if(classValue=="options"){
@@ -37,9 +37,20 @@ export default function Home() {
       <div className="rootContainer">
         <div className="root" >
           <Link to="/home">
-                <span>- - - - - ERRP LOGO - - - - - - </span>
+                <span>ERRP LOGO </span>
           </Link>
           <Form method="get" action="search">
+          <select
+                required
+                name="type"
+                value={searchType}
+                style={{backgroundColor:"var(--wh)",outline:"none",color:"var(--bl)",height:"35px",width:"75px",border:"2px solid white"}}
+                onChange={(event)=>setSearchType(event.target.value)} 
+                className="select"> 
+                    <option value="name" style={{height:"30px"}}>by name</option>
+                    <option value="brand" style={{height:"30px"}}>search by brand</option>
+                    <option value="category" style={{height:"30px"}}>search by category</option>
+            </select>
             <input type="search" placeholder="search" id="search" name="search"/>
             <button className="searchIcon"><AiOutlineSearch/></button>
           </Form>
