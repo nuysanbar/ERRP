@@ -29,18 +29,22 @@ import Scrollbar from '../Admin/components/scrollbar';
 import axios from 'axios'
 // sections
 import { UserListHead, UserListToolbar } from '../Admin/sections/@dashboard/user';
-const access_token=window.localStorage.getItem('access_token');
+// mock
+// import USERLIST from '../_mock/user';
+
+// ----------------------------------------------------------------------
+const access_token=window.localStorage.getItem('access_token')
 const TABLE_HEAD = [
-    { id: 'brand', label: 'brand', alignRight: false },
-    { id: 'retailer', label: 'retailer', alignRight: false },
-    { id: 'source', label: 'source', alignRight: false },
-    { id: 'destination', label: 'destination', alignRight: false },
-    { id: 'prime', label: 'prime', alignRight: false },
-    { id: 'date', label: 'date', alignRight: false },
-    { id: '' },
-  ];
+  { id: 'brand', label: 'brand', alignRight: false },
+  { id: 'retailer', label: 'retailer', alignRight: false },
+  { id: 'source', label: 'source', alignRight: false },
+  { id: 'destination', label: 'destination', alignRight: false },
+  { id: 'prime', label: 'prime', alignRight: false },
+  { id: 'date', label: 'date', alignRight: false },
+  { id: '' },
+];
 export async function loader(){
-    const apiUrl=`http://localhost:3500/delivery/getOrders`
+    const apiUrl=`http://localhost:3500/delivery/getHistory`
     const res = await axios.get(apiUrl,{
         headers: {
           'Authorization': 'Bearer ' + access_token
@@ -49,6 +53,7 @@ export async function loader(){
     console.log(res.data)
     return res.data
 }
+// ----------------------------------------------------------------------
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -65,7 +70,6 @@ function getComparator(order, orderBy) {
     ? (a, b) => descendingComparator(a, b, orderBy)
     : (a, b) => -descendingComparator(a, b, orderBy);
 }
-
 function applySortFilter(array, comparator, query) {
   const stabilizedThis = array.map((el, index) => [el, index]);
   stabilizedThis.sort((a, b) => {
@@ -74,11 +78,11 @@ function applySortFilter(array, comparator, query) {
     return a[1] - b[1];
   });
   if (query) {
-    return filter(array, (_user) => _user.source.toLowerCase().indexOf(query.toLowerCase()) !== -1);
+    return filter(array, (_user) => _user.retailer.toLowerCase().indexOf(query.toLowerCase()) !== -1);
   }
   return stabilizedThis.map((el) => el[0]);
 }
-export default function Orders() {
+export default function Delivered() {
   const orders=useLoaderData()
   const [open, setOpen] = useState(null);
 
@@ -88,7 +92,7 @@ export default function Orders() {
 
   const [selected, setSelected] = useState([]);
 
-  const [orderBy, setOrderBy] = useState('source');
+  const [orderBy, setOrderBy] = useState('retailer');
 
   const [filterName, setFilterName] = useState('');
 
@@ -256,7 +260,7 @@ export default function Orders() {
       
         <MenuItem 
          component={Link}
-         to={`/delivery/orders/${current}`} >
+         to={`/delivery/history/${current}`} >
           <Iconify icon={'eva:edit-fill'} sx={{ mr: 2 }} />
           details
         </MenuItem>

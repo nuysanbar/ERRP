@@ -68,6 +68,17 @@ const orderSchema=new Schema({
     },
     deliveredBy:{
         type:String
+    },
+    prime:{
+        type:String,
+        default:"No"
+    },
+    isDeliveredTwo:{
+        type:Boolean,
+        default:false
+    },
+    proveImg:{
+        type:String
     }
 });
 module.exports=mongoose.model('Order',orderSchema);

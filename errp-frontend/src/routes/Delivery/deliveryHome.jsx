@@ -19,14 +19,18 @@ export default function Delivery() {
       <>
       <div className="rootContainer">
         <div className="root">
-          <span>- - - - - ERRP LOGO - - - - - - </span> 
+          <span> </span> 
           <NavLink to={"/delivery/orders"} className="combineSymbolText">
            <AiOutlineSetting/> <br />
-                orders
+                Orders
             </NavLink>
             <NavLink to={"/delivery/myselection"} className="combineSymbolText">
             <AiOutlineSetting/> <br />
-                selection
+                InProgress
+            </NavLink>
+            <NavLink to={"/delivery/history"} className="combineSymbolText">
+            <AiOutlineSetting/> <br />
+                history
             </NavLink>
             <div className="menu">
               <div onClick={changeClassName} className="toggle">

@@ -37,13 +37,14 @@ import { createBrowserRouter,RouterProvider} from "react-router-dom";
 import Retailers, {loader as searchRetailerLoader} from "./routes/retailers";
 import UserPage from './routes/Admin/pages/UserPage';
 import ProductsPage from './routes/Admin/pages/ProductsPage';
-import DashboardAppPage from './routes/Admin/pages/DashboardAppPage';
 import { usersLoader,productsAdminLoader,memberAddAction,editProductAction } from "./routes/Admin/adminLA";
 import AddMember, {action as addMemberAction} from "./routes/Admin/pages/addMember";
 import EditMember,{loader as editMemberLoader,action as editMemberAction} from "./routes/Admin/pages/editMember";
 import EditProduct, {action as productsEditAction} from "./routes/Admin/pages/editProduct";
 import Orders, {loader as ordersLoader} from "./routes/Delivery/orders";
-import Selections, {loader as selectionslaoder} from "./routes/Delivery/selected"
+import Selections, {loader as selectionsLoader} from "./routes/Delivery/selected"
+import OrderDetails, {loader as orderDetailLoader,action as orderDetailAction} from "./routes/Delivery/orderDetails";
+import Delivered, {loader as deliveredLoader} from "./routes/Delivery/delivered";
 const router=createBrowserRouter([
     {
         path:'/',
@@ -69,7 +70,6 @@ const router=createBrowserRouter([
         children:[
             {
                 index:true,
-                // path:'/admin/users',
                 element:<UserPage />,
                 loader:usersLoader
             },
@@ -129,9 +129,32 @@ const router=createBrowserRouter([
                 loader:ordersLoader
             },
             {
+                path:"/delivery/orders/:id",
+                element:<OrderDetails  value={"order"}/>,
+                loader:orderDetailLoader,
+                action:orderDetailAction
+            },
+            {
                 path:"/delivery/myselection",
                 element:<Selections/>,
-                loader:selectionslaoder
+                loader:selectionsLoader
+            },
+            {
+                path:"/delivery/myselection/:id",
+                element:<OrderDetails  value={"selected"}/>,
+                loader:orderDetailLoader,
+                action:orderDetailAction
+            },
+            {
+                path:"/delivery/history",
+                element:<Delivered />,
+                loader:deliveredLoader
+            },
+            {
+                path:"/delivery/history/:id",
+                element:<OrderDetails value={"delivered"}/>,
+                loader:orderDetailLoader,
+                action:orderDetailAction
             },
             {
                 path:"/delivery/profile",
