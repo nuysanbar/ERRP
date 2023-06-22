@@ -23,7 +23,7 @@ export async function action({request}){
         return redirect('/admin/profile')
     }
     else{
-        return redirect('/home/profile')
+        return redirect('../')
     }
 }
 export default function ProfileEdit(){
@@ -34,33 +34,33 @@ export default function ProfileEdit(){
             <Form method="post"  encType="multipart/form-data" >
                 <TextField margin="normal"
                 id="firstname"
-                label={response.firstname}
+                label="firstname"
                 name="firstname"
                 variant="outlined"/><br />
                 <TextField margin="normal"
                     id="middlename"
-                    label={response.lastname}
+                    label="lastname"
                     name="lastname"
                     variant="outlined"/><br />
                 <TextField margin="normal"
                     id="city"
-                    label={response.city}
+                    label="city"
                     name="city"
                     variant="outlined"/><br />
                 <TextField margin="normal"
                     id="subcity"
-                    label={response.subcity}
+                    label="subcity"
                     name="subcity"
                     variant="outlined"/><br />
                 <TextField margin="normal"
                     id="phone"
-                    label={response.phoneNum}
+                    label="phone no"
                     name="phone"
                     type="number"
                     variant="outlined"/><br />
                 <TextField margin="normal"
                     id="email"
-                    label={response.email}
+                    label="email"
                     name="email"
                     type="email"
                     variant="outlined"/><br />

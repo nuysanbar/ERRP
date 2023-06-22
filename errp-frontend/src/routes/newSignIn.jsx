@@ -110,9 +110,7 @@ export default function SignIn() {
             </Button>
             <Grid container>
               <Grid item xs>
-                <NavLink href="#" variant="body2" style={{color:"var(--bl)"}}>
-                  Forgot password?
-                </NavLink>
+              
               </Grid>
               <Grid item>
                 <NavLink to={'/signUp'} variant="body2"style={{color:"var(--bl)"}}>

@@ -9,19 +9,28 @@ import Select  from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 const access_token=window.localStorage.getItem("access_token")
 export async function action({request}){
-    return redirect('/')
+    const formData = await request.formData();
+    const apiUrl="http://localhost:3500/admin/addMember"
+        const res=await axios.post(apiUrl,formData,{
+            headers:{
+                "Authorization":"Bearer " + access_token
+            }
+        })
+    console.log(res.data)
+    return redirect('/admin/users')
 }
 export default function AddMember(){
     const navigate=useNavigate()
     const [toggleRetailer,setToggleRetailer]=useState(false)
     const [values,setValues]=useState({username:"",firstname:"",lastname:"",password:"",role:"",subcity:"",city:"",phoneNum:"",email:"",profileImg:"",lat:"",lon:"",sellerCode:"",pdtToken:""})
     const handleRole=(e)=>{
-        setValues({...values,"role":e.currentTarget.value})
-        if(e.currentTarget.value==5508){
+        setValues({...values,"role":e.target.value})
+        if(e.target.value==5508){
         setToggleRetailer(true)
         }else{
             setToggleRetailer(false)
         }
+        return 0;
     }
     function getFormData(object) {
         const formData = new FormData();
@@ -43,7 +52,7 @@ export default function AddMember(){
     return(
         <div style={{marginLeft:"30px"}}>
         <div >
-            <Form   encType="multipart/form-data" onSubmit={handleSubmit}>
+            <Form   method="post" encType="multipart/form-data" >
             <TextField margin="normal"
               required
               id="username"
@@ -155,7 +164,7 @@ export default function AddMember(){
                 onChange={(e)=>setValues({...values,"pdtToken":e.currentTarget.value})}/> <br /></>}
                 <label htmlFor="email"></label>
                 <label htmlFor="profileImg" ></label>
-                <input type="file" name="profileImg"  onChange={(e)=>setValues({...values,"profileImg":e.currentTarget.files[0]})}/><br />
+                <input type="file" name="profileImg"  onChange={(e)=>setValues({...values,"profileImg":e.currentTarget.files[0]})} required/><br />
                 <Button variant="outlined" style={{color:"var(--bl)",marginRight:"10px",borderColor:"var(--bl)"}} onClick={()=>navigate(-1)}>cancel</Button>   
                 <Button type="submit" variant="contained" style={{backgroundColor:"var(--bl)",width:"100px",textAlign:"center",margin:"10px"}}>submit</Button>
             </Form>

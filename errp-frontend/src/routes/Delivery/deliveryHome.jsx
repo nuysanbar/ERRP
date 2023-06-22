@@ -20,6 +20,14 @@ export default function Delivery() {
       <div className="rootContainer">
         <div className="root">
           <span>- - - - - ERRP LOGO - - - - - - </span> 
+          <NavLink to={"/delivery/orders"} className="combineSymbolText">
+           <AiOutlineSetting/> <br />
+                orders
+            </NavLink>
+            <NavLink to={"/delivery/myselection"} className="combineSymbolText">
+            <AiOutlineSetting/> <br />
+                selection
+            </NavLink>
             <div className="menu">
               <div onClick={changeClassName} className="toggle">
                   <img src={`http://localhost:3500/${basicData.image}`} alt="profileImg" /> <br />

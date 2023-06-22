@@ -20,7 +20,7 @@ function SimpleDialog(props) {
     <Dialog onClose={handleClose} open={open}>
       <List sx={{ pt: 0 }}>
         {response.map((item) => (
-          <ListItem disableGutters>
+          <ListItem disableGutters key={item.username}>
             <ListItemButton component="a" href={`/home/favorites/${item.username}`} key={item.username}>
               <ListItemAvatar>
                 <Avatar >

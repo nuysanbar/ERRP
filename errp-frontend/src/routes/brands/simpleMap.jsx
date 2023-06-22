@@ -14,11 +14,6 @@ const Map = ({markers}) => {
   const [mapRef, setMapRef] = useState();
   const [isOpen, setIsOpen] = useState(false);
   const [infoWindowData, setInfoWindowData] = useState();
-  // const markers = [
-  //   { address: "Address1", lat: 18.5204, lng: 73.8567 },
-  //   { address: "Address2", lat: 18.5314, lng: 73.8446 },
-  //   { address: "Address3", lat: 18.5642, lng: 73.7769 },
-  // ];
 
   const onMapLoad = (map) => {
     setMapRef(map);

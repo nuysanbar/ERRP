@@ -24,10 +24,25 @@ app.use("/auth",require('./routes/api/auth'));
 app.use('/refresh',require('./routes/api/refresh'));
 app.use('/logout',require('./routes/api/logout'));
 app.use(verifyJWT);
+const verifyAdmin=(req,res,next)=>{
+    if(!req?.roles) return res.sendStatus(401)
+    if(!(req.roles===3030)){
+        return res.sendStatus(401)
+    }
+    next()
+}
+const verifyDelivery=(req,res,next)=>{
+    if(!req?.roles) return res.sendStatus(401)
+    if(!(req.roles===3011)){
+        return res.sendStatus(401)
+    }
+    next()
+}
 app.use('/home',require('./routes/api/home'))
 app.use('/order',require('./routes/api/order'))
 app.use('/users',require('./routes/api/landingPage'))
 app.use('/admin',require('./routes/api/admin'))
+app.use('/delivery',require('./routes/api/delivery'))
 mongoose.connection.once('open',()=>{
     console.log('Mongodb is connected');
     app.listen(PORT,()=>{

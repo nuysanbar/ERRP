@@ -65,6 +65,9 @@ const orderSchema=new Schema({
     refund:{
         type:Boolean,
         default:false
+    },
+    deliveredBy:{
+        type:String
     }
 });
 module.exports=mongoose.model('Order',orderSchema);

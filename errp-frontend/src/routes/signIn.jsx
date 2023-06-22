@@ -20,7 +20,7 @@ export async function action({request}){
             return redirect('/delivery/')
         }
         else if (userRole=="3030"){
-            return redirect('/admin/')
+            return redirect('/admin/app/')
         }
         else{
             return redirect('/home/')

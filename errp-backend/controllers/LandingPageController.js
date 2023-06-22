@@ -34,7 +34,7 @@ const getProducts=async(req,res)=>{
         return res.status(204).json({"message":"No products available"})
     }
     for(let i=0; i<products.length; i++){
-        var resp=await Product.findOne({barcode:products[i].barcode})
+        var resp=await Product.findOne({barcode:products[i].barcode}).exec()
         productInfo.push(resp)
     }
     res.json({products,productInfo})

@@ -11,8 +11,7 @@ export async function searchLoader({request}){
             "Authorization":'Bearer ' + access_token
         }
     })
-    console.log(res.data)
-    return res.data;
+    return res.data
 }
 export async function recommendationLoader(){
     const apiUrl = `http://localhost:3500/home/`

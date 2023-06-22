@@ -7,14 +7,16 @@ var client = new recombee.ApiClient("astu-dev",privateToken,{region:'us-west'})
 const getProducts=async(req,res)=>{
     var productInfo=[];
     const products= await RetailerProduct.find({retailerUserName:req.username})
+    console.log(products)
     if(!products){
         return res.status(204).json({"message":"No products available"})
     }
+    console.log(products)
     for(let i=0; i<products.length; i++){
         var resp=await Product.findOne({barcode:products[i].barcode})
         productInfo.push(resp)
     }
-    res.json({products,productInfo})
+    res.status(200).json({products,productInfo})
 }
 const getProduct = async(req,res)=>{
     if(!req?.params?.barcode){

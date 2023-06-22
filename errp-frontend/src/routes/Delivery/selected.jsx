@@ -23,25 +23,33 @@ import {
   TablePagination,
 } from '@mui/material';
 // components
-import Label from '../components/label';
-import Iconify from '../components/iconify';
-import Scrollbar from '../components/scrollbar';
+import Label from '../Admin/components/label';
+import Iconify from '../Admin/components/iconify';
+import Scrollbar from '../Admin/components/scrollbar';
 import axios from 'axios'
 // sections
-import { UserListHead, UserListToolbar } from '../sections/@dashboard/user';
+import { UserListHead, UserListToolbar } from '../Admin/sections/@dashboard/user';
 // mock
 // import USERLIST from '../_mock/user';
 
 // ----------------------------------------------------------------------
 const access_token=window.localStorage.getItem('access_token')
 const TABLE_HEAD = [
-  { id: 'name', label: 'Name', alignRight: false },
+  { id: 'brand', label: 'brand', alignRight: false },
+  { id: 'retailer', label: 'retailer', alignRight: false },
   { id: 'address', label: 'address', alignRight: false },
-  { id: 'role', label: 'Role', alignRight: false },
-  { id: 'status', label: 'Status', alignRight: false },
   { id: '' },
 ];
-
+export async function loader(){
+    const apiUrl=`http://localhost:3500/delivery/getSelections`
+    const res = await axios.get(apiUrl,{
+        headers: {
+          'Authorization': 'Bearer ' + access_token
+        }
+      })
+    console.log(res.data)
+    return res.data
+}
 // ----------------------------------------------------------------------
 
 function descendingComparator(a, b, orderBy) {
@@ -72,21 +80,9 @@ function applySortFilter(array, comparator, query) {
   }
   return stabilizedThis.map((el) => el[0]);
 }
-const assignRole=(value)=>{
-  var result;
-  if(value=="2001"){
-    result='consumer'
-  }else if(value=="5508"){
-    result="retailer"
-  }else if(value=="3011"){
-    result="delivery ppl"
-  }else{
-    result="admin"
-  }
-  return result
-}
-export default function UserPage() {
-  const users=useLoaderData()
+
+export default function Selections() {
+  const selections=useLoaderData()
   const [open, setOpen] = useState(null);
 
   const [page, setPage] = useState(0);
@@ -103,16 +99,8 @@ export default function UserPage() {
 
   const [current,setCurrent]=useState(null)
   const [currentRole,setCurrentRole]=useState(null)
-  const USERLIST=users.map((user)=>{
-    return {
-      "username":user.username,
-      "name":`${user.firstname} ${user.lastname}`,
-      "id":user._id,
-      "role":assignRole(user.roles),
-      "address":`${user.subcity}, ${user.city}`,
-      "status":"active",
-      "avatarUrl":`http://localhost:3500/${user.imgUrl}`
-    }
+  const MYSELECTIONS=selections.map((user)=>{
+    return {}
   })
 
   const handleOpenMenu = (event,role) => {
@@ -146,19 +134,9 @@ export default function UserPage() {
     setPage(0);
     setFilterName(event.target.value);
   }
-  const handleDeleteUser=async()=>{
-    const apiUrl=`http://localhost:3500/admin/deleteMember/${current}/${currentRole}`
-    const response=await axios.delete(apiUrl ,{
-        headers:{
-            "Authorization":"Bearer "+access_token
-        }
-    })
-    console.log(response.data)
-    return redirect("/admin")
-  }
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - USERLIST.length) : 0;
+  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - MYSELECTIONS.length) : 0;
 
-  const filteredUsers = applySortFilter(USERLIST, getComparator(order, orderBy), filterName);
+  const filteredUsers = applySortFilter(MYSELECTIONS, getComparator(order, orderBy), filterName);
 
   const isNotFound = !filteredUsers.length && !!filterName;
 
@@ -182,7 +160,7 @@ export default function UserPage() {
                   order={order}
                   orderBy={orderBy}
                   headLabel={TABLE_HEAD}
-                  rowCount={USERLIST.length}
+                  rowCount={MYSELECTIONS.length}
                   onRequestSort={handleRequestSort}
                   options={{
                     selectableRows: false // <===== will turn off checkboxes in rows
@@ -248,7 +226,7 @@ export default function UserPage() {
           <TablePagination
             rowsPerPageOptions={[5, 10, 25]}
             component="div"
-            count={USERLIST.length}
+            count={MYSELECTIONS.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}
@@ -257,36 +235,7 @@ export default function UserPage() {
         </Card>
       </Container>
     
-      <Popover
-        open={Boolean(open)}
-        anchorEl={open}
-        onClose={handleCloseMenu}
-        anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
-        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-        PaperProps={{
-          sx: {
-            p: 1,
-            width: 140,
-            '& .MuiMenuItem-root': {
-              px: 1,
-              typography: 'body2',
-              borderRadius: 0.75,
-            },
-          },
-        }}
-      >
-      
-        <MenuItem 
-         component={Link}
-         to={`/admin/users/edit/${current}`} >
-          <Iconify icon={'eva:edit-fill'} sx={{ mr: 2 }} />
-          edit
-        </MenuItem>
-        <MenuItem sx={{ color: 'error.main' }} onClick={handleDeleteUser}>
-          <Iconify icon={'eva:trash-2-outline'} sx={{ mr: 2 }} />
-          Delete
-        </MenuItem>
-      </Popover>
+    
     </>
   );
 }

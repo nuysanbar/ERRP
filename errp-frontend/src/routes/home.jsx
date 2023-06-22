@@ -7,23 +7,46 @@ import {BiCategory,BiLogOut,BiPackage,BiPurchaseTag} from "react-icons/bi"
 import {BsCaretDown,BsGraphUp} from "react-icons/bs"
 import {FaStore} from "react-icons/fa"
 import jwt from 'jwt-decode'
+import axios from 'axios'
+import * as React from 'react';
+import Popover from '@mui/material/Popover';
+import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
 
 const access_token=window.localStorage.getItem('access_token');
-// export async function loader(){
-//     // const apiUrl=`http://localhost:3500/home/`
-//     // const res = await axios.get(apiUrl,{
-//     //     headers: {
-//     //       'Authorization': 'Bearer ' + access_token
-//     //     }
-//     //   })
-//     const userRole=user.userInfo.roles
-//     return {userRole}
-// }
+export async function loader(){
+    const apiUrl=`http://localhost:3500/home/`
+    const res = await axios.get(apiUrl,{
+        headers: {
+          'Authorization': 'Bearer ' + access_token
+        }
+      })
+    if(res.statusText=="OK"){
+      const user=jwt(access_token)
+      const userRole=user.userInfo.roles
+      return {userRole}
+    }
+    return 0;
+    
+}
 export default function Home() {
    const user=jwt(access_token);
-   const {userRole}=useState(user.userInfo.roles)
+   const {userRole}=useLoaderData()
    const [classValue,setClassValue]=useState(null)
    const [searchType,setSearchType]=useState("byname")
+   const [anchorEl, setAnchorEl] = React.useState(null);
+
+   const handleClick = (event) => {
+     setAnchorEl(event.currentTarget);
+     console.log("clicked notification")
+   };
+ 
+   const handleClose = () => {
+     setAnchorEl(null);
+   };
+ 
+   const open = Boolean(anchorEl);
+   const id = open ? 'simple-popover' : undefined;
    const basicData=JSON.parse(window.localStorage.getItem('basic_data'));
    function changeClassName(){
     if(classValue=="options"){
@@ -37,7 +60,7 @@ export default function Home() {
       <div className="rootContainer">
         <div className="root" >
           <Link to="/home">
-                <span>ERRP LOGO </span>
+                <span style={{fontStyle:"italic"}}>E<span >R<sup>2</sup></span>P</span>
           </Link>
           <Form method="get" action="search">
           <select
@@ -88,9 +111,9 @@ export default function Home() {
               <NavLink to={"/home/saved"}>
                   <AiOutlineShoppingCart/>
               </NavLink>
-              <NavLink to={"/home/notifications"}>
-                  <IoIosNotificationsOutline />
-              </NavLink>
+              {/* <NavLink to={"#"}>
+              </NavLink> */}
+              <span onClick={handleClick}><IoIosNotificationsOutline  style={{fontWeight:"bold",fontSize:"25px"}}  /></span>
             </div>
             <div className="menu">
               <div onClick={changeClassName} className="toggle">
@@ -109,6 +132,23 @@ export default function Home() {
         </div>
         <div className="drawer" >
           <TemporaryDrawer basicData={basicData} userRole={userRole} />
+        </div>
+        <div>
+          {/* <Button aria-describedby={id} variant="contained" >
+            Open Popover
+          </Button> */}
+          <Popover
+            id={id}
+            open={open}
+            anchorEl={anchorEl}
+            onClose={handleClose}
+            anchorOrigin={{
+              vertical: 'bottom',
+              horizontal: 'left',
+            }}
+          >
+            <Typography sx={{ p: 2 }}>The content of the Popover.</Typography>
+          </Popover>
         </div>
         <div id="detail"><Outlet /></div>
         </div>

@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { Box, Card, Link, Typography, Stack } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { BiEdit } from 'react-icons/bi';
-import Button from '@mui/material/Button';
 // ----------------------------------------------------------------------
 
 const StyledProductImg = styled('img')({

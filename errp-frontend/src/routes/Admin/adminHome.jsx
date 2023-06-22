@@ -19,11 +19,7 @@ export default function Admin() {
       <div className="rootContainer">
         <div className="root">
           <span>- ERRP LOGO -</span> 
-          <NavLink to={"/admin/app"} className="combineSymbolText">
-              <span><BiCategory /></span> <br />
-                dashboard
-            </NavLink>
-          <NavLink to={"/admin/users"} className="combineSymbolText">
+          <NavLink to={"/admin"} className="combineSymbolText">
               <span><BiCategory /></span> <br />
                 users
             </NavLink>

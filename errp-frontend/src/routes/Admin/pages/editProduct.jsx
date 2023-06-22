@@ -11,30 +11,17 @@ import Select  from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 const access_token=window.localStorage.getItem('access_token')
 
-export async function loader(){
-    const apiUrl='http://localhost:3500/home/products/brands'
-    const res= await axios.get(apiUrl,{
-        headers:{
-            "Authorization":"Bearer "+ access_token
-        }
-    })
-    const response=res.data
-    console.log(response)
-    console.log("brands loader is being called")
-    return response
-}
-
 export async function action({request,params}){
     const formData = await request.formData();
     const apiUrl=`http://localhost:3500/admin/editProduct/${params.id}`
-    const res=await axios.post(apiUrl,formData,{
+    const res=await axios.put(apiUrl,formData,{
         headers:{
             "Authorization":"Bearer "+access_token
         }
     })
     const response=res.data
     console.log(response)
-    return redirect('../');
+    return redirect('/admin/products');
 }
 function EmptyTextarea() {
     const blue = {
@@ -95,7 +82,6 @@ function EmptyTextarea() {
       aria-label="maximum height"
       placeholder="Details with comma example resolution 4k, screen size 5'8"
       name="details"
-      required
     />
   );
 }
@@ -111,9 +97,8 @@ export default function EditProduct(){
     }
     return(
         <div style={{margin:"20px 0 20px 50px"}}>
-            <Form method="post"  encType="multipart/form-data">
+            <Form method="put" encType="multipart/form-data">
             <TextField margin="normal"
-              required
               autoFocus
               id="brandName"
               label="brand name"
@@ -122,7 +107,6 @@ export default function EditProduct(){
              <FormControl>
                 <InputLabel id="demo-simple-select-label">select categories</InputLabel>
              <Select
-                required
                 name="type"
                 labelId="demo-simple-select-required-label"
                 id="demo-simple-select-required"
@@ -142,7 +126,6 @@ export default function EditProduct(){
              <FormControl>
                <InputLabel id="demo-simple-select-label">select type</InputLabel>
                 <Select
-                    required
                     name="brand"
                     labelId="demo-simple-select-required-label"
                     id="demo-simple-select-required"
@@ -161,7 +144,7 @@ export default function EditProduct(){
              <br />
                <EmptyTextarea /> <br /> <br />
                 <label htmlFor="productImg"></label>
-                <input type="file" accept="image/*" name="productImg" multiple required/><br />
+                <input type="file" accept="image/*" name="productImg" multiple /><br />
                 <Button variant="outlined" style={{color:"var(--bl)",marginRight:"10px",borderColor:"var(--bl)"}} onClick={()=>navigate(-1)}>cancel</Button> 
                 <Button type="submit" variant="contained" style={{backgroundColor:"var(--bl)"}}>apply</Button>
             </Form>

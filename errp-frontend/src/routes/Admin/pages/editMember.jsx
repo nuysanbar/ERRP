@@ -3,44 +3,65 @@ import { useState } from "react";
 import axios from "axios";
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-export async function action({request,params}){
-    const formData = await request.formData();
-    const access_token=window.localStorage.getItem('access_token')
-    const apiUrl='http://localhost:3500/admin/editMember'
-    const response=await axios.post(apiUrl,formData ,{
+const access_token=window.localStorage.getItem('access_token')
+export async function loader({params}){
+    const apiUrl=`http://localhost:3500/admin/getUser/${params.id}`
+    const response=await axios.get(apiUrl,{
         headers:{
             "Authorization":"Bearer "+access_token
         }
     })
-    return redirect("./admin/users")
+    var isRetailer,role=response.data.roles;
+    if(response.data.roles==5508){
+        isRetailer=true
+    }else{
+        isRetailer=false
+    }
+    return {isRetailer,role};
+}
+export async function action({request,params}){
+    const formData = await request.formData();
+    const updates = Object.fromEntries(formData);
+    const apiUrl=`http://localhost:3500/admin/editMember/edit/${params.id}`
+    const response=await axios.put(apiUrl,updates ,{
+        headers:{
+            "Authorization":"Bearer "+access_token
+        }
+    })
+    console.log(response.data)
+    return redirect("/admin/")
 }
 export default function EditMember(){
     const navigate=useNavigate()
-    const [toggleRetailer,setToggleRetailer]=useState(false)
+    const {isRetailer,role}=useLoaderData();
     return (
         <div className="form-box" style={{margin:"20px 0 20px 50px"}}>
-            <Form method="post" >
+            <Form method="put" >
             <TextField margin="normal"
-                required
+                type="hidden"
+                id="role"
+                label="role"
+                name="role"
+                value={role}
+               /> <br />
+            <TextField margin="normal"
+               
                 id="lat"
                 label="latitude"
                 name="lat"
                 variant="outlined"/> <br />
                 <TextField margin="normal"
-                required
                 id="lon"
                 label="longitude"
                 name="lon"
                 variant="outlined"/> <br />
-                {toggleRetailer && <>
+                {isRetailer && <>
                 <TextField margin="normal"
-                required
                 id="sellerCode"
                 label="seller code"
                 name="sellerCode"
                 variant="outlined"/> <br />
                 <TextField margin="normal"
-                required
                 id="pdtToken"
                 label="pdt token"
                 name="pdtToken"

@@ -115,6 +115,7 @@ export default function AddNewProduct(){
             <Form method="post"  encType="multipart/form-data">
             <TextField margin="normal"
               required
+              type="hidden"
               id="barcode"
               label="barcode"
               name="barcode"

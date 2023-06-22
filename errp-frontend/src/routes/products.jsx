@@ -40,7 +40,7 @@ export default function Products(){
         <>
         {/* <Scanner /> */}
         <Form method="post">
-          <input type="text" name="barcode" placeholder="barcode"/>
+          <input type="text" name="barcode" placeholder="~ num ~"/>
           <button type="submit">add</button>
         </Form>
         <Outlet />

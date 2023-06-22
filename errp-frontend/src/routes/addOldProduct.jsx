@@ -25,6 +25,7 @@ export default function AddOldProduct(){
             <Form method="post">
                 <TextField margin="normal"
                 required
+                type="hidden"
                 id="barcode"
                 label="barcode"
                 name="barcode"

@@ -22,10 +22,10 @@ export default function Favorite(){
                 <SimpleDialogDemo response={response}/>
             </div>
             <div className="favorites">
-                <Form method="get" action="search" style={{display:"block",textAlign:"center"}}>
+                {/* <Form method="get" action="search" style={{display:"block",textAlign:"center"}}>
                     <input type="search" placeholder="search retailers" id="search" name="search" style={{height:"30px", padding:"10px", color:"var(--bl)",outline:"none",border:"2px solid var(--bl)",borderRadius:"5px"}}/>
-                </Form>
-                { response && response.map((favored)=>{
+                </Form> */}
+                 {response.map((favored)=>{
                     return (
                     <NavLink to={`/home/favorites/${favored.username}`} key={favored.username} className={({ isActive, isPending }) =>
                     isActive
@@ -43,6 +43,5 @@ export default function Favorite(){
             <div className="favoritesDetail">
                 <Outlet/>
             </div>
-        </div>
-    )
+        </div>)
 }

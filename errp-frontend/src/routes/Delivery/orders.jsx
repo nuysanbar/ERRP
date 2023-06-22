@@ -23,26 +23,30 @@ import {
   TablePagination,
 } from '@mui/material';
 // components
-import Label from '../components/label';
-import Iconify from '../components/iconify';
-import Scrollbar from '../components/scrollbar';
+import Label from '../Admin/components/label';
+import Iconify from '../Admin/components/iconify';
+import Scrollbar from '../Admin/components/scrollbar';
 import axios from 'axios'
 // sections
-import { UserListHead, UserListToolbar } from '../sections/@dashboard/user';
-// mock
-// import USERLIST from '../_mock/user';
-
-// ----------------------------------------------------------------------
-const access_token=window.localStorage.getItem('access_token')
+import { UserListHead, UserListToolbar } from '../Admin/sections/@dashboard/user';
+const access_token=window.localStorage.getItem('access_token');
 const TABLE_HEAD = [
-  { id: 'name', label: 'Name', alignRight: false },
-  { id: 'address', label: 'address', alignRight: false },
-  { id: 'role', label: 'Role', alignRight: false },
-  { id: 'status', label: 'Status', alignRight: false },
-  { id: '' },
-];
-
-// ----------------------------------------------------------------------
+    { id: 'brand', label: 'brand', alignRight: false },
+    { id: 'retailer', label: 'retailer', alignRight: false },
+    { id: 'source', label: 'source', alignRight: false },
+    { id: 'destination', label: 'destination', alignRight: false },
+    { id: '' },
+  ];
+export async function loader(){
+    const apiUrl=`http://localhost:3500/delivery/getOrders`
+    const res = await axios.get(apiUrl,{
+        headers: {
+          'Authorization': 'Bearer ' + access_token
+        }
+      })
+    console.log(res.data)
+    return res.data
+}
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -72,21 +76,8 @@ function applySortFilter(array, comparator, query) {
   }
   return stabilizedThis.map((el) => el[0]);
 }
-const assignRole=(value)=>{
-  var result;
-  if(value=="2001"){
-    result='consumer'
-  }else if(value=="5508"){
-    result="retailer"
-  }else if(value=="3011"){
-    result="delivery ppl"
-  }else{
-    result="admin"
-  }
-  return result
-}
-export default function UserPage() {
-  const users=useLoaderData()
+export default function Orders() {
+  const orders=useLoaderData()
   const [open, setOpen] = useState(null);
 
   const [page, setPage] = useState(0);
@@ -103,15 +94,13 @@ export default function UserPage() {
 
   const [current,setCurrent]=useState(null)
   const [currentRole,setCurrentRole]=useState(null)
-  const USERLIST=users.map((user)=>{
+  const ORDERSLIST=orders.map((order)=>{
     return {
-      "username":user.username,
-      "name":`${user.firstname} ${user.lastname}`,
-      "id":user._id,
-      "role":assignRole(user.roles),
-      "address":`${user.subcity}, ${user.city}`,
-      "status":"active",
-      "avatarUrl":`http://localhost:3500/${user.imgUrl}`
+        orderId:order.orderId,
+        name:order.brand,
+        retailer:order.retailer.firstname+" "+order.retailer.lastname,
+        source:`${order.retailer.subcity}, ${order.retailer.city}`,
+        destination:`${order.costumer.subcity}, ${order.costumer.city}`
     }
   })
 
@@ -146,19 +135,10 @@ export default function UserPage() {
     setPage(0);
     setFilterName(event.target.value);
   }
-  const handleDeleteUser=async()=>{
-    const apiUrl=`http://localhost:3500/admin/deleteMember/${current}/${currentRole}`
-    const response=await axios.delete(apiUrl ,{
-        headers:{
-            "Authorization":"Bearer "+access_token
-        }
-    })
-    console.log(response.data)
-    return redirect("/admin")
-  }
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - USERLIST.length) : 0;
 
-  const filteredUsers = applySortFilter(USERLIST, getComparator(order, orderBy), filterName);
+  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - ORDERSLIST.length) : 0;
+
+  const filteredUsers = applySortFilter(ORDERSLIST, getComparator(order, orderBy), filterName);
 
   const isNotFound = !filteredUsers.length && !!filterName;
 
@@ -167,11 +147,8 @@ export default function UserPage() {
       <Container>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h6" gutterBottom>
-            Users
+            Orders
           </Typography>
-          <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} href='/admin/users/addMember' style={{backgroundColor:"var(--bl)"}}>
-            New User
-          </Button>
         </Stack>
         <Card>
           <UserListToolbar numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} />
@@ -182,7 +159,7 @@ export default function UserPage() {
                   order={order}
                   orderBy={orderBy}
                   headLabel={TABLE_HEAD}
-                  rowCount={USERLIST.length}
+                  rowCount={ORDERSLIST.length}
                   onRequestSort={handleRequestSort}
                   options={{
                     selectableRows: false // <===== will turn off checkboxes in rows
@@ -190,27 +167,25 @@ export default function UserPage() {
                 />
                 <TableBody>
                   {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                    const {username,name,id,avatarUrl,role,status,address}=row;
-                    const selectedUser = selected.indexOf(name) !== -1; 
+                    const {orderId,name,retailer,source,destination}=row;
+                    // const selectedUser = selected.indexOf(name) !== -1; 
                     return (
-                      <TableRow hover key={id} tabIndex={-1} role="checkbox" selected={selectedUser}>
+                      <TableRow hover key={orderId} tabIndex={-1} role="checkbox" >
                         <TableCell padding="checkbox">
                         </TableCell>
                         <TableCell component="th" scope="row" padding="none">
                           <Stack direction="row" alignItems="center" spacing={2}>
-                            <Avatar alt={name} src={avatarUrl} />
+                            {/* <Avatar alt={name} src={avatarUrl} /> */}
                             <Typography variant="subtitle2" noWrap>
                               {name}
                             </Typography>
                           </Stack>
                         </TableCell>
-                        <TableCell align="left">{address}</TableCell>
-                        <TableCell align="left">{role}</TableCell>
-                        <TableCell align="left">
-                          <Label color={(status === 'banned' && 'error') || 'success'}>{sentenceCase(status)}</Label>
-                        </TableCell>
+                        <TableCell align="left">{retailer}</TableCell>
+                        <TableCell align="left">{source}</TableCell>
+                        <TableCell align="left">{destination}</TableCell>
                         <TableCell align="right">
-                          <IconButton size="large" color="inherit" id={username} onClick={(event)=>handleOpenMenu(event,role)}>
+                          <IconButton size="large" color="inherit" id={orderId} >
                             <Iconify icon={'eva:more-vertical-fill'} />
                           </IconButton>
                         </TableCell>
@@ -248,7 +223,7 @@ export default function UserPage() {
           <TablePagination
             rowsPerPageOptions={[5, 10, 25]}
             component="div"
-            count={USERLIST.length}
+            count={ORDERSLIST.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}
@@ -256,37 +231,6 @@ export default function UserPage() {
           />
         </Card>
       </Container>
-    
-      <Popover
-        open={Boolean(open)}
-        anchorEl={open}
-        onClose={handleCloseMenu}
-        anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
-        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-        PaperProps={{
-          sx: {
-            p: 1,
-            width: 140,
-            '& .MuiMenuItem-root': {
-              px: 1,
-              typography: 'body2',
-              borderRadius: 0.75,
-            },
-          },
-        }}
-      >
-      
-        <MenuItem 
-         component={Link}
-         to={`/admin/users/edit/${current}`} >
-          <Iconify icon={'eva:edit-fill'} sx={{ mr: 2 }} />
-          edit
-        </MenuItem>
-        <MenuItem sx={{ color: 'error.main' }} onClick={handleDeleteUser}>
-          <Iconify icon={'eva:trash-2-outline'} sx={{ mr: 2 }} />
-          Delete
-        </MenuItem>
-      </Popover>
     </>
   );
 }

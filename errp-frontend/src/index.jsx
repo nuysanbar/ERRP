@@ -4,7 +4,7 @@ import ErrorPage from "./error-page";
 import './index.css'
 import './index2.css'
 import Root from "./routes/root.jsx"
-import Home from './routes/home.jsx'
+import Home, {loader as homeLoader} from './routes/home.jsx'
 // import SignInOld, {action as signInAction} from './routes/signIn.jsx'
 import SignUp, {action as signUpAction} from './routes/signup.jsx'
 import LandingPage, {loader as landingPageLoader} from './routes/landingPage.jsx'
@@ -31,7 +31,6 @@ import Notification,{loader as notificationLoader} from "./routes/notification"
 import Saved, {loader as savedLoader} from "./routes/saved";
 import Dashboard, {loader as dashboardLoader} from "./routes/dashboard";
 import Admin  from "./routes/Admin/adminHome"
-// import App from "./routes/Admin/App"
 import Delivery from "./routes/Delivery/deliveryHome"
 import SignIn, {action as signInAction} from "./routes/newSignIn"
 import { createBrowserRouter,RouterProvider} from "react-router-dom";
@@ -40,9 +39,11 @@ import UserPage from './routes/Admin/pages/UserPage';
 import ProductsPage from './routes/Admin/pages/ProductsPage';
 import DashboardAppPage from './routes/Admin/pages/DashboardAppPage';
 import { usersLoader,productsAdminLoader,memberAddAction,editProductAction } from "./routes/Admin/adminLA";
-import AddMember from "./routes/Admin/pages/addMember";
-import EditMember from "./routes/Admin/pages/editMember";
-import EditProduct from "./routes/Admin/pages/editProduct";
+import AddMember, {action as addMemberAction} from "./routes/Admin/pages/addMember";
+import EditMember,{loader as editMemberLoader,action as editMemberAction} from "./routes/Admin/pages/editMember";
+import EditProduct, {action as productsEditAction} from "./routes/Admin/pages/editProduct";
+import Orders, {loader as ordersLoader} from "./routes/Delivery/orders";
+import Selections, {loader as selectionslaoder} from "./routes/Delivery/selected"
 const router=createBrowserRouter([
     {
         path:'/',
@@ -68,21 +69,20 @@ const router=createBrowserRouter([
         children:[
             {
                 index:true,
-                path:"/admin/app",
-                element:<DashboardAppPage />
-            },
-            {
-                path:'/admin/users',
+                // path:'/admin/users',
                 element:<UserPage />,
                 loader:usersLoader
             },
             {
                 path:'/admin/users/addMember',
-                element: <AddMember />
+                element: <AddMember />,
+                action:addMemberAction
             },
             {
                 path:'/admin/users/edit/:id',
-                element:<EditMember />
+                element:<EditMember />,
+                loader:editMemberLoader,
+                action:editMemberAction
             },
             {
                 path:"/admin/products",
@@ -92,7 +92,8 @@ const router=createBrowserRouter([
             {
                 path:"/admin/products/edit/:id",
                 element:<EditProduct/>,
-                loader:brandsLoader
+                loader:brandsLoader,
+                action:productsEditAction
             },
             {
                 path:"/admin/profile",
@@ -121,6 +122,17 @@ const router=createBrowserRouter([
         element:<Delivery />,
         errorElement:<ErrorPage />,
         children:[
+            
+            {
+                path:"/delivery/orders",
+                element:<Orders/>,
+                loader:ordersLoader
+            },
+            {
+                path:"/delivery/myselection",
+                element:<Selections/>,
+                loader:selectionslaoder
+            },
             {
                 path:"/delivery/profile",
                 element:<Profile role={3011} />,
@@ -144,7 +156,7 @@ const router=createBrowserRouter([
     {
         path:"/home",
         element: <Home />,
-        // loader: homeLoader,
+        loader: homeLoader,
         errorElement:<ErrorPage />,
         children:[
             {
