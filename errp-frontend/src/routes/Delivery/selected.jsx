@@ -152,11 +152,6 @@ export default function Selections() {
   return (
     <>
       <Container>
-        {/* <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
-          <Typography variant="h6" gutterBottom>
-            Orders
-          </Typography>
-        </Stack> */}
         <Card>
           <UserListToolbar numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} />
           <Scrollbar>
@@ -177,7 +172,8 @@ export default function Selections() {
                     const {orderId,name,retailer,source,destination,prime,date}=row;
                     // const selectedUser = selected.indexOf(name) !== -1; 
                     return (
-                      <TableRow hover key={orderId} tabIndex={-1} role="checkbox" >
+                      <TableRow hover key={orderId} tabIndex={-1} component={"a"}
+                      href={`/delivery/myselection/${orderId}`} style={{textDecoration:"none"}}>
                         <TableCell padding="checkbox">
                         </TableCell>
                         <TableCell component="th" scope="row" padding="none">
@@ -193,11 +189,6 @@ export default function Selections() {
                         <TableCell align="left">{destination}</TableCell>
                         <TableCell align="left">{prime}</TableCell>
                         <TableCell align="left">{formatDate(date)}</TableCell>
-                        <TableCell align="right">
-                          <IconButton size="large" color="inherit" id={orderId} onClick={(event)=>handleOpenMenu(event)}>
-                            <Iconify icon={'eva:more-vertical-fill'} />
-                          </IconButton>
-                        </TableCell>
                       </TableRow>
                     );
                   })}
@@ -240,32 +231,6 @@ export default function Selections() {
           />
         </Card>
       </Container>
-      <Popover
-        open={Boolean(open)}
-        anchorEl={open}
-        onClose={handleCloseMenu}
-        anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
-        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-        PaperProps={{
-          sx: {
-            p: 1,
-            width: 140,
-            '& .MuiMenuItem-root': {
-              px: 1,
-              typography: 'body2',
-              borderRadius: 0.75,
-            },
-          },
-        }}
-      >
-      
-        <MenuItem 
-         component={Link}
-         to={`/delivery/myselection/${current}`} >
-          <Iconify icon={'eva:edit-fill'} sx={{ mr: 2 }} />
-          details
-        </MenuItem>
-      </Popover>
     </>
   );
 }
