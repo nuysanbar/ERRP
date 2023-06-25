@@ -41,7 +41,6 @@ export default function LandingPageSingle(){
    const [saved,setSaved]=useState(response1.saved)
    const [comment,setComment]=useState('')
    const [imageUrl,setImageUrl]=useState(`http://localhost:3500/products/${response1.productInfo.imgUrl[0]}`)
-
    const handleSaved=async()=>{
       setSaved(!saved)
       console.log("save action is being called")
@@ -79,12 +78,12 @@ export default function LandingPageSingle(){
           <p className='availableAmount'><span>{response1.product.availableAmount} </span> in stock</p>
           <p className='price'>{response1.product.price} ETB</p>
           <p className='usedOrNew'>{response1.product.usedOrNew}!</p> <br />
-          <NavLink to={`/home/${username}/${barcode}/checkout`}>Buy It Now <IoArrowForward /></NavLink>
+          <NavLink to={`/home/${username}/${barcode}/checkout`}>Order now <IoArrowForward /></NavLink>
           {saved===false? <button onClick={handleSaved} className='toFromCart plus'><span><FaCartPlus/></span> Add To Cart</button>
               : <button onClick={handleSaved} className='toFromCart minus'>Remove From <span><BsCartDashFill/></span></button>}
       </div><br />
         <Form method="post"  onSubmit={handleReview}>
-            <textarea name="review" id="" cols="40" rows="3" defaultValue={comment} placeholder='comment here'></textarea>
+            <textarea name="review" id="" cols="40" rows="3" defaultValue={comment} placeholder='leave your comment'></textarea>
             <button type='submit'><span><IoIosSend /></span></button>
         </Form>
         {response1.review.map((comment)=>{

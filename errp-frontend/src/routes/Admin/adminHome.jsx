@@ -1,9 +1,10 @@
-import { Outlet,NavLink} from "react-router-dom";
+import { Outlet,NavLink,Link} from "react-router-dom";
 import { useState } from "react";
 import {AiOutlineSetting} from "react-icons/ai"
 import {BiLogOut} from "react-icons/bi"
 import {BsCaretDown} from "react-icons/bs"
 import { BiCategory } from "react-icons/bi";
+import Footer from "../footer"
 export default function Admin() {
    const [classValue,setClassValue]=useState(null)
    const basicData=JSON.parse(window.localStorage.getItem('basic_data'));
@@ -18,7 +19,9 @@ export default function Admin() {
       <>
       <div className="rootContainer">
         <div className="root">
-          <span>- ERRP LOGO -</span> 
+          <Link to="/home">
+                <span style={{fontStyle:"italic",fontSize:"small"}}>E<span >R<sup>2</sup></span>P</span>
+          </Link>
           <NavLink to={"/admin"} className="combineSymbolText">
               <span><BiCategory /></span> <br />
                 users
@@ -44,7 +47,7 @@ export default function Admin() {
         </div>
         <div id="detail"><Outlet /></div>
         </div>
-        <div className="company"><h1>Company Services</h1></div>
+        <div style={{marginTop:"50px"}}><Footer /></div>
       </>
     );
   }

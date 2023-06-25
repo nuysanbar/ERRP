@@ -17,6 +17,7 @@ export async function loader({params}){
         }
       })
     response1=res.data
+    console.log("response 1")
     console.log(response1)
     return response1
 }

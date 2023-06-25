@@ -15,7 +15,6 @@ app.use(cors(corsOptionsDelegate));
 app.use(express.urlencoded({extended:false}));
 app.use(cookieParser());
 // app.use(credentials);
-
 app.use(express.json());
 app.use(express.static(path.join(__dirname,'public','uploads')));
 app.use("/products/",express.static(path.join(__dirname,'public','uploads','products')))
@@ -25,20 +24,6 @@ app.use("/auth",require('./routes/api/auth'));
 app.use('/refresh',require('./routes/api/refresh'));
 app.use('/logout',require('./routes/api/logout'));
 app.use(verifyJWT);
-const verifyAdmin=(req,res,next)=>{
-    if(!req?.roles) return res.sendStatus(401)
-    if(!(req.roles===3030)){
-        return res.sendStatus(401)
-    }
-    next()
-}
-const verifyDelivery=(req,res,next)=>{
-    if(!req?.roles) return res.sendStatus(401)
-    if(!(req.roles===3011)){
-        return res.sendStatus(401)
-    }
-    next()
-}
 app.use('/home',require('./routes/api/home'))
 app.use('/order',require('./routes/api/order'))
 app.use('/users',require('./routes/api/landingPage'))

@@ -12,7 +12,7 @@ import * as React from 'react';
 import Popover from '@mui/material/Popover';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
-
+import Footer from "./footer";
 const access_token=window.localStorage.getItem('access_token');
 export async function loader(){
     const apiUrl=`http://localhost:3500/home/`
@@ -31,7 +31,8 @@ export async function loader(){
 }
 export default function Home() {
    const user=jwt(access_token);
-   const {userRole}=useLoaderData()
+   const userRole=user.userInfo.roles
+  //  const {userRole}=useLoaderData()
    const [classValue,setClassValue]=useState(null)
    const [searchType,setSearchType]=useState("byname")
    const [anchorEl, setAnchorEl] = React.useState(null);
@@ -60,7 +61,7 @@ export default function Home() {
       <div className="rootContainer">
         <div className="root" >
           <Link to="/home">
-                <span style={{fontStyle:"italic"}}>E<span >R<sup>2</sup></span>P</span>
+                <span style={{fontStyle:"italic",fontWeight:"bold",fontSize:"x-small"}}>E<span >R<sup>2</sup></span>P</span>
           </Link>
           <Form method="get" action="search">
           <select
@@ -134,9 +135,6 @@ export default function Home() {
           <TemporaryDrawer basicData={basicData} userRole={userRole} />
         </div>
         <div>
-          {/* <Button aria-describedby={id} variant="contained" >
-            Open Popover
-          </Button> */}
           <Popover
             id={id}
             open={open}
@@ -152,7 +150,7 @@ export default function Home() {
         </div>
         <div id="detail"><Outlet /></div>
         </div>
-        <div className="company"><h1>Company Services</h1></div>
+        <div style={{marginTop:"50px"}}><Footer /></div>
       </>
     );
   }

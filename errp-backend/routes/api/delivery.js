@@ -14,16 +14,23 @@ var storage2 = multer.diskStorage({
   })
 
 var upload2= multer({ storage: storage2})
+const verifyDelivery=(req,res,next)=>{
+    if(!req?.roles) return res.sendStatus(401)
+    if(!(req.roles===3011)){
+        return res.sendStatus(401)
+    }
+    next()
+}
 router.route("/getOrders")
-    .get(deliveryController.getOrders);
+    .get(verifyDelivery,deliveryController.getOrders);
 router.route("/getSelections")
-    .get(deliveryController.getSelections);
+    .get(verifyDelivery,deliveryController.getSelections);
 router.route("/getHistory")
-    .get(deliveryController.getHistory);
+    .get(verifyDelivery,deliveryController.getHistory);
 router.route("/getOrderDetail/:id")
-    .get(deliveryController.getOrderDetail)
+    .get(verifyDelivery,deliveryController.getOrderDetail)
 router.route("/sendProve/:id")
-    .post(upload2.single("proveImg"),deliveryController.sendProve)
+    .post(verifyDelivery,upload2.single("proveImg"),deliveryController.sendProve)
 router.route("/letMeShip/")
-    .post(deliveryController.letMeShip)
+    .post(verifyDelivery,deliveryController.letMeShip)
 module.exports=router;

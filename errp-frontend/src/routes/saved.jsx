@@ -28,7 +28,7 @@ export default function Saved(){
                 <p className="productName">{save.brandname}</p>
               </div>
             </NavLink>
-            <NavLink to={`/home/${save.retailer}/${save.barcode}/checkout`} className="buyItNow">Buy It Now <IoArrowForward /></NavLink>
+            <NavLink to={`/home/${save.retailer}/${save.barcode}/checkout`} className="buyItNow">Order now <IoArrowForward /></NavLink>
             </div>
             )
           })

@@ -17,7 +17,7 @@ export async function action({request}){
             }
         })
     console.log(res.data)
-    return redirect('/admin/users')
+    return redirect('/admin')
 }
 export default function AddMember(){
     const navigate=useNavigate()
@@ -50,9 +50,10 @@ export default function AddMember(){
         return redirect('../');
     }
     return(
-        <div style={{marginLeft:"30px"}}>
+        <div style={{marginLeft:"30px",width:"100%"}}>
         <div >
-            <Form   method="post" encType="multipart/form-data" >
+            <Form   method="post" encType="multipart/form-data" style={{width:"100%"}} >
+            <div style={{width:"30%",display:"inline-block"}}>
             <TextField margin="normal"
               required
               id="username"
@@ -111,6 +112,8 @@ export default function AddMember(){
                 variant="outlined"
                 value={values.city}
                 onChange={(e)=>setValues({...values,"city":e.currentTarget.value})}/> <br />
+                </div>
+                <div style={{width:"30%",display:"inline-block",verticalAlign:"top"}}>
               <TextField margin="normal"
                 required
                 id="lat"
@@ -167,6 +170,7 @@ export default function AddMember(){
                 <input type="file" name="profileImg"  onChange={(e)=>setValues({...values,"profileImg":e.currentTarget.files[0]})} required/><br />
                 <Button variant="outlined" style={{color:"var(--bl)",marginRight:"10px",borderColor:"var(--bl)"}} onClick={()=>navigate(-1)}>cancel</Button>   
                 <Button type="submit" variant="contained" style={{backgroundColor:"var(--bl)",width:"100px",textAlign:"center",margin:"10px"}}>submit</Button>
+                </div>
             </Form>
             <br />
         </div>

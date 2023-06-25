@@ -35,6 +35,10 @@ const userSchema=new Schema({
         type:Number,
         default:0
     },
-    favoredBy:[]
+    favoredBy:[],
+    passwordResetHash:{
+        type:String,
+        default:""
+    }
 });
 module.exports=mongoose.model('User',userSchema);

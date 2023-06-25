@@ -1,10 +1,10 @@
-import { Outlet,NavLink} from "react-router-dom";
+import { Outlet,NavLink,Link} from "react-router-dom";
 import { useState } from "react";
 import {AiOutlineSetting} from "react-icons/ai"
-
 import {BiLogOut} from "react-icons/bi"
-import {BsCaretDown} from "react-icons/bs"
-
+import {BsCaretDown,BsList,BsListCheck} from "react-icons/bs"
+import {FaHistory} from "react-icons/fa"
+import Footer from "../footer"
 export default function Delivery() {
    const [classValue,setClassValue]=useState(null)
    const basicData=JSON.parse(window.localStorage.getItem('basic_data'));
@@ -19,17 +19,19 @@ export default function Delivery() {
       <>
       <div className="rootContainer">
         <div className="root">
-          <span> </span> 
+         <Link to="/home">
+                <span style={{fontStyle:"italic"}}>E<span >R<sup>2</sup></span>P</span>
+          </Link>
           <NavLink to={"/delivery/orders"} className="combineSymbolText">
-           <AiOutlineSetting/> <br />
+           <BsList/> <br />
                 Orders
             </NavLink>
             <NavLink to={"/delivery/myselection"} className="combineSymbolText">
-            <AiOutlineSetting/> <br />
+            <BsListCheck/> <br />
                 InProgress
             </NavLink>
             <NavLink to={"/delivery/history"} className="combineSymbolText">
-            <AiOutlineSetting/> <br />
+            <FaHistory/> <br />
                 history
             </NavLink>
             <div className="menu">
@@ -49,7 +51,7 @@ export default function Delivery() {
         </div>
         <div id="detail"><Outlet /></div>
         </div>
-        <div className="company"><h1>Company Services</h1></div>
+        <div style={{marginTop:"50px"}}><Footer /></div>
       </>
     );
   }

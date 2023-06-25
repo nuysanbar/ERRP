@@ -15,7 +15,7 @@ var sellerCode,
     currency = "ETB";
 
 exports.CheckoutExpress =(req, res)=> {
-  const {barcode,retailer,merchantCode,pdToken,ItemName,UnitPrice,DeliveryFee,Discount,Tax1,Tax2,HandlingFee,Quantity}=req.body;
+  const {barcode,retailer,merchantCode,pdToken,ItemName,UnitPrice,DeliveryFee,Discount,Tax1,Tax2,HandlingFee,Quantity,prime}=req.body;
   if(!barcode || !retailer || !merchantCode || !pdToken || !ItemName || !UnitPrice || !DeliveryFee || !Discount || !Tax1 || !Tax2 || !Quantity){
     return res.status(400).json({"message":"unfulfilled data"})}
   var status="unpaid", currency="ETB";
@@ -33,6 +33,7 @@ exports.CheckoutExpress =(req, res)=> {
         "DeliveryFee":DeliveryFee,
         "Tax":Tax1,
         "Quantity":Quantity,
+        "prime":prime,
         "status":status,
         "currency":currency,
         "TransactionId":merchantOrderId+barcode,

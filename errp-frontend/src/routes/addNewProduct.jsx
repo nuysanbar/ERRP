@@ -127,7 +127,7 @@ export default function AddNewProduct(){
               id="brandName"
               label="brand name"
               name="brandname"
-             variant="outlined"/> <br />
+              variant="outlined"/> <br />
              <FormControl>
                 <InputLabel id="demo-simple-select-label">select categories</InputLabel>
              <Select

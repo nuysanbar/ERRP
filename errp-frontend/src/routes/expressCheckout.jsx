@@ -2,6 +2,9 @@ import {useLoaderData,Form,redirect } from 'react-router-dom'
 import {IoArrowForward} from 'react-icons/io5'
 import axios from 'axios'
 import { useState } from 'react';
+import Select from "@mui/material/Select"
+import MenuItem from '@mui/material/MenuItem';
+import Button from "@mui/material/Button"
 const access_token=window.localStorage.getItem('access_token');
 export async function loader({params}){
     var response1,response2;
@@ -39,6 +42,7 @@ export default function ExpressCheckout(){
    const username=response1.product.retailerUserName
    const barcode=response1.product.barcode
    const price=response1.product.price
+   const [prime,setPrime]=useState("No")
    const [quantity,setQuantity]=useState(1)
    const tax=price*quantity*0.02
    return (
@@ -52,13 +56,26 @@ export default function ExpressCheckout(){
               <input type="hidden" name='pdToken' value={response2.pdtToken} readOnly={true}/>
               <input type="hidden" name="ItemName" value={response1.productInfo.brandName} readOnly={true}/>
               <input type="hidden" name="UnitPrice" value={100} readOnly={true}/>
-              <input type="hidden" name="DeliveryFee" value="100" readOnly={true}/>
               <input type="hidden" name="Discount" value="0" readOnly={true}/>
               <input type="hidden" name="Tax1" value={tax} readOnly={true}/>
               <input type="hidden" name="Tax2" value="0" readOnly={true}/>
               <input type="hidden" name="HandlingFee" value="0" readOnly={true}/>
-              <span>Qty : <input type="number" value={quantity} name="Quantity" onChange={(e)=>setQuantity(e.target.value)}/></span> <br />
-              <button type='submit'>Pay with YenePay <IoArrowForward/></button>
+              <Select
+                required
+                name="prime"
+                labelId="demo-simple-select-required-label"
+                id="demo-simple-select-required"
+                label="type"
+                className='type'
+                value={prime}
+                onChange={(e)=>setPrime(e.target.value)}
+                style={{width:"50px",margin:"20px 0px 0px"}}> 
+                    <MenuItem value="No" >ship regular</MenuItem>
+                    <MenuItem value="Yes">ship prime</MenuItem>
+              </Select><br />
+              <input type="hidden" name="DeliveryFee" value={prime==="No"?"100":"150"} readOnly={true}/>
+              <span>Qty : <input type="number" value={quantity} name="Quantity" onChange={(e)=>setQuantity(e.target.value)} min={1} max={response1.product.availableAmount}/></span> <br />
+              <Button  variant='contained' style={{"color":"var(--wh)",backgroundColor:"var(--bl)"}}type='submit'>Pay with YenePay <IoArrowForward/></Button>
           </Form>
         </div>
         <div className='checkoutInfo'>

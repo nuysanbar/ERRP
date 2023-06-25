@@ -234,7 +234,7 @@ body{
     border-radius: 10px;
 }
 .personalProducts .brandName{
-    font-size: x-large;
+    font-size: large;
     font-weight: 700;
     color: var(--bl);
     text-align: center;
@@ -643,7 +643,6 @@ body{
 }
 .myStore .myStoreProduct p{
     color:var(--bl);
-    font-weight: bold;
     text-align: center;
 }
 .myStore .myStoreProduct img{

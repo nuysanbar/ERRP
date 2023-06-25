@@ -4,7 +4,7 @@ const getFavourites=async(req,res)=>{
     const allFavoritesListed=[]
     const results=await Favorite.findOne({"username":req.username}).exec();
     if(!results){
-        return res.status(200).json({"messaage":"you didn't favored any online store"})
+        return res.status(404).json({"messaage":"you didn't favored any online store"})
     }else{
     const favourites=results.favorites;
     for(let i=0; i<favourites.length; i++){

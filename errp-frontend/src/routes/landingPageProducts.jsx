@@ -29,9 +29,8 @@ export default function LandingPageProducts({customPath}){
     }
     return (
         <div className="personalProducts">
-            {displayProducts()} 
+            {response2.products.length && (displayProducts())}
+            {!(response2.products.length) && "page is not available"}
         </div>
-             
-            
     )
 }

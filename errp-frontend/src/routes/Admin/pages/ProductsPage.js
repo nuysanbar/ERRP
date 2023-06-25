@@ -3,7 +3,6 @@ import { Container,Typography } from '@mui/material';
 import {useLoaderData} from 'react-router-dom'
 import { ProductList} from '../sections/@dashboard/products';
 // mock
-import PRODUCTS from '../_mock/products';
 
 // ----------------------------------------------------------------------
 

@@ -11,20 +11,21 @@ export async function loader({params}){
         }
     })
     const response=res.data
+    console.log(response)
     return response;
 }
 
 export default function Favorite(){
     const response=useLoaderData()
     return (
+        <>
+        {response!==[] &&
         <div className="favoriteContainer">
             <div className="favoriteContainerDialog">
                 <SimpleDialogDemo response={response}/>
             </div>
             <div className="favorites">
-                {/* <Form method="get" action="search" style={{display:"block",textAlign:"center"}}>
-                    <input type="search" placeholder="search retailers" id="search" name="search" style={{height:"30px", padding:"10px", color:"var(--bl)",outline:"none",border:"2px solid var(--bl)",borderRadius:"5px"}}/>
-                </Form> */}
+            
                  {response.map((favored)=>{
                     return (
                     <NavLink to={`/home/favorites/${favored.username}`} key={favored.username} className={({ isActive, isPending }) =>
@@ -43,5 +44,6 @@ export default function Favorite(){
             <div className="favoritesDetail">
                 <Outlet/>
             </div>
-        </div>)
+        </div>
+}</>)
 }

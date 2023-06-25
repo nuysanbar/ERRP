@@ -14,7 +14,8 @@ const getUser=async (req,res)=>{
     if(!user){
         return res.status(204).json({"message":"No user matches the username"})
     }
-    const checkFav=user.favoredBy.find((item)=>req.username)
+    const checkFav=user.favoredBy.find((item)=>req.username==item)
+    console.log(checkFav)
     if(checkFav){
         isFavored=true
     }else{

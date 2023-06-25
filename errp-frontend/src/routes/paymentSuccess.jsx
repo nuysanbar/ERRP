@@ -20,13 +20,13 @@ export async function paymentSuccessLoader({request}){
 
 export default function PaymentSuccessfull(){
     const {costumer,order,product,retailer}=useLoaderData()
-
+    const days=order.prime=="Yes"?" 24 hours":"2 days"
     return(
         <div className='paymentSuccess'>
             <div>
             <Alert severity="success">
                 <AlertTitle>Successfully Ordered</AlertTitle>
-                This product will reach you in — <strong>2 days</strong>
+                This product will reach you in — <strong>{days}</strong>
             </Alert>
             </div>
             <div className='paymentSuccessInfo'>

@@ -13,6 +13,7 @@ export async function loader({params}){
           'Authorization': 'Bearer ' + access_token
         }
       })
+    if(res.statusText=="OK"){
     if(res.data.user.roles===2001){
         userRole="consumer"
     }
@@ -20,13 +21,13 @@ export async function loader({params}){
         userRole="retailer"
     }
     response1=res.data
-    console.log(response1)
+    console.log(response1)}
     return [userRole,response1]
 }
 export default function LandingPage({customPath}){
     const [userRole,response1]=useLoaderData()
-    const username=response1.user.username
-    const [isFavorite,setIsFavorite]=useState(response1.isFavored)
+    const username=response1?response1.user.username:null
+    const [isFavorite,setIsFavorite]=useState(response1?response1.isFavored:null)
     const access_token=window.localStorage.getItem("access_token")
     const handleFavorite =async()=>{
         console.log("fav action is being called")
@@ -42,7 +43,7 @@ export default function LandingPage({customPath}){
     }
     return (
         <div >
-            <div className="personalInfoContainer">
+            {userRole && (<div className="personalInfoContainer">
             <div className="personalInfo">
             <div className="sensitiveInfo">
             <NavLink to={`/home/${response1.user.username}`} className="personalName">
@@ -66,7 +67,7 @@ export default function LandingPage({customPath}){
                         <AiFillStar onClick={handleFavorite}/>} <br /><span>{response1.user.favoredNumber}</span>
             </div>
             </div>
-            </div>
+            </div>)}
             <Outlet />
         </div>
     )}

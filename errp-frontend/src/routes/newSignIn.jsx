@@ -3,8 +3,6 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
@@ -20,7 +18,6 @@ export async function action({request}){
     const updates = Object.fromEntries(formData);
     const apiUrl='http://localhost:3500/auth/'
     const response = await axios.post(apiUrl,updates)
-    console.log(response)
     const basicData={
         image:response.data.foundUser.imgUrl,
         firstName:response.data.foundUser.firstname
@@ -31,7 +28,7 @@ export async function action({request}){
         const user=jwt(response.data.access_token);
         const userRole=user.userInfo.roles
         if(userRole=="3011"){
-            return redirect('/delivery/')
+            return redirect('/delivery/orders')
         }
         else if (userRole=="3030"){
             return redirect('/admin/')
@@ -110,7 +107,9 @@ export default function SignIn() {
             </Button>
             <Grid container>
               <Grid item xs>
-              
+              <NavLink to={'/forgotPassword'} variant="body2"style={{color:"var(--bl)"}}>
+                  {"forgot password?"}
+              </NavLink>
               </Grid>
               <Grid item>
                 <NavLink to={'/signUp'} variant="body2"style={{color:"var(--bl)"}}>

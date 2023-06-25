@@ -34,7 +34,6 @@ import Admin  from "./routes/Admin/adminHome"
 import Delivery from "./routes/Delivery/deliveryHome"
 import SignIn, {action as signInAction} from "./routes/newSignIn"
 import { createBrowserRouter,RouterProvider} from "react-router-dom";
-import Retailers, {loader as searchRetailerLoader} from "./routes/retailers";
 import UserPage from './routes/Admin/pages/UserPage';
 import ProductsPage from './routes/Admin/pages/ProductsPage';
 import { usersLoader,productsAdminLoader,memberAddAction,editProductAction } from "./routes/Admin/adminLA";
@@ -45,28 +44,44 @@ import Orders, {loader as ordersLoader} from "./routes/Delivery/orders";
 import Selections, {loader as selectionsLoader} from "./routes/Delivery/selected"
 import OrderDetails, {loader as orderDetailLoader,action as orderDetailAction} from "./routes/Delivery/orderDetails";
 import Delivered, {loader as deliveredLoader} from "./routes/Delivery/delivered";
+import ForgotPassword, {action as forgotPasswordAction} from "./routes/forgotPassword";
+import ResetPassword, {action as resetPasswordAction} from "./routes/resetPassword";
 const router=createBrowserRouter([
     {
         path:'/',
         element:<Root />,
-        errorElement:<ErrorPage />,
+        errorElement:<ErrorPage><p>page not available</p></ErrorPage>,
         children:[
             {
                 index:true,
+                errorElement:<ErrorPage> <SignIn/> </ErrorPage>,
                 element: <SignIn/>,
                 action:signInAction
             },
             {
-                path: "signUp/",
+                path: "/signUp/",
                 element: <SignUp />,
+                errorElement:<ErrorPage> <SignUp/> </ErrorPage>,
                 action:signUpAction
-            }
+            },
+            {
+                path: "/forgotPassword",
+                element: <ForgotPassword />,
+                errorElement:<ErrorPage> <ForgotPassword/> </ErrorPage>,
+                action:forgotPasswordAction
+            },
+            {
+                path: "/resetPassword",
+                element: <ResetPassword />,
+                errorElement:<ErrorPage> <ResetPassword/> </ErrorPage>,
+                action:resetPasswordAction
+            },
         ]
     },
     {
         path:"/admin",
         element:<Admin />,
-        errorElement:<ErrorPage />,
+        errorElement:<ErrorPage><p>page not available</p></ErrorPage>,
         children:[
             {
                 index:true,
@@ -120,7 +135,7 @@ const router=createBrowserRouter([
     {
         path:"/delivery",
         element:<Delivery />,
-        errorElement:<ErrorPage />,
+        errorElement:<ErrorPage><p>page not available</p></ErrorPage>,
         children:[
             
             {
@@ -180,17 +195,19 @@ const router=createBrowserRouter([
         path:"/home",
         element: <Home />,
         loader: homeLoader,
-        errorElement:<ErrorPage />,
+        errorElement:<ErrorPage><p>page is not available</p></ErrorPage>,
         children:[
             {
                 index:true,
                 element: <Search />,
+                errorElement:<ErrorPage><p>page is not available</p></ErrorPage>,
                 loader:recommendationLoader,
             },
          
             {
                 path:"/home/search",
                 element:<Search/>,
+                errorElement:<ErrorPage><p>page not available</p></ErrorPage>,
                 loader:searchLoader,
             },
             {
@@ -205,6 +222,7 @@ const router=createBrowserRouter([
             },
             {
                 path:"/home/:username",
+                errorElement:<ErrorPage><p>page is not available</p></ErrorPage>,
                 element:<LandingPage customPath={""}/>,
                 loader:landingPageLoader,
                 errorElement:<ErrorPage />,
@@ -232,7 +250,7 @@ const router=createBrowserRouter([
             {
                 path:"/home/products",
                 element:<Products/>,
-                errorElement:<ErrorPage />,
+                errorElement:<ErrorPage><p>page not available</p></ErrorPage>,
                 action:productsAction,
                 loader:productsLoader,
                 children:[
@@ -270,6 +288,7 @@ const router=createBrowserRouter([
             {
                 path:"/home/favorites",
                 element:<Favorite />,
+                errorElement:<ErrorPage><p>page not available</p></ErrorPage>,
                 loader:favoriteLoader,
                 children:[
                     {
@@ -289,11 +308,6 @@ const router=createBrowserRouter([
                                 action:reviewAction
                             }
                         ]
-                    },
-                    {
-                        path:"/home/favorites/search",
-                        element:<Retailers/>,
-                        loader:searchRetailerLoader,
                     }
                 ]
             },
@@ -310,6 +324,7 @@ const router=createBrowserRouter([
                     {
                         path:"/home/brands/:type/:brand",
                         element: <SpecificBrand isSearch={false} />,
+                        errorElement:<ErrorPage><p>page not available</p></ErrorPage>,
                         loader:SpecificLoader,
                         children:[
                             {
@@ -363,5 +378,8 @@ const router=createBrowserRouter([
 ])
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-      <RouterProvider router={router} />
+    <React.StrictMode>
+        <RouterProvider router={router} />
+    </React.StrictMode>
   );
+  

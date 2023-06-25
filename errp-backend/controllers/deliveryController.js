@@ -5,11 +5,12 @@ const Order=require("../data/order")
 const getOrders=async(req,res)=>{
     var data=[]
     const results=await Order.find({"status":"Paid","delivered":false,"refund":false,"deliveredBy":null})
+    if(results.length>0){
     for(let i=0; i<results.length;i++){
         const retailer=await User.findOne({"username":results[i].retailerUserName},{firstname:true,lastname:true,city:true,subcity:true}).exec()
         const costumer=await User.findOne({"username":results[i].costumerUserName},{city:true,subcity:true}).exec()
         data.push({retailer,costumer,orderId:results[i]._id,brand:results[i].ItemName,date:results[i].date,prime:results[0].prime})
-    }
+    }}
     return res.status(201).json(data)
 }
 const getSelections=async(req,res)=>{
@@ -21,17 +22,13 @@ const getSelections=async(req,res)=>{
         const retailer=await User.findOne({"username":results[i].retailerUserName},{firstname:true,lastname:true,city:true,subcity:true}).exec()
         const costumer=await User.findOne({"username":results[i].costumerUserName},{city:true,subcity:true}).exec()
         data.push({retailer,costumer,orderId:results[i]._id,brand:results[i].ItemName,date:results[i].date,prime:results[0].prime})
-    }
-    return res.status(201).json(data)
-    }else{
-        return res.status(404).json({"message":"bad request"})
-    }
+        }
+    }return res.status(201).json(data)
 }
 const getHistory=async(req,res)=>{
     var data=[]
     const results=await Order.find({"deliveredBy":req.username,isDeliveredTwo:true})
     console.log(results)
-    // const results=await Order.find({"status":"Paid","delivered":false,"refund":false})
     if(results!==null){
     for(let i=0; i<results.length;i++){
         const retailer=await User.findOne({"username":results[i].retailerUserName},{firstname:true,lastname:true,city:true,subcity:true}).exec()

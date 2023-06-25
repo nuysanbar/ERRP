@@ -60,7 +60,7 @@ export default function Store({retailer,barcode}){
                  <span className='price'><BsCheck2Square/> {retailer.price} ETB</span> <br />
                 <span className='availableAmount'><BsCheck2Square/> {retailer.availableAmount} in stock</span> <br />
                 <span className='usedOrNew'>{retailer.usedOrNew}!</span>
-                <NavLink to={`/home/${username}/${barcode}/checkout`} className="buyItNow">Buy It Now <IoArrowForward /></NavLink> <br />
+                <NavLink to={`/home/${username}/${barcode}/checkout`} className="buyItNow">Order now <IoArrowForward /></NavLink> <br />
                 {saved===false? <button onClick={handleSaved} className='toFromCart plus'><span><FaCartPlus/></span> Add To Cart</button>
                     : <button onClick={handleSaved} className='toFromCart minus'>Remove From <span><BsCartDashFill/></span></button>}
                 <button className="comments"><NavLink to={`/home/${username}/${barcode}`}><span>{retailer.review.length}</span>  reviews</NavLink></button>

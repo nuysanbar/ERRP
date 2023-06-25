@@ -25,18 +25,25 @@ var storage2 = multer.diskStorage({
 })
 var upload = multer({ storage: storage })
 var upload2 = multer({ storage: storage2 })
+const verifyAdmin=(req,res,next)=>{
+  if(!req?.roles) return res.sendStatus(401)
+  if(!(req.roles===3030)){
+      return res.sendStatus(401)
+  }
+  next()
+}
 router.route("/getUsers")
-    .get(adminController.getUsers);
+    .get(verifyAdmin,adminController.getUsers);
 router.route("/getUser/:username")
-    .get(adminController.getUser);
+    .get(verifyAdmin,adminController.getUser);
 router.route("/getProducts")
-    .get(adminController.getProducts)
+    .get(verifyAdmin,adminController.getProducts)
 router.route('/editProduct/:barcode')
-    .put(upload2.array("productImg",5),adminController.editProduct)
+    .put(verifyAdmin,upload2.array("productImg",5),adminController.editProduct)
 router.route('/addMember')
-    .post(upload.single('profileImg'),adminController.addUser)
+    .post(verifyAdmin,upload.single('profileImg'),adminController.addUser)
 router.route("/editMember/edit/:username")
-    .put(adminController.editMember)
+    .put(verifyAdmin,adminController.editMember)
 router.route("/deleteMember/:username/:role")
-    .delete(adminController.deleteUser)
+    .delete(verifyAdmin,adminController.deleteUser)
 module.exports=router;

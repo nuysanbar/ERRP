@@ -1,13 +1,17 @@
-import {redirect, Form,useNavigate } from "react-router-dom"
+import {redirect, Form,NavLink } from "react-router-dom"
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import axios from 'axios'
 import {useState} from 'react'
 import { useEffect } from "react";
-const access_token=window.localStorage.getItem("access_token")
 export async function action({request}){
-    return redirect('/')
+    const formData = await request.formData();
+    const apiUrl="http://localhost:3500/register/"
+    const res=await axios.post(apiUrl,formData)
+    const response=res.data
+    console.log(response)
+    return redirect('../')
 }
 export default function SignUp(){
     const [progressPage,setProgressPage]=useState(0)
@@ -32,25 +36,15 @@ export default function SignUp(){
         Object.keys(object).forEach(key => formData.append(key, object[key]));
         return formData;
     }
-    const handleSubmit=async()=>{
-        const formValues={...values,"lat":lat,"lon":lon}
-        const formData=getFormData(formValues)
-        const apiUrl="http://localhost:3500/register/"
-        const res=await axios.post(apiUrl,formData,{
-            headers:{
-                "Authorization":"Bearer " + access_token
-            }
-        })
-        console.log("before redirect ")
-        return redirect('../');
-    }
     return(
         <div className="signUpContainer">
         <div className="signUp">
             <Typography component="h1" variant="h5" style={{textAlign:"center"}}>
                 Sign up
             </Typography>
-            <Form   encType="multipart/form-data" onSubmit={handleSubmit}>
+            <Form method="post"  encType="multipart/form-data">
+            <input type="hidden" value={lat} name="lat" />
+            <input type="hidden" value={lon} name="lon" />
             <TextField margin="normal"
               required
               id="username"
@@ -62,7 +56,7 @@ export default function SignUp(){
               <TextField margin="normal"
               required
               id="firstname"
-              label="First Name"
+              label="first name"
               name="firstname"
               variant="outlined"
               value={values.firstname}
@@ -70,7 +64,7 @@ export default function SignUp(){
               <TextField margin="normal"
               required
               id="lastname"
-              label="Middle Name"
+              label="last name"
               name="lastname"
               variant="outlined"
               value={values.lastname}
@@ -124,6 +118,9 @@ export default function SignUp(){
                 <label htmlFor="profileImg" ></label>
                 <input type="file" name="profileImg"  onChange={(e)=>setValues({...values,"profileImg":e.currentTarget.files[0]})}/><br />
                 <Button type="submit" variant="contained" style={{backgroundColor:"var(--bl)",width:"100px",textAlign:"center",margin:"10px"}}>submit</Button>
+                <NavLink to={'/'} variant="body2"style={{color:"var(--bl)",fontSize:"small"}}>
+                  {"have an account? Sign In"}
+                </NavLink>
             </Form>
             <br />
         </div>
