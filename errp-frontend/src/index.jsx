@@ -27,7 +27,6 @@ import Search,{searchLoader,recommendationLoader} from "./routes/search"
 import Purchases , {loader as purchasesLoader} from "./routes/purchases";
 import SpecificBrand, {loader as SpecificLoader} from "./routes/brands/specificBrands";
 import SpecificStore, {loader as specificStoreLoader} from "./routes/brands/specificStores";
-import Notification,{loader as notificationLoader} from "./routes/notification"
 import Saved, {loader as savedLoader} from "./routes/saved";
 import Dashboard, {loader as dashboardLoader} from "./routes/dashboard";
 import Admin  from "./routes/Admin/adminHome"
@@ -335,11 +334,6 @@ const router=createBrowserRouter([
                         ]
                     }
                 ]
-            },
-            {
-                path:"/home/notifications",
-                element:<Notification />,
-                loader:notificationLoader
             },
             {
                 path:"/home/dashboard",

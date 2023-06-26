@@ -11,8 +11,8 @@ import axios from 'axios'
 import * as React from 'react';
 import Popover from '@mui/material/Popover';
 import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
 import Footer from "./footer";
+import { formatDate } from "./purchases";
 const access_token=window.localStorage.getItem('access_token');
 export async function loader(){
     const apiUrl=`http://localhost:3500/home/`
@@ -32,16 +32,11 @@ export async function loader(){
 export default function Home() {
    const user=jwt(access_token);
    const userRole=user.userInfo.roles
-  //  const {userRole}=useLoaderData()
    const [classValue,setClassValue]=useState(null)
    const [searchType,setSearchType]=useState("byname")
    const [anchorEl, setAnchorEl] = React.useState(null);
+   const [notificationData,setNotificationData]=useState(null)
 
-   const handleClick = (event) => {
-     setAnchorEl(event.currentTarget);
-     console.log("clicked notification")
-   };
- 
    const handleClose = () => {
      setAnchorEl(null);
    };
@@ -56,6 +51,32 @@ export default function Home() {
       return setClassValue("options")
     }
    }
+   const Notification=()=>{
+    return (
+      <div style={{width:"300px",paddingBottom:"50px"}}>
+        {notificationData && notificationData.map((notify)=>{
+          return(
+            <div key={notify._id} style={{fontSize:"small",fontWeight:"bold"}}>
+            {notify.reviewed.map((item)=>{
+              return (<div key={item.reviewText} style={{margin:"10px",padding:"5px 20px"}}>
+                <NavLink to={`/home/${notify.retailerUserName}/${notify.barcode}`} >{item.reviewText.slice(0,20)}...</NavLink> reviewed by<NavLink to={`/home/${item.reviewedBy}`}> {item.reviewedBy}</NavLink> on {formatDate(item.date)}
+              </div>)})}</div>)})}
+      </div>
+    )
+   }
+   const handleNotification=async(event)=>{
+    setAnchorEl(event.target);
+    console.log("clicked notification")
+    const apiUrl='http://localhost:3500/home/notifications'
+    const res=await axios.get(apiUrl,{
+        headers:{
+            "Authorization":"Bearer "+access_token
+        }
+    })
+    setNotificationData(res.data)
+    console.log(res.data)
+    return 0;
+  }
     return (
       <>
       <div className="rootContainer">
@@ -112,9 +133,7 @@ export default function Home() {
               <NavLink to={"/home/saved"}>
                   <AiOutlineShoppingCart/>
               </NavLink>
-              {/* <NavLink to={"#"}>
-              </NavLink> */}
-              <span onClick={handleClick}><IoIosNotificationsOutline  style={{fontWeight:"bold",fontSize:"25px"}}  /></span>
+              <span onClick={handleNotification}><IoIosNotificationsOutline  style={{fontWeight:"bold",fontSize:"25px"}} /></span>
             </div>
             <div className="menu">
               <div onClick={changeClassName} className="toggle">
@@ -140,12 +159,13 @@ export default function Home() {
             open={open}
             anchorEl={anchorEl}
             onClose={handleClose}
+            sx={{display:"block",width:"350px"}}
             anchorOrigin={{
               vertical: 'bottom',
               horizontal: 'left',
             }}
           >
-            <Typography sx={{ p: 2 }}>The content of the Popover.</Typography>
+            <Notification />
           </Popover>
         </div>
         <div id="detail"><Outlet /></div>

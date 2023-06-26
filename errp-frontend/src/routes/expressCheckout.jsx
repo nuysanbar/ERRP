@@ -43,6 +43,7 @@ export default function ExpressCheckout(){
    const barcode=response1.product.barcode
    const price=response1.product.price
    const [prime,setPrime]=useState("No")
+   const [deliveryFee,setDeliveryFee]=useState(100)
    const [quantity,setQuantity]=useState(1)
    const tax=price*quantity*0.02
    return (
@@ -81,7 +82,7 @@ export default function ExpressCheckout(){
         <div className='checkoutInfo'>
           <p>{response1.productInfo.brandName}</p>
             <p>price : {price}</p> 
-            <p>delivery : 100</p>
+            <p>delivery : {prime=="No"?100:150}</p>
             <p>Tax : {tax} </p> 
             <p className="total">Total : {tax + 100+(quantity*price)} ETB </p>
         </div>

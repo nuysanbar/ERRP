@@ -20,21 +20,21 @@ const getSearch= async (req,res)=>{
     if(results){
         return res.status(200).json(results)
     }
-    // if(results){
-    //  var length=results.length;
-    //  for(let i=0; i<length; i++){
-    //     var rqst= new rqs.AddDetailView(req.username,results[i].barcode,{cascadeCreate:true})
-    //     rqst.timeout=10000;
-    //     client.send(rqst ,(err,response)=>{
-    //         if(err){
-    //             console.log(err)
-    //         }else{
-    //             console.log(response)
-    //         }
-    //      })
-    //  }
-    //    return res.status(200).json(results)
-    // }
+    if(results){
+     var length=results.length;
+     for(let i=0; i<length; i++){
+        var rqst= new rqs.AddDetailView(req.username,results[i].barcode,{cascadeCreate:true})
+        rqst.timeout=10000;
+        client.send(rqst ,(err,response)=>{
+            if(err){
+                console.log(err)
+            }else{
+                console.log(response)
+            }
+         })
+     }
+       return res.status(200).json(results)
+    }
     else{
         return res.status(200).json({"message":"No product called "+search+ " available"})
     }
