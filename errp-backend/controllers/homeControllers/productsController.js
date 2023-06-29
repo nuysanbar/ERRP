@@ -1,5 +1,6 @@
 const Product=require("../../data/Product");
 const RetailerProduct=require("../../data/RetailerProduct")
+const PendingProduct=require("../../data/PendingProducts")
 var recombee=require("recombee-api-client")
 var rqs = recombee.requests;
 var privateToken="dnd6Tav4GksaTyatcBgaO3VTsWwhhYLr6Tws4iIM877BZNcyK3GduLySqXMjFdB0"
@@ -56,23 +57,36 @@ const addNewProduct=async(req,res)=>{
     const duplicate= await Product.findOne({barcode:barcode}).exec();
     if(duplicate) return res.sendStatus(409)
     try{
-        const result=await Product.create({
-            "barcode":barcode,
-            "brandName":brandname,
-            "type":type,
-            "brand":brand,
-            "details":details,
-            "imgUrl":pictures
-        })
-        console.log(result);
-        const result2= await RetailerProduct.create({
-            "barcode":barcode,
-            "price":price,
-            "availableAmount":amount,
-            "retailerUserName":req.username,
-            "usedOrNew":usedornew,
-        })
-        console.log(result2)
+        const result=await PendingProduct.create({
+                "barcode":barcode,
+                "brandName":brandname,
+                "type":type,
+                "brand":brand,
+                "details":details,
+                "imgUrl":pictures,
+                "price":price,
+                "availableAmount":amount,
+                "retailerUserName":req.username,
+                "usedOrNew":usedornew
+            })
+
+        // const result=await Product.create({
+        //     "barcode":barcode,
+        //     "brandName":brandname,
+        //     "type":type,
+        //     "brand":brand,
+        //     "details":details,
+        //     "imgUrl":pictures
+        // })
+        // console.log(result);
+        // const result2= await RetailerProduct.create({
+        //     "barcode":barcode,
+        //     "price":price,
+        //     "availableAmount":amount,
+        //     "retailerUserName":req.username,
+        //     "usedOrNew":usedornew,
+        // })
+        // console.log(result2)
         var rqst=new rqs.SetItemValues(barcode,{
             "brandName":brandname,
             "type":type,

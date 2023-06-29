@@ -85,9 +85,7 @@ export function ProductStatus(){
             {details.map((detail)=>{
                 return <p key={detail} className='detail'><span><TiTick/></span>{detail}</p>
             })}
-            <Button>approve</Button>
             <NavLink>edit</NavLink>
-            <Button>Delete</Button>
         </div>
         </div>
         </div>

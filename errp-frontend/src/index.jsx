@@ -29,13 +29,13 @@ import SpecificBrand, {loader as SpecificLoader} from "./routes/brands/specificB
 import SpecificStore, {loader as specificStoreLoader} from "./routes/brands/specificStores";
 import Saved, {loader as savedLoader} from "./routes/saved";
 import Dashboard, {loader as dashboardLoader} from "./routes/dashboard";
-import Admin  from "./routes/Admin/adminHome"
+import Admin, {DataHolder}  from "./routes/Admin/adminHome"
 import Delivery from "./routes/Delivery/deliveryHome"
 import SignIn, {action as signInAction} from "./routes/newSignIn"
 import { createBrowserRouter,RouterProvider} from "react-router-dom";
 import UserPage from './routes/Admin/pages/UserPage';
 import ProductsPage from './routes/Admin/pages/ProductsPage';
-import { usersLoader,productsAdminLoader,memberAddAction,editProductAction,retailersLoader,deliverersLoader } from "./routes/Admin/adminLA";
+import { usersLoader,productsAdminLoader,memberAddAction,editProductAction,retailersLoader,deliverersLoader,dashboardDataLoader } from "./routes/Admin/adminLA";
 import AddMember, {action as addMemberAction} from "./routes/Admin/pages/addMember";
 import EditMember,{loader as editMemberLoader,action as editMemberAction} from "./routes/Admin/pages/editMember";
 import EditProduct, {action as productsEditAction} from "./routes/Admin/pages/editProduct";
@@ -92,6 +92,16 @@ const router=createBrowserRouter([
         element:<Admin />,
         errorElement:<ErrorPage><p>page not available</p></ErrorPage>,
         children:[
+            {
+                index:true,
+                element: <DataHolder/>,
+                loader:dashboardDataLoader
+            },
+            // {
+            //     path:"/admin/pendingProducts",
+            //     element:<PendingProducts/>,
+            //     loader:PendingProductsLoader
+            // },
             {
                 path:"/admin/customers",
                 element:<UserPage />,

@@ -9,7 +9,7 @@ const getOrders=async(req,res)=>{
     for(let i=0; i<results.length;i++){
         const retailer=await User.findOne({"username":results[i].retailerUserName},{firstname:true,lastname:true,city:true,subcity:true}).exec()
         const costumer=await User.findOne({"username":results[i].costumerUserName},{city:true,subcity:true}).exec()
-        data.push({retailer,costumer,orderId:results[i]._id,brand:results[i].ItemName,date:results[i].date,prime:results[0].prime})
+        data.push({retailer,costumer,orderId:results[i]._id,brand:results[i].ItemName,date:results[i].date,prime:results[i].prime})
     }}
     return res.status(201).json(data)
 }

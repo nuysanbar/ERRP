@@ -8,6 +8,8 @@ const verifyAdmin=(req,res,next)=>{
   }
   next()
 }
+router.route("/dashbaord")
+    .get(verifyAdmin,adminController2.dashboardData)
 router.route("/retailers/:id")
     .get(verifyAdmin,adminController2.getRetailer);
 router.route("/retailers/:id/products")

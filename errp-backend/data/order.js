@@ -68,7 +68,6 @@ const orderSchema=new Schema({
     },
     deliveredBy:{
         type:String,
-        default:null
     },
     prime:{
         type:String

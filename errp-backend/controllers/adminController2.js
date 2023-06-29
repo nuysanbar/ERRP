@@ -53,7 +53,7 @@ const getOrders=async(req,res)=>{
     for(let i=0; i<results.length;i++){
         const retailer=await User.findOne({"username":results[i].retailerUserName},{firstname:true,lastname:true,city:true,subcity:true}).exec()
         const costumer=await User.findOne({"username":results[i].costumerUserName},{city:true,subcity:true}).exec()
-        data.push({retailer,costumer,orderId:results[i]._id,brand:results[i].ItemName,date:results[i].date,prime:results[0].prime})
+        data.push({retailer,costumer,orderId:results[i]._id,brand:results[i].ItemName,date:results[i].date,prime:results[i].prime})
     }}
     return res.status(201).json(data)
 }
@@ -72,4 +72,25 @@ const getSingleOrder=async(req,res)=>{
         return res.status(500).json({"message":"server problem"})
     }
 }
-module.exports={getRetailer,getRetailerProducts,getProduct,getProductRetailers,getOrders,getSingleOrder,getDeliverer}
+const dashboardData=async(req,res)=>{
+    const data=[]
+    const orders=await Order.find({status:"Paid"},{delivered:true,TotalAmount:true})
+    var revenue=0;
+    for(let i=0; i<orders.length;i++){
+        revenue+=orders[i].TotalAmount
+    }
+    data.push({totalOrders:orders.length})
+    const delivered=orders.filter((item)=>item.delivered==true)
+    data.push({totalOrdersDelivered:delivered.length})
+    const users=await User.find({})
+    const deliverers=users.filter((item)=>item.roles==3011)
+    const consumers=users.filter((item)=>item.roles==2001)
+    const retailers=users.filter((item)=>item.roles==5508)
+    data.push({deliverers:deliverers.length})
+    data.push({consumers:consumers.length})
+    data.push({retailers:retailers.length})
+    data.push({revenue:revenue})
+    console.log("dashboard data sent")
+    res.status(200).json(data)
+}
+module.exports={getRetailer,getRetailerProducts,getProduct,getProductRetailers,getOrders,getSingleOrder,getDeliverer,dashboardData}
