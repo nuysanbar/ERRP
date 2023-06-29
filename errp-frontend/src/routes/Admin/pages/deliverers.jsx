@@ -37,7 +37,6 @@ const access_token=window.localStorage.getItem('access_token')
 const TABLE_HEAD = [
   { id: 'name', label: 'Name', alignRight: false },
   { id: 'address', label: 'address', alignRight: false },
-  { id: 'role', label: 'Role', alignRight: false },
   { id: 'status', label: 'Status', alignRight: false },
   { id: '' },
 ];
@@ -85,7 +84,7 @@ const assignRole=(value)=>{
   }
   return result
 }
-export default function UserPage() {
+export default function DeliverersPage() {
   const users=useLoaderData()
   const [open, setOpen] = useState(null);
 
@@ -108,7 +107,6 @@ export default function UserPage() {
       "username":user.username,
       "name":`${user.firstname} ${user.lastname}`,
       "id":user._id,
-      "role":assignRole(user.roles),
       "address":`${user.subcity}, ${user.city}`,
       "status":user.suspended,
       "avatarUrl":`http://localhost:3500/${user.imgUrl}`
@@ -165,6 +163,14 @@ export default function UserPage() {
   return (
     <>
       <Container>
+        <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
+          <Typography variant="h6" gutterBottom>
+            Deliverers
+          </Typography>
+          <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} href='/admin/users/addMember' style={{backgroundColor:"var(--bl)"}}>
+            New Deliverer
+          </Button>
+        </Stack>
         <Card>
           <UserListToolbar numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} />
           <Scrollbar>
@@ -186,7 +192,7 @@ export default function UserPage() {
                     const selectedUser = selected.indexOf(name) !== -1; 
                     return (
                       <TableRow hover key={id} tabIndex={-1} role="checkbox" selected={selectedUser} component={Link}
-                      to={`/admin/customers/${username}`} style={{textDecoration:"none"}}>
+                      to={`/admin/deliverers/${username}`} style={{textDecoration:"none"}}>
                         <TableCell padding="checkbox">
                         </TableCell>
                         <TableCell component="th" scope="row" padding="none">
@@ -198,9 +204,8 @@ export default function UserPage() {
                           </Stack>
                         </TableCell>
                         <TableCell align="left">{address}</TableCell>
-                        <TableCell align="left">{role}</TableCell>
                         <TableCell align="left">
-                            {status? <span style={{color:"red"}}>pending</span>: <span style={{color:"green"}}>active</span>}
+                          {status? <span style={{color:"red"}}>pending</span>: <span style={{color:"green"}}>active</span>}
                         </TableCell>
                         <TableCell align="right">
                           <IconButton size="large" color="inherit" id={username} onClick={(event)=>handleOpenMenu(event,role)}>
@@ -237,7 +242,6 @@ export default function UserPage() {
               </Table>
             </TableContainer>
           </Scrollbar>
-
           <TablePagination
             rowsPerPageOptions={[5, 10, 25]}
             component="div"
@@ -249,37 +253,6 @@ export default function UserPage() {
           />
         </Card>
       </Container>
-    
-      <Popover
-        open={Boolean(open)}
-        anchorEl={open}
-        onClose={handleCloseMenu}
-        anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
-        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-        PaperProps={{
-          sx: {
-            p: 1,
-            width: 140,
-            '& .MuiMenuItem-root': {
-              px: 1,
-              typography: 'body2',
-              borderRadius: 0.75,
-            },
-          },
-        }}
-      >
-      
-        <MenuItem 
-         component={Link}
-         to={`/admin/users/edit/${current}`} >
-          <Iconify icon={'eva:edit-fill'} sx={{ mr: 2 }} />
-          edit
-        </MenuItem>
-        <MenuItem sx={{ color: 'error.main' }} onClick={handleDeleteUser}>
-          <Iconify icon={'eva:trash-2-outline'} sx={{ mr: 2 }} />
-          Delete
-        </MenuItem>
-      </Popover>
     </>
   );
 }

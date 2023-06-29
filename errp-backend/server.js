@@ -28,6 +28,7 @@ app.use('/home',require('./routes/api/home'))
 app.use('/order',require('./routes/api/order'))
 app.use('/users',require('./routes/api/landingPage'))
 app.use('/admin',require('./routes/api/admin'))
+app.use('/admin2',require('./routes/api/admin2'))
 app.use('/delivery',require('./routes/api/delivery'))
 mongoose.connection.once('open',()=>{
     console.log('Mongodb is connected');

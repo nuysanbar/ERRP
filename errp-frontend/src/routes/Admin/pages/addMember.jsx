@@ -22,7 +22,7 @@ export async function action({request}){
 export default function AddMember(){
     const navigate=useNavigate()
     const [toggleRetailer,setToggleRetailer]=useState(false)
-    const [values,setValues]=useState({username:"",firstname:"",lastname:"",password:"",role:"",subcity:"",city:"",phoneNum:"",email:"",profileImg:"",lat:"",lon:"",sellerCode:"",pdtToken:""})
+    const [values,setValues]=useState({username:"",firstname:"",lastname:"",password:"",role:"",subcity:"",city:"",phoneNum:"",email:"",profileImg:"",lat:"",lon:"",sellerCode:"",pdtToken:"",license:""})
     const handleRole=(e)=>{
         setValues({...values,"role":e.target.value})
         if(e.target.value==5508){
@@ -165,8 +165,7 @@ export default function AddMember(){
                 variant="outlined"
                 value={values.pdtToken}
                 onChange={(e)=>setValues({...values,"pdtToken":e.currentTarget.value})}/> <br /></>}
-                <label htmlFor="email"></label>
-                <label htmlFor="profileImg" ></label>
+               <label htmlFor="profileImg" >Profile</label><br />
                 <input type="file" name="profileImg"  onChange={(e)=>setValues({...values,"profileImg":e.currentTarget.files[0]})} required/><br />
                 <Button variant="outlined" style={{color:"var(--bl)",marginRight:"10px",borderColor:"var(--bl)"}} onClick={()=>navigate(-1)}>cancel</Button>   
                 <Button type="submit" variant="contained" style={{backgroundColor:"var(--bl)",width:"100px",textAlign:"center",margin:"10px"}}>submit</Button>

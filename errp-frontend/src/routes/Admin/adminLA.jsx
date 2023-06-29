@@ -2,7 +2,7 @@ import axios from "axios";
 import { redirect } from "react-router-dom";
 const access_token=window.localStorage.getItem('access_token');
 export async function usersLoader(){
-    const apiUrl=`http://localhost:3500/admin/getUsers`
+    const apiUrl=`http://localhost:3500/admin/getCustomers`
     const res = await axios.get(apiUrl,{
         headers: {
           'Authorization': 'Bearer ' + access_token
@@ -10,6 +10,26 @@ export async function usersLoader(){
       })
     console.log(res.data)
     return res.data
+}
+export async function retailersLoader(){
+  const apiUrl=`http://localhost:3500/admin/getRetailers`
+  const res = await axios.get(apiUrl,{
+      headers: {
+        'Authorization': 'Bearer ' + access_token
+      }
+    })
+  console.log(res.data)
+  return res.data
+}
+export async function deliverersLoader(){
+  const apiUrl=`http://localhost:3500/admin/getDeliverers`
+  const res = await axios.get(apiUrl,{
+      headers: {
+        'Authorization': 'Bearer ' + access_token
+      }
+    })
+  console.log(res.data)
+  return res.data
 }
 export async function productsAdminLoader(){
     const apiUrl=`http://localhost:3500/admin/getProducts`

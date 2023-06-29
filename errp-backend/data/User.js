@@ -39,6 +39,13 @@ const userSchema=new Schema({
     passwordResetHash:{
         type:String,
         default:""
+    },
+    license:{
+        type:String,
+        default:null
+    },
+    suspended:{
+        type:Boolean
     }
 });
 module.exports=mongoose.model('User',userSchema);

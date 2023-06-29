@@ -71,8 +71,7 @@ const orderSchema=new Schema({
         default:null
     },
     prime:{
-        type:String,
-        default:"No"
+        type:String
     },
     isDeliveredTwo:{
         type:Boolean,

@@ -8,6 +8,7 @@ const handleAuth=async (req,res)=>{
     if(!username || !password)return res.status(400).json({"message":"both username and password is required"});
     const foundUser= await User.findOne({username:username}).exec();
     if(!foundUser) return res.status(400).json({"message":"username is not available sign up first"});
+    if(foundUser.suspended)return res.status(400).json({"message":"your are temporarly banned from accessing you account contact us"});
     const match= await bcrypt.compare(password,foundUser.password);
     if(match){
         const roles=foundUser.roles;

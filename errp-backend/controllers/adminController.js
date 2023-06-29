@@ -6,23 +6,29 @@ const Favorite=require("../data/Favorite")
 const Order=require("../data/order")
 const Merchant=require("../data/merchant")
 const bcrypt=require("bcrypt")
-const getUsers=async(req,res)=>{
-    const results=await User.find({},{password:false})
+const getCustomers=async(req,res)=>{
+    const results=await User.find({roles:2001},{password:false})
     return res.status(201).json(results)
 }
 const getUser=async(req,res)=>{
     console.log(req.params.username)
     const result=await User.findOne({"username":req.params.username},{username:true,roles:true}).exec()
-    console.log(result)
     res.status(201).json(result)
+}
+const getRetailers=async(req,res)=>{
+    const results=await User.find({roles:5508},{password:false})
+    return res.status(201).json(results)
+}
+const getDeliverers=async(req,res)=>{
+    const results=await User.find({roles:3011},{password:false})
+    return res.status(201).json(results)
 }
 const getProducts=async(req,res)=>{
     const results= await Product.find()
     return res.status(201).json(results)
 }
 const addUser=async(req,res)=>{
-    console.log(req.body)
-    console.log(req.file.filename)
+
     const {username,firstname,lastname,password,role,subcity,city,lat,lon,phoneNum,email,sellerCode,pdtToken}=req.body;
     if(!username || !password|| !role || !firstname || !lastname || !subcity || !city|| !lat || !lon || !phoneNum ||!email) return res.status(400).json({"message":"bad request"})
     const duplicate= await User.findOne({username:username}).exec();
@@ -57,7 +63,8 @@ const addUser=async(req,res)=>{
             "lon":parseFloat(lon),
             "email":email,
             "phoneNum":parseInt(phoneNum),
-            "imgUrl":req.file.filename
+            "imgUrl":req.file.filename,
+            
         })
         console.log(result);
         console.log("new user added")
@@ -92,6 +99,18 @@ const editProduct=async(req,res)=>{
         res.status(500).json({"error":"server problem"})
     }
 }
+const addLicense=async(req,res)=>{
+    console.log(req.params.id)
+    try{
+        const result= await User.findOne({"username":req.params.id}).exec()
+        if(result) result.license=req.file.filename
+        result.save()
+        console.log("license added")
+        res.status(201).json({"success":"license is updated successfully"})
+    }catch(err){
+        res.status(500).json({"error":"server problem"})
+    }
+}
 const deleteUser=async(req,res)=>{
     const username=req.params.username;
     const role=req.params.role
@@ -99,11 +118,11 @@ const deleteUser=async(req,res)=>{
     console.log("delete operation progressing")
     if(!username||!role)return res.sendStatus(404)
     try{
-    if(role=="retailer"){
+    if(role=="retailer"){ 
         const allDelivered=await Order.findOne({"retailerUserName":username,"delivered":false})
         if(!allDelivered){
         const deleteUser=await User.deleteOne({"username":username})
-        const deleteProducts=await RetailerProduct.deleteMany({"username":username})
+        const deleteProducts=await RetailerProduct.deleteMany({"retailerUserName":username})
         const deleteMerchant=await Merchant.deleteOne({"username":username})
         const deleteSaved=await Saved.deleteMany({"username":username})
         const deleteFavorites=await Favorite.deleteOne({"username":username})
@@ -138,5 +157,17 @@ const editMember=async(req,res)=>{
         return res.status(500).json({"message":"server problem"})
     }
 }
-
-module.exports={editProduct, addUser,getUsers,getProducts,editMember,getUser,deleteUser}
+const toggleSuspend=async(req,res)=>{
+    const username=req.params.id;
+    console.log(username)
+    try{
+        const result=await User.findOne({"username":username}).exec()
+        var status=result.suspended;
+        result.suspended=!status;
+        result.save()
+        return res.status(201).json({"message":username+"status is updated member"})
+    }catch(err){
+        return res.status(500).json({"message":"server problem"})
+    }
+}
+module.exports={editProduct, addUser,getCustomers,getProducts,editMember,getUser,deleteUser,getRetailers,getDeliverers,addLicense,toggleSuspend}

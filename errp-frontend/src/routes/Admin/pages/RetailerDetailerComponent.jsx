@@ -1,6 +1,6 @@
 import { filter } from 'lodash';
-import { sentenceCase } from 'change-case';
 import { useState } from 'react';
+import Map from "../../brands/simpleMap"
 import { useLoaderData,Link,redirect } from 'react-router-dom';
 // @mui
 import {
@@ -8,40 +8,31 @@ import {
   Table,
   Stack,
   Paper,
-  Avatar,
-  Button,
-  Popover,
-  Checkbox,
   TableRow,
-  MenuItem,
   TableBody,
   TableCell,
   Container,
   Typography,
-  IconButton,
   TableContainer,
   TablePagination,
 } from '@mui/material';
 // components
-import Label from '../components/label';
-import Iconify from '../components/iconify';
-import Scrollbar from '../components/scrollbar';
+import Button from '@mui/material/Button';
+import {Form } from "react-router-dom"
+import Scrollbar from '../../Admin/components/scrollbar';
 import axios from 'axios'
 // sections
-import { UserListHead, UserListToolbar } from '../sections/@dashboard/user';
+import { UserListHead, UserListToolbar } from '../../Admin/sections/@dashboard/user';
 // mock
 // import USERLIST from '../_mock/user';
 
 // ----------------------------------------------------------------------
 const access_token=window.localStorage.getItem('access_token')
 const TABLE_HEAD = [
-  { id: 'name', label: 'Name', alignRight: false },
-  { id: 'address', label: 'address', alignRight: false },
-  { id: 'role', label: 'Role', alignRight: false },
-  { id: 'status', label: 'Status', alignRight: false },
-  { id: '' },
+  { id: 'name', label: 'brand name', alignRight: false },
+  { id: 'price', label: 'price', alignRight: false },
+  { id: 'usedornew', label: 'used or new', alignRight: false },
 ];
-
 // ----------------------------------------------------------------------
 
 function descendingComparator(a, b, orderBy) {
@@ -68,25 +59,73 @@ function applySortFilter(array, comparator, query) {
     return a[1] - b[1];
   });
   if (query) {
-    return filter(array, (_user) => _user.name.toLowerCase().indexOf(query.toLowerCase()) !== -1);
+    return filter(array, (_user) => _user.brandName.toLowerCase().indexOf(query.toLowerCase()) !== -1);
   }
   return stabilizedThis.map((el) => el[0]);
 }
-const assignRole=(value)=>{
-  var result;
-  if(value=="2001"){
-    result='consumer'
-  }else if(value=="5508"){
-    result="retailer"
-  }else if(value=="3011"){
-    result="delivery ppl"
-  }else{
-    result="admin"
-  }
-  return result
+export async function addLicenseAction({request,params}){
+  const formData = await request.formData();
+  const apiUrl=`http://localhost:3500/admin/addLicense/${params.id}`
+  const res=await axios.put(apiUrl,formData,{
+      headers:{
+          "Authorization":"Bearer "+access_token
+      }
+  })
+  const response=res.data
+  console.log(response)
+  return redirect(`/admin/retailers/${params.id}/license`);
 }
-export default function UserPage() {
-  const users=useLoaderData()
+export function License(){
+    const response=useLoaderData()
+    return (
+        <div>
+          <div>
+          <img src={`http://localhost:3500/delivery/${response.license}`} alt="license" style={{width:"600px",height:"700px",display:"block",margin:"10px auto",borderRadius:"20px"}}/>  
+          </div>
+             <Form   method="put" encType="multipart/form-data" style={{width:"600px",display:"block",margin:"0 auto"}} >
+                <label htmlFor="license">update license :</label>
+                <input type="file" name="license" required/><br />  
+                <Button type="submit" variant="contained" style={{backgroundColor:"var(--bl)",width:"100px",textAlign:"center",margin:"10px"}}>submit</Button>
+            </Form>
+        </div>
+    )
+}
+export function UpdateStatus(){
+    const response=useLoaderData()
+    const [suspended,setSuspended]=useState(response.suspended)
+    const toggleSuspend=async(username,suspended,setSuspended)=>{
+      setSuspended(!suspended)
+      const apiUrl=`http://localhost:3500/admin/changeStatus/${username}/toggleSuspend`
+      const res = await axios.get(apiUrl,{
+          headers: {
+            'Authorization': 'Bearer ' + access_token
+          }
+        })
+      console.log(res.data)
+      return res.data
+    }
+    return (
+        <div>
+            <div style={{display:"inline-block",width:"400px"}}>
+              <img src={`http://localhost:3500/${response.imgUrl}`} alt="profile pic" style={{width:"400px",height:"500px",height:"500px",marginTop:"30px",borderRadius:"20px"}} />
+            </div>
+            <div style={{display:"inline-block",width:"400px",marginLeft:"30px",verticalAlign:"top"}}>
+              
+              <h4>Name : {response.firstname} {response.lastname}</h4>
+              <h4>PHONE NO : +251{response.phoneNum}</h4>
+              <h4>ADDRESS : {response.subcity}, {response.city}</h4>
+              <h4>STATUS : {suspended? <span style={{color:"red"}}>pending</span>:<span style={{color:"green"}}>active</span> }</h4>
+              <Map markers={[{address: response.firstname, lat:parseFloat(response.lat), lng:parseFloat(response.lon)}]}/> 
+            </div>
+            <div style={{width:"400px",margin:"0 auto"}}>
+              {suspended &&<Button variant='outlined' style={{color:"red",borderColor:"var(--bl)"}} onClick={()=>toggleSuspend(response.username,suspended,setSuspended)}>REMOVE PENDING STATUS</Button>}
+              {!suspended &&<Button variant='contained'style={{backgroundColor:"var(--bl)"}}  onClick={()=>toggleSuspend(response.username,suspended,setSuspended)}>sUSPEND TEMPORARLY</Button>}
+            </div>
+        </div>
+    )
+}
+export  function RetailersProduct() {
+  const products=useLoaderData()
   const [open, setOpen] = useState(null);
 
   const [page, setPage] = useState(0);
@@ -95,37 +134,20 @@ export default function UserPage() {
 
   const [selected, setSelected] = useState([]);
 
-  const [orderBy, setOrderBy] = useState('name');
+  const [orderBy, setOrderBy] = useState('brandName');
 
   const [filterName, setFilterName] = useState('');
 
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
-  const [current,setCurrent]=useState(null)
-  const [currentRole,setCurrentRole]=useState(null)
-  const USERLIST=users.map((user)=>{
+  const PRODUCTSLIST=products.map((product)=>{
     return {
-      "username":user.username,
-      "name":`${user.firstname} ${user.lastname}`,
-      "id":user._id,
-      "role":assignRole(user.roles),
-      "address":`${user.subcity}, ${user.city}`,
-      "status":user.suspended,
-      "avatarUrl":`http://localhost:3500/${user.imgUrl}`
+      barcode:product.barcode,
+      brandName:product.brandName,
+      price:product.price,
+      usedOrNew:product.usedOrNew
     }
   })
-
-  const handleOpenMenu = (event,role) => {
-    console.log(event.currentTarget.id)
-    console.log(role)
-    setCurrent(event.currentTarget.id)
-    setCurrentRole(role)
-    setOpen(event.currentTarget);
-  };
-
-  const handleCloseMenu = () => {
-    setOpen(null);
-  };
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -146,19 +168,10 @@ export default function UserPage() {
     setPage(0);
     setFilterName(event.target.value);
   }
-  const handleDeleteUser=async()=>{
-    const apiUrl=`http://localhost:3500/admin/deleteMember/${current}/${currentRole}`
-    const response=await axios.delete(apiUrl ,{
-        headers:{
-            "Authorization":"Bearer "+access_token
-        }
-    })
-    console.log(response.data)
-    return redirect("/admin")
-  }
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - USERLIST.length) : 0;
 
-  const filteredUsers = applySortFilter(USERLIST, getComparator(order, orderBy), filterName);
+  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - PRODUCTSLIST.length) : 0;
+
+  const filteredUsers = applySortFilter(PRODUCTSLIST, getComparator(order, orderBy), filterName);
 
   const isNotFound = !filteredUsers.length && !!filterName;
 
@@ -174,7 +187,7 @@ export default function UserPage() {
                   order={order}
                   orderBy={orderBy}
                   headLabel={TABLE_HEAD}
-                  rowCount={USERLIST.length}
+                  rowCount={PRODUCTSLIST.length}
                   onRequestSort={handleRequestSort}
                   options={{
                     selectableRows: false // <===== will turn off checkboxes in rows
@@ -182,31 +195,22 @@ export default function UserPage() {
                 />
                 <TableBody>
                   {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                    const {username,name,id,avatarUrl,role,status,address}=row;
-                    const selectedUser = selected.indexOf(name) !== -1; 
+                    const {barcode,brandName,price,usedOrNew}=row;
+                    // const selectedUser = selected.indexOf(name) !== -1; 
                     return (
-                      <TableRow hover key={id} tabIndex={-1} role="checkbox" selected={selectedUser} component={Link}
-                      to={`/admin/customers/${username}`} style={{textDecoration:"none"}}>
+                      <TableRow hover key={barcode} tabIndex={-1} component={"a"}
+                      href={`/admin/products/${barcode}`} style={{textDecoration:"none"}}>
                         <TableCell padding="checkbox">
                         </TableCell>
                         <TableCell component="th" scope="row" padding="none">
                           <Stack direction="row" alignItems="center" spacing={2}>
-                            <Avatar alt={name} src={avatarUrl} />
                             <Typography variant="subtitle2" noWrap>
-                              {name}
+                              {brandName}
                             </Typography>
                           </Stack>
                         </TableCell>
-                        <TableCell align="left">{address}</TableCell>
-                        <TableCell align="left">{role}</TableCell>
-                        <TableCell align="left">
-                            {status? <span style={{color:"red"}}>pending</span>: <span style={{color:"green"}}>active</span>}
-                        </TableCell>
-                        <TableCell align="right">
-                          <IconButton size="large" color="inherit" id={username} onClick={(event)=>handleOpenMenu(event,role)}>
-                            <Iconify icon={'eva:more-vertical-fill'} />
-                          </IconButton>
-                        </TableCell>
+                        <TableCell align="left">{price}</TableCell>
+                        <TableCell align="left">{usedOrNew}</TableCell>
                       </TableRow>
                     );
                   })}
@@ -241,7 +245,7 @@ export default function UserPage() {
           <TablePagination
             rowsPerPageOptions={[5, 10, 25]}
             component="div"
-            count={USERLIST.length}
+            count={PRODUCTSLIST.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}
@@ -249,37 +253,6 @@ export default function UserPage() {
           />
         </Card>
       </Container>
-    
-      <Popover
-        open={Boolean(open)}
-        anchorEl={open}
-        onClose={handleCloseMenu}
-        anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
-        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-        PaperProps={{
-          sx: {
-            p: 1,
-            width: 140,
-            '& .MuiMenuItem-root': {
-              px: 1,
-              typography: 'body2',
-              borderRadius: 0.75,
-            },
-          },
-        }}
-      >
-      
-        <MenuItem 
-         component={Link}
-         to={`/admin/users/edit/${current}`} >
-          <Iconify icon={'eva:edit-fill'} sx={{ mr: 2 }} />
-          edit
-        </MenuItem>
-        <MenuItem sx={{ color: 'error.main' }} onClick={handleDeleteUser}>
-          <Iconify icon={'eva:trash-2-outline'} sx={{ mr: 2 }} />
-          Delete
-        </MenuItem>
-      </Popover>
     </>
   );
 }

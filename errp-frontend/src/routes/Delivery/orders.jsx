@@ -8,12 +8,7 @@ import {
   Table,
   Stack,
   Paper,
-  Avatar,
-  Button,
-  Popover,
-  Checkbox,
   TableRow,
-  MenuItem,
   TableBody,
   TableCell,
   Container,
@@ -23,8 +18,6 @@ import {
   TablePagination,
 } from '@mui/material';
 // components
-import Label from '../Admin/components/label';
-import Iconify from '../Admin/components/iconify';
 import Scrollbar from '../Admin/components/scrollbar';
 import axios from 'axios'
 // sections
@@ -94,8 +87,6 @@ export default function Orders() {
 
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
-  const [current,setCurrent]=useState(null)
-  const [currentRole,setCurrentRole]=useState(null)
   const ORDERSLIST=orders.map((order)=>{
     return {
         orderId:order.orderId,
@@ -107,16 +98,6 @@ export default function Orders() {
         date:order.date
     }
   })
-
-  const handleOpenMenu = (event) => {
-    console.log(event.currentTarget.id)
-    setCurrent(event.currentTarget.id)
-    setOpen(event.currentTarget);
-  };
-
-  const handleCloseMenu = () => {
-    setOpen(null);
-  };
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';

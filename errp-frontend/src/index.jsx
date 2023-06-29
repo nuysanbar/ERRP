@@ -35,7 +35,7 @@ import SignIn, {action as signInAction} from "./routes/newSignIn"
 import { createBrowserRouter,RouterProvider} from "react-router-dom";
 import UserPage from './routes/Admin/pages/UserPage';
 import ProductsPage from './routes/Admin/pages/ProductsPage';
-import { usersLoader,productsAdminLoader,memberAddAction,editProductAction } from "./routes/Admin/adminLA";
+import { usersLoader,productsAdminLoader,memberAddAction,editProductAction,retailersLoader,deliverersLoader } from "./routes/Admin/adminLA";
 import AddMember, {action as addMemberAction} from "./routes/Admin/pages/addMember";
 import EditMember,{loader as editMemberLoader,action as editMemberAction} from "./routes/Admin/pages/editMember";
 import EditProduct, {action as productsEditAction} from "./routes/Admin/pages/editProduct";
@@ -45,6 +45,16 @@ import OrderDetails, {loader as orderDetailLoader,action as orderDetailAction} f
 import Delivered, {loader as deliveredLoader} from "./routes/Delivery/delivered";
 import ForgotPassword, {action as forgotPasswordAction} from "./routes/forgotPassword";
 import ResetPassword, {action as resetPasswordAction} from "./routes/resetPassword";
+import RetailersPage from "./routes/Admin/pages/retailersPage"
+import DeliverersPage from "./routes/Admin/pages/deliverers";
+import RetailerDetail, {loader as RetailerDetailLoader,RetailerProductsLoader} from "./routes/Admin/pages/retailerDetail"
+import DelivererDetail, {loader as delivererDetailLoader} from "./routes/Admin/pages/delivererDetail";
+import ProductDetail, {loader as ProductDetailLoader,ProductRetailerLoader} from "./routes/Admin/pages/productDetail";
+import { License,RetailersProduct,UpdateStatus,addLicenseAction } from "./routes/Admin/pages/RetailerDetailerComponent";
+import { ProductStatus,ProductRetailers } from "./routes/Admin/pages/productDetailComponent";
+import OrdersPage from "./routes/Admin/pages/ordersPage";
+import OrdersDetail, {specificOrdersLoader,loader as ordersDetailLoader} from "./routes/Admin/pages/ordersDetail";
+import CustomerDetail from "./routes/Admin/pages/customerDetail";
 const router=createBrowserRouter([
     {
         path:'/',
@@ -83,9 +93,38 @@ const router=createBrowserRouter([
         errorElement:<ErrorPage><p>page not available</p></ErrorPage>,
         children:[
             {
-                index:true,
+                path:"/admin/customers",
                 element:<UserPage />,
                 loader:usersLoader
+            },
+            {
+                path:"/admin/customers/:id",
+                element:<CustomerDetail />,
+                loader:delivererDetailLoader,
+                children:[
+                    {
+                        index:true,
+                        element:<UpdateStatus />,
+                        loader:RetailerDetailLoader
+                    }
+                ]
+            },
+            {
+                path:"/admin/deliverers",
+                element:<DeliverersPage/>,
+                loader:deliverersLoader
+            },
+            {
+                path:"/admin/deliverers/:id",
+                element:<DelivererDetail/>,
+                loader:delivererDetailLoader,
+                children:[
+                    {
+                        index:true,
+                        element:<UpdateStatus/>,
+                        loader:RetailerDetailLoader
+                    }
+                ]
             },
             {
                 path:'/admin/users/addMember',
@@ -99,9 +138,64 @@ const router=createBrowserRouter([
                 action:editMemberAction
             },
             {
+                path:"/admin/orders",
+                element:<OrdersPage />,
+                loader:ordersDetailLoader
+            },
+            {
+                path:"/admin/orders/:id",
+                element:<OrdersDetail />,
+                loader:specificOrdersLoader
+            },
+            {
                 path:"/admin/products",
                 element:<ProductsPage/>,
-                loader:productsAdminLoader
+                loader:productsAdminLoader,
+            },
+            {
+                path:"/admin/products/:id",
+                element:<ProductDetail/>,
+                loader:ProductDetailLoader,
+                children:[
+                    {
+                        path:"/admin/products/:id/status",
+                        element:<ProductStatus/>,
+                        loader:ProductDetailLoader,
+                    },
+                    {
+                        path:"/admin/products/:id/retailers",
+                        element: <ProductRetailers/>,
+                        loader:ProductRetailerLoader,
+                    },
+                ]
+            },
+            {
+                path:"/admin/retailers",
+                element:<RetailersPage/>,
+                loader:retailersLoader
+            },
+            {
+                path:"/admin/retailers/:id",
+                element:<RetailerDetail/>,
+                loader:RetailerDetailLoader,
+                children:[
+                    {
+                        path:"/admin/retailers/:id/license",
+                        element:<License/>,
+                        loader:RetailerDetailLoader,
+                        action:addLicenseAction
+                    },
+                    {
+                        path:"/admin/retailers/:id/products",
+                        element:<RetailersProduct/>,
+                        loader:RetailerProductsLoader
+                    },
+                    {
+                        path:"/admin/retailers/:id/status",
+                        element:<UpdateStatus/>,
+                        loader:RetailerDetailLoader
+                    },
+                ]
             },
             {
                 path:"/admin/products/edit/:id",
@@ -121,9 +215,6 @@ const router=createBrowserRouter([
                         action:profileEditAction
                     }
                 ]
-            },
-            {
-                
             },
             {
                 path:"/admin/logout",
