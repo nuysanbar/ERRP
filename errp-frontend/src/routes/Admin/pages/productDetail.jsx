@@ -46,6 +46,18 @@ export async function loader({params}){
     console.log(response)
     return response;
 }
+export async function PendingProductLoader({params}){
+    const access_token=window.localStorage.getItem("access_token")
+    const apiUrl=`http://localhost:3500/admin2/pendingProducts/${params.id}`
+    const res=await axios.get(apiUrl,{
+        headers:{
+            'Authorization':"Bearer "+access_token
+        }
+    })
+    const response=res.data
+    console.log(response)
+    return response;
+}
 export async function ProductRetailerLoader({params}){
     const access_token=window.localStorage.getItem("access_token")
     const apiUrl=`http://localhost:3500/admin2/products/${params.id}/retailers`

@@ -51,6 +51,16 @@ export async function productsAdminLoader(){
     console.log(res.data)
     return res.data
 }
+export async function PendingProductsLoader(){
+  const apiUrl=`http://localhost:3500/admin2/pendingProducts`
+  const res = await axios.get(apiUrl,{
+      headers: {
+        'Authorization': 'Bearer ' + access_token
+      }
+    })
+  console.log(res.data)
+  return res.data
+}
 export async function editProductAction({request}){
     const formData = await request.formData();
     const apiUrl='http://localhost:3500/admin/editProduct'

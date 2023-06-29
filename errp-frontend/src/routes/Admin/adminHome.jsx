@@ -72,13 +72,13 @@ export default function Admin() {
   export function DataHolder(){
     const response=useLoaderData()
     return(
-      <div style={{display:"inline-block",textAlign:"center"}}>
+      <div style={{display:"inline-block",textAlign:"center",margin:"50px auto 105px"}}>
         <RectangleComponent background={"rgba(4, 24, 66,0.5)"} color={"white"} name={"Total Orders"} dataValue={response[0].totalOrders} imgUrl={"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS8erehh1z-cwW_T-dTa6ebFWv9DnOrcYO4YFuUruw&s"}/>
-        <RectangleComponent background={"rgba(4, 24, 66,0.6)"} color={"lightgreen"} name={"Total Orders Delivered"} dataValue={response[1].totalOrdersDelivered} imgUrl={"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSB2V5m6YgXZvwnK-VYgmGgdbxngNPQ0Ao8PjcraAE&s"}/>
-        <RectangleComponent background={"rgba(4, 24, 66,0.7)"} color={"yellow"} name={"Revenue"} dataValue={Math.round(response[5].revenue)} imgUrl={"https://cdn-icons-png.flaticon.com/512/4577/4577278.png"}/>
-        <RectangleComponent background={"rgba(4, 24, 66,0.8)"} color={"red"} name={"delivery man"} dataValue={response[2].deliverers} imgUrl={"https://png.pngtree.com/png-vector/20210525/ourlarge/pngtree-the-delivery-man-icon-rides-a-motorbike-png-image_3343631.jpg"}/>
-        <RectangleComponent background={"rgba(4, 24, 66,0.9)"} color={"aqua"} name={"customers"} dataValue={response[3].consumers} imgUrl={"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRkwx72sYi5sNeQzrKLGW8grJ1PhtZyf2zZZPULZE0&s"}/>
-        <RectangleComponent background={"rgba(4, 24, 66)"} color={"orange"} name={"retailers"} dataValue={response[4].retailers} imgUrl={"https://d1nhio0ox7pgb.cloudfront.net/_img/g_collection_png/standard/512x512/businessman.png"}/>
+        <RectangleComponent background={"rgba(4, 24, 66,0.55)"} color={"lightgreen"} name={"Total Orders Delivered"} dataValue={response[1].totalOrdersDelivered} imgUrl={"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSB2V5m6YgXZvwnK-VYgmGgdbxngNPQ0Ao8PjcraAE&s"}/>
+        <RectangleComponent background={"rgba(4, 24, 66,0.6)"} color={"yellow"} name={"Revenue"} dataValue={Math.round(response[5].revenue)} imgUrl={"https://cdn-icons-png.flaticon.com/512/4577/4577278.png"}/>
+        <RectangleComponent background={"rgba(4, 24, 66,0.65)"} color={"pink"} name={"delivery man"} dataValue={response[2].deliverers} imgUrl={"https://png.pngtree.com/png-vector/20210525/ourlarge/pngtree-the-delivery-man-icon-rides-a-motorbike-png-image_3343631.jpg"}/>
+        <RectangleComponent background={"rgba(4, 24, 66,0.7)"} color={"aqua"} name={"customers"} dataValue={response[3].consumers} imgUrl={"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRkwx72sYi5sNeQzrKLGW8grJ1PhtZyf2zZZPULZE0&s"}/>
+        <RectangleComponent background={"rgba(4, 24, 66,0.75)"} color={"orange"} name={"retailers"} dataValue={response[4].retailers} imgUrl={"https://d1nhio0ox7pgb.cloudfront.net/_img/g_collection_png/standard/512x512/businessman.png"}/>
       </div>
     )
   }

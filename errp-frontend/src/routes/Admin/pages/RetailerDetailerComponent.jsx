@@ -1,7 +1,7 @@
 import { filter } from 'lodash';
 import { useState } from 'react';
 import Map from "../../brands/simpleMap"
-import { useLoaderData,Link,redirect } from 'react-router-dom';
+import { useLoaderData,Link,redirect,NavLink } from 'react-router-dom';
 // @mui
 import {
   Card,
@@ -75,6 +75,18 @@ export async function addLicenseAction({request,params}){
   console.log(response)
   return redirect(`/admin/retailers/${params.id}/license`);
 }
+export async function profileEditAction2({request,params}){
+  const formData = await request.formData();
+  const access_token=window.localStorage.getItem('access_token')
+  const apiUrl=`http://localhost:3500/admin2/update/${params.id}`
+  const response=await axios.post(apiUrl,formData ,{
+      headers:{
+          "Authorization":"Bearer "+access_token
+      }
+    })
+    console.log(response.data)
+    return redirect('../')
+}
 export function License(){
     const response=useLoaderData()
     return (
@@ -93,6 +105,14 @@ export function License(){
 export function UpdateStatus(){
     const response=useLoaderData()
     const [suspended,setSuspended]=useState(response.suspended)
+    var role
+    if(response.roles==3011){
+        role="deliverers"
+    }else if(response.roles==5508){
+      role="retailers"
+    }else{
+      role="customers"
+    }
     const toggleSuspend=async(username,suspended,setSuspended)=>{
       setSuspended(!suspended)
       const apiUrl=`http://localhost:3500/admin/changeStatus/${username}/toggleSuspend`
@@ -118,6 +138,7 @@ export function UpdateStatus(){
               <Map markers={[{address: response.firstname, lat:parseFloat(response.lat), lng:parseFloat(response.lon)}]}/> 
             </div>
             <div style={{width:"400px",margin:"0 auto"}}>
+              <NavLink to={`/admin/${role}/${response.username}/edit`} style={{padding:"0 30px",fontWeight:"bold"}}>edit</NavLink>
               {suspended &&<Button variant='outlined' style={{color:"red",borderColor:"var(--bl)"}} onClick={()=>toggleSuspend(response.username,suspended,setSuspended)}>REMOVE PENDING STATUS</Button>}
               {!suspended &&<Button variant='contained'style={{backgroundColor:"var(--bl)"}}  onClick={()=>toggleSuspend(response.username,suspended,setSuspended)}>sUSPEND TEMPORARLY</Button>}
             </div>
@@ -199,7 +220,7 @@ export  function RetailersProduct() {
                     // const selectedUser = selected.indexOf(name) !== -1; 
                     return (
                       <TableRow hover key={barcode} tabIndex={-1} component={"a"}
-                      href={`/admin/products/${barcode}`} style={{textDecoration:"none"}}>
+                      href={`/admin/products/${barcode}/status`} style={{textDecoration:"none"}}>
                         <TableCell padding="checkbox">
                         </TableCell>
                         <TableCell component="th" scope="row" padding="none">

@@ -1,10 +1,7 @@
 const Product=require("../../data/Product");
 const RetailerProduct=require("../../data/RetailerProduct")
 const PendingProduct=require("../../data/PendingProducts")
-var recombee=require("recombee-api-client")
-var rqs = recombee.requests;
-var privateToken="dnd6Tav4GksaTyatcBgaO3VTsWwhhYLr6Tws4iIM877BZNcyK3GduLySqXMjFdB0"
-var client = new recombee.ApiClient("astu-dev",privateToken,{region:'us-west'})
+
 const getProducts=async(req,res)=>{
     var productInfo=[];
     const products= await RetailerProduct.find({retailerUserName:req.username})
@@ -69,38 +66,6 @@ const addNewProduct=async(req,res)=>{
                 "retailerUserName":req.username,
                 "usedOrNew":usedornew
             })
-
-        // const result=await Product.create({
-        //     "barcode":barcode,
-        //     "brandName":brandname,
-        //     "type":type,
-        //     "brand":brand,
-        //     "details":details,
-        //     "imgUrl":pictures
-        // })
-        // console.log(result);
-        // const result2= await RetailerProduct.create({
-        //     "barcode":barcode,
-        //     "price":price,
-        //     "availableAmount":amount,
-        //     "retailerUserName":req.username,
-        //     "usedOrNew":usedornew,
-        // })
-        // console.log(result2)
-        var rqst=new rqs.SetItemValues(barcode,{
-            "brandName":brandname,
-            "type":type,
-            "brand":brand,
-            "details":details
-        })
-        rqst.timeout=10000
-        client.send(rqst,(err,response)=>{
-            if(err){
-                console.log(err)
-            }else{
-                console.log(response)
-            }
-         })
         res.status(201).json({"success":"new product is created"})
     }catch(err){
         res.status(500).json({"error":"server problem"})

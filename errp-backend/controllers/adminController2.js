@@ -6,6 +6,11 @@ const Favorite=require("../data/Favorite")
 const Order=require("../data/order")
 const Merchant=require("../data/merchant")
 const bcrypt=require("bcrypt")
+const PendingProduct=require("../data/PendingProducts")
+var recombee=require("recombee-api-client")
+var rqs = recombee.requests;
+var privateToken="dnd6Tav4GksaTyatcBgaO3VTsWwhhYLr6Tws4iIM877BZNcyK3GduLySqXMjFdB0"
+var client = new recombee.ApiClient("astu-dev",privateToken,{region:'us-west'})
 
 const getRetailer=async(req,res)=>{
     const result=await User.findOne({"username":req.params.id}).exec()
@@ -31,6 +36,17 @@ const getRetailerProducts=async(req,res)=>{
 }
 const getProduct=async(req,res)=>{
     const result=await Product.findOne({"barcode":req.params.id}).exec()
+    console.log(result)
+    res.status(201).json(result)
+}
+const getPendingProduct=async(req,res)=>{
+    const result=await PendingProduct.findOne({"barcode":req.params.id}).exec()
+    console.log(result)
+    res.status(201).json(result)
+}
+const getPendingProducts=async(req,res)=>{
+    console.log("pending products called")
+    const result=await PendingProduct.find({}).exec()
     console.log(result)
     res.status(201).json(result)
 }
@@ -93,4 +109,75 @@ const dashboardData=async(req,res)=>{
     console.log("dashboard data sent")
     res.status(200).json(data)
 }
-module.exports={getRetailer,getRetailerProducts,getProduct,getProductRetailers,getOrders,getSingleOrder,getDeliverer,dashboardData}
+const handleApprove=async(req,res)=>{
+    console.log(req.params.id)
+    try{
+    const result=await PendingProduct.findOne({"barcode":req.params.id}).exec()
+    const productExist=await Product.findOne({"barcode":req.params.id}).exec()
+    console.log(result)
+    if(!productExist){
+        const createdProduct=await Product.create({
+            "barcode":result.barcode,
+            "brandName":result.brandName,
+            "type":result.type,
+            "brand":result.brand,
+            "details":result.details,
+            "imgUrl":result.imgUrl
+        })
+        console.log(createdProduct);
+        const createdRetailerProduct= await RetailerProduct.create({
+            "barcode":result.barcode,
+            "price":result.price,
+            "availableAmount":result.availableAmount,
+            "retailerUserName":result.retailerUserName,
+            "usedOrNew":result.usedOrNew,
+        })
+        console.log(createdRetailerProduct)
+        var rqst=new rqs.SetItemValues(result.barcode,{
+            "brandName":result.brandName,
+            "type":result.type,
+            "brand":result.brand,
+            "details":result.details
+        })
+        rqst.timeout=10000
+        client.send(rqst,(err,response)=>{
+            if(err){
+                console.log(err)
+            }else{
+                console.log(response)
+            }
+         })
+    const deletePending=await PendingProduct.deleteOne({"barcode":req.params.id}).exec()
+    }
+    res.status(201).json(result)
+}catch(err){
+    res.status(500).json({"message":"server problem"})
+ }
+}
+const handleRemove=async(req,res)=>{
+    const deletePending=await PendingProduct.deleteOne({"barcode":req.params.id}).exec()
+    res.status(201).json(deletePending)
+}
+const handleProfileUpdate=async(req,res)=>{
+    console.log("handle profile update")
+    try{
+        const user= await User.findOne({"username":req.params.id}).exec()
+        const {firstname,lastname,city,subcity,phone,email,password}=req.body
+        if(req.file) user.imgUrl=req.file.filename
+        if(firstname) user.firstname=firstname
+        if(lastname)user.lastname=lastname
+        if(city)user.city=city
+        if(subcity)user.subcity=subcity
+        if(phone)user.phoneNum=phone
+        if(email)user.email=email
+        if(password) {
+            const hashedPwd= await bcrypt.hash(password,10);
+            user.password=hashedPwd
+        }
+        user.save()
+        res.sendStatus(200)
+        }catch(err){
+            res.status(500).json({"message":"server problem"})
+        }
+}
+module.exports={getRetailer,getRetailerProducts,getProduct,getProductRetailers,getOrders,getSingleOrder,getDeliverer,dashboardData,getPendingProduct,getPendingProducts,handleApprove,handleRemove,handleProfileUpdate}

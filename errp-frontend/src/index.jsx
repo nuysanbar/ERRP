@@ -35,7 +35,9 @@ import SignIn, {action as signInAction} from "./routes/newSignIn"
 import { createBrowserRouter,RouterProvider} from "react-router-dom";
 import UserPage from './routes/Admin/pages/UserPage';
 import ProductsPage from './routes/Admin/pages/ProductsPage';
-import { usersLoader,productsAdminLoader,memberAddAction,editProductAction,retailersLoader,deliverersLoader,dashboardDataLoader } from "./routes/Admin/adminLA";
+import PendingProducts from "./routes/Admin/pages/PendingProductsPage";
+import {PendingProductsStatus} from "./routes/Admin/pages/PendingProductsComponent"
+import { usersLoader,productsAdminLoader,memberAddAction,editProductAction,retailersLoader,deliverersLoader,dashboardDataLoader,PendingProductsLoader } from "./routes/Admin/adminLA";
 import AddMember, {action as addMemberAction} from "./routes/Admin/pages/addMember";
 import EditMember,{loader as editMemberLoader,action as editMemberAction} from "./routes/Admin/pages/editMember";
 import EditProduct, {action as productsEditAction} from "./routes/Admin/pages/editProduct";
@@ -49,8 +51,9 @@ import RetailersPage from "./routes/Admin/pages/retailersPage"
 import DeliverersPage from "./routes/Admin/pages/deliverers";
 import RetailerDetail, {loader as RetailerDetailLoader,RetailerProductsLoader} from "./routes/Admin/pages/retailerDetail"
 import DelivererDetail, {loader as delivererDetailLoader} from "./routes/Admin/pages/delivererDetail";
-import ProductDetail, {loader as ProductDetailLoader,ProductRetailerLoader} from "./routes/Admin/pages/productDetail";
-import { License,RetailersProduct,UpdateStatus,addLicenseAction } from "./routes/Admin/pages/RetailerDetailerComponent";
+import ProductDetail, {loader as ProductDetailLoader,ProductRetailerLoader, PendingProductLoader} from "./routes/Admin/pages/productDetail";
+import PendingProductsDetail from "./routes/Admin/pages/PendingProductsDetail";
+import { License,RetailersProduct,UpdateStatus,addLicenseAction,profileEditAction2 } from "./routes/Admin/pages/RetailerDetailerComponent";
 import { ProductStatus,ProductRetailers } from "./routes/Admin/pages/productDetailComponent";
 import OrdersPage from "./routes/Admin/pages/ordersPage";
 import OrdersDetail, {specificOrdersLoader,loader as ordersDetailLoader} from "./routes/Admin/pages/ordersDetail";
@@ -97,11 +100,23 @@ const router=createBrowserRouter([
                 element: <DataHolder/>,
                 loader:dashboardDataLoader
             },
-            // {
-            //     path:"/admin/pendingProducts",
-            //     element:<PendingProducts/>,
-            //     loader:PendingProductsLoader
-            // },
+            {
+                path:"/admin/pendingProducts",
+                element:<PendingProducts />,
+                loader:PendingProductsLoader
+            },
+            {
+                path:"/admin/pendingProducts/:id",
+                element: <PendingProductsDetail />,
+                loader:PendingProductLoader,
+                children:[
+                    {
+                        index:true,
+                        element: <PendingProductsStatus />,
+                        loader:PendingProductLoader,
+                    },
+                ]
+            },
             {
                 path:"/admin/customers",
                 element:<UserPage />,
@@ -116,6 +131,11 @@ const router=createBrowserRouter([
                         index:true,
                         element:<UpdateStatus />,
                         loader:RetailerDetailLoader
+                    },
+                    {
+                        path:"/admin/customers/:id/edit",
+                        element:<ProfileEdit/>,
+                        action:profileEditAction2
                     }
                 ]
             },
@@ -133,6 +153,11 @@ const router=createBrowserRouter([
                         index:true,
                         element:<UpdateStatus/>,
                         loader:RetailerDetailLoader
+                    },
+                    {
+                        path:"/admin/deliverers/:id/edit",
+                        element:<ProfileEdit/>,
+                        action:profileEditAction2
                     }
                 ]
             },
@@ -177,6 +202,12 @@ const router=createBrowserRouter([
                         element: <ProductRetailers/>,
                         loader:ProductRetailerLoader,
                     },
+                    {
+                        path:"/admin/products/:id/edit",
+                        element:<EditProduct/>,
+                        loader:brandsLoader,
+                        action:productsEditAction
+                    },
                 ]
             },
             {
@@ -205,13 +236,12 @@ const router=createBrowserRouter([
                         element:<UpdateStatus/>,
                         loader:RetailerDetailLoader
                     },
+                    {
+                        path:"/admin/retailers/:id/edit",
+                        element:<ProfileEdit/>,
+                        action:profileEditAction2
+                    }
                 ]
-            },
-            {
-                path:"/admin/products/edit/:id",
-                element:<EditProduct/>,
-                loader:brandsLoader,
-                action:productsEditAction
             },
             {
                 path:"/admin/profile",

@@ -21,7 +21,7 @@ export async function action({request,params}){
     })
     const response=res.data
     console.log(response)
-    return redirect('/admin/products');
+    return redirect('../status');
 }
 function EmptyTextarea() {
     const blue = {

@@ -34,7 +34,6 @@ const TABLE_HEAD = [
   { id: 'name', label: 'name', alignRight: false },
   { id: 'brand', label: 'brand', alignRight: false },
   { id: 'category', label: 'category', alignRight: false },
-  { id: 'status', label: 'status', alignRight: false },
   { id: '' },
 ];
 
@@ -68,19 +67,7 @@ function applySortFilter(array, comparator, query) {
   }
   return stabilizedThis.map((el) => el[0]);
 }
-const assignRole=(value)=>{
-  var result;
-  if(value=="2001"){
-    result='consumer'
-  }else if(value=="5508"){
-    result="retailer"
-  }else if(value=="3011"){
-    result="delivery ppl"
-  }else{
-    result="admin"
-  }
-  return result
-}
+
 export default function ProductsPage() {
   const products=useLoaderData()
   const [open, setOpen] = useState(null);
@@ -97,8 +84,6 @@ export default function ProductsPage() {
 
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
-  const [current,setCurrent]=useState(null)
-  const [currentRole,setCurrentRole]=useState(null)
   const PRODUCTSLIST=products.map((item)=>{
     return {
       "id":item._id,
@@ -106,21 +91,8 @@ export default function ProductsPage() {
       "name":item.brandName,
       "brand":item.brand,
       "category":item.type,
-      "status":"active"
     }
     })
-
-  const handleOpenMenu = (event,role) => {
-    console.log(event.currentTarget.id)
-    console.log(role)
-    setCurrent(event.currentTarget.id)
-    setCurrentRole(role)
-    setOpen(event.currentTarget);
-  };
-
-  const handleCloseMenu = () => {
-    setOpen(null);
-  };
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -141,16 +113,7 @@ export default function ProductsPage() {
     setPage(0);
     setFilterName(event.target.value);
   }
-  const handleDeleteUser=async()=>{
-    const apiUrl=`http://localhost:3500/admin/deleteMember/${current}/${currentRole}`
-    const response=await axios.delete(apiUrl ,{
-        headers:{
-            "Authorization":"Bearer "+access_token
-        }
-    })
-    console.log(response.data)
-    return redirect("/admin")
-  }
+
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - PRODUCTSLIST.length) : 0;
 
   const filteredUsers = applySortFilter(PRODUCTSLIST, getComparator(order, orderBy), filterName);
@@ -160,14 +123,6 @@ export default function ProductsPage() {
   return (
     <>
       <Container>
-        <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
-          <Typography variant="h6" gutterBottom>
-            Inventories
-          </Typography>
-          <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} href='/admin/users/addMember' style={{backgroundColor:"var(--bl)"}}>
-            New Inventory
-          </Button>
-        </Stack>
         <Card>
           <UserListToolbar numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} />
           <Scrollbar>
@@ -185,7 +140,7 @@ export default function ProductsPage() {
                 />
                 <TableBody>
                   {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                    const {barcode,id,name,brand,category,status}=row;
+                    const {barcode,id,name,brand,category}=row;
                     const selectedUser = selected.indexOf(name) !== -1; 
                     return (
                       <TableRow hover key={id} tabIndex={-1} role="checkbox" selected={selectedUser} component={Link}
@@ -201,9 +156,6 @@ export default function ProductsPage() {
                         </TableCell>
                         <TableCell align="left">{brand}</TableCell>
                         <TableCell align="left">{category}</TableCell>
-                        <TableCell align="left">
-                          <Label color={(status === 'banned' && 'error') || 'success'}>{sentenceCase(status)}</Label>
-                        </TableCell>
                         <TableCell align="right">
                           <IconButton size="large" color="inherit"  >
                             <Iconify icon={'eva:more-vertical-fill'} />

@@ -1,5 +1,6 @@
 const express = require('express');
 const router=express.Router();
+const multer=require('multer')
 const adminController2 = require('../../controllers/adminController2.js');
 const verifyAdmin=(req,res,next)=>{
   if(!req?.roles) return res.sendStatus(401)
@@ -8,6 +9,19 @@ const verifyAdmin=(req,res,next)=>{
   }
   next()
 }
+
+var storage2 = multer.diskStorage({
+    destination: function (req, file, cb) {
+      console.log('calling destination...')
+      cb(null, './public/uploads/')
+    },
+    filename: function (req, file, cb) {
+      console.log(file.originalname)
+      cb(null, Date.now()+file.originalname)
+    }
+  })
+
+var upload2= multer({ storage: storage2})
 router.route("/dashbaord")
     .get(verifyAdmin,adminController2.dashboardData)
 router.route("/retailers/:id")
@@ -24,4 +38,14 @@ router.route("/orders/:id")
     .get(verifyAdmin,adminController2.getSingleOrder);
 router.route("/deliverers/:id")
     .get(verifyAdmin,adminController2.getDeliverer)
+router.route("/pendingProducts")
+    .get(verifyAdmin,adminController2.getPendingProducts)
+router.route("/pendingProducts/:id")
+    .get(verifyAdmin,adminController2.getPendingProduct);
+router.route("/handleRemove/:id")
+    .delete(verifyAdmin,adminController2.handleRemove)
+router.route("/handleApprove/:id")
+    .get(verifyAdmin,adminController2.handleApprove)
+router.route("/update/:id")
+    .post(verifyAdmin,upload2.single("profileImg"),adminController2.handleProfileUpdate)
 module.exports=router;
