@@ -1,4 +1,4 @@
-import {useLoaderData,Form,redirect } from 'react-router-dom'
+import {useLoaderData,Form,redirect,UseHistory } from 'react-router-dom'
 import {IoArrowForward} from 'react-icons/io5'
 import axios from 'axios'
 import { useState } from 'react';
@@ -24,7 +24,7 @@ export async function loader({params}){
     response2=res2.data
     console.log(response1,response2)
     return {response1,response2}}
-export async function action({request}){
+export async function action({request,params}){
     const formData = await request.formData();
     const updates = Object.fromEntries(formData);
     const apiUrl='http://localhost:3500/order/CheckoutExpress'
@@ -33,8 +33,13 @@ export async function action({request}){
             "Authorization":"Bearer "+access_token
         }
     })
-
-    return redirect(response.data.url);
+    console.log(response.data)
+    if(response.data.suspended===true){
+      return  redirect(`/home/retailerIsBanned/${updates.retailer}`)
+    }else{
+      console.log(response.data.url)
+      return redirect(response.data.url);
+    }
 }
 
 export default function ExpressCheckout(){

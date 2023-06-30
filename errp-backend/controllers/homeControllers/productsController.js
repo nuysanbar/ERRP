@@ -112,4 +112,10 @@ const deleteProduct=async(req,res)=>{
     res.sendStatus(200)
     return 0
 }
-module.exports={getProducts,getProduct,addProduct,addNewProduct,addOldProduct,updateAmount,updatePrice,deleteProduct}
+const getPendingProducts=async(req,res)=>{
+    console.log(req.username)
+    const results=await PendingProduct.find({"retailerUserName":req.username})
+    console.log(results)
+    res.status(200).json(results)
+}
+module.exports={getProducts,getProduct,addProduct,addNewProduct,addOldProduct,updateAmount,updatePrice,deleteProduct,getPendingProducts}

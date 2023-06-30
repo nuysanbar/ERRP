@@ -106,14 +106,14 @@ export default function ProductsListSingle(){
           <span className='availableAmount'>{amount} in stock</span>
             {changeAmount===false? <BiEdit onClick={()=>setChangeAmount(true)} className="edit"/>:
             <Form method="post" action="updateAmount" onSubmit={()=>setChangeAmount(false)}>
-                <input type="number"  name='amount' placeholder={amount} onChange={(e)=>setAmount(parseInt(e.currentTarget.value))}/>
+                <input type="number"  name='amount' min={1} placeholder={amount} onChange={(e)=>setAmount(parseInt(e.currentTarget.value))}/>
                 <GiCancel onClick={handleAmountCancel} className='cancel'/>
                 <button><FcApproval className='apply'/></button>
             </Form>} <br />
           <span className='price'>{price} ETB</span>
           {changePrice===false?  <BiEdit onClick={()=>setChangePrice(true)} className='edit'/>:
             <Form method="post" action='updatePrice' onSubmit={()=>setChangePrice(false)}>
-                <input type="number" name='price' placeholder={price} onChange={(e)=>setPrice(parseInt(e.currentTarget.value))}/>
+                <input type="number" name='price' min={100} placeholder={price} onChange={(e)=>setPrice(parseInt(e.currentTarget.value))}/>
                 <GiCancel onClick={handlePriceCancel} className='cancel'/>
                 <button><FcApproval className='apply'/></button>
             </Form>} <br />

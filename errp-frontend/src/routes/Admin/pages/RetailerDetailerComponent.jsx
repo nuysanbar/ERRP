@@ -1,7 +1,8 @@
 import { filter } from 'lodash';
 import { useState } from 'react';
 import Map from "../../brands/simpleMap"
-import { useLoaderData,Link,redirect,NavLink } from 'react-router-dom';
+import AlertDialog from '../../customAlertConfirm';
+import { useLoaderData,Link,redirect,NavLink ,useNavigate} from 'react-router-dom';
 // @mui
 import {
   Card,
@@ -104,7 +105,17 @@ export function License(){
 }
 export function UpdateStatus(){
     const response=useLoaderData()
+    const navigate=useNavigate()
     const [suspended,setSuspended]=useState(response.suspended)
+    const [open,setOpen]=useState(false)
+    const deleteTitle="Are you sure you want to delete this account permanently?"
+    const deleteContent="Click agree if you really want to remove this account from your platform"
+    const handleDisAgree = () => {
+      setOpen(false);
+    };
+    const handleClickOpen = () => {
+      setOpen(true);
+    };
     var role
     if(response.roles==3011){
         role="deliverers"
@@ -112,6 +123,17 @@ export function UpdateStatus(){
       role="retailers"
     }else{
       role="customers"
+    }
+    const handleDeleteUser=async()=>{
+      const apiUrl=`http://localhost:3500/admin/deleteMember/${response.username}/${role}`
+      console.log(apiUrl)
+      const result=await axios.delete(apiUrl ,{
+          headers:{
+              "Authorization":"Bearer "+access_token
+          }
+      })
+       console.log(result.data)
+       return navigate(-1)
     }
     const toggleSuspend=async(username,suspended,setSuspended)=>{
       setSuspended(!suspended)
@@ -137,11 +159,13 @@ export function UpdateStatus(){
               <h4>STATUS : {suspended? <span style={{color:"red"}}>pending</span>:<span style={{color:"green"}}>active</span> }</h4>
               <Map markers={[{address: response.firstname, lat:parseFloat(response.lat), lng:parseFloat(response.lon)}]}/> 
             </div>
-            <div style={{width:"400px",margin:"0 auto"}}>
+            <div style={{width:"700px",margin:"0 auto"}}>
               <NavLink to={`/admin/${role}/${response.username}/edit`} style={{padding:"0 30px",fontWeight:"bold"}}>edit</NavLink>
               {suspended &&<Button variant='outlined' style={{color:"red",borderColor:"var(--bl)"}} onClick={()=>toggleSuspend(response.username,suspended,setSuspended)}>REMOVE PENDING STATUS</Button>}
               {!suspended &&<Button variant='contained'style={{backgroundColor:"var(--bl)"}}  onClick={()=>toggleSuspend(response.username,suspended,setSuspended)}>sUSPEND TEMPORARLY</Button>}
+              <Button variant='contained' style={{backgroundColor:"red",marginLeft:"30px"}} onClick={handleClickOpen} >Delete Permanently</Button>
             </div>
+            <AlertDialog open={open} handleAgree={handleDeleteUser} handleDisAgree={handleDisAgree} title={deleteTitle} content={deleteContent}/>
         </div>
     )
 }

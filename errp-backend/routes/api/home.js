@@ -89,7 +89,8 @@ router.route('/profile')
     .get(profileController.getProfile)
 router.route('/profile/update')
     .post(upload2.single("profileImg"),profileController.updateProfile)
-    
 router.route("/saved")
     .get(savedController.getSavedProductAndPlace)
+router.route('/pendingProducts')
+    .get(productsController.getPendingProducts)
 module.exports=router;

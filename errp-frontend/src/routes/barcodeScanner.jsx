@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Quagga from 'quagga';
 
-export default function Scanner(props){
+const Scanner = (props) => {
 
   const firstUpdate = useRef(true);
   const [isStart, setIsStart] = useState(false);
@@ -67,20 +67,7 @@ export default function Scanner(props){
           }
         },
         decoder: {
-          readers: [
-            'code_128_reader',
-            'ean_reader',
-            'ean_8_reader',
-            'code_39_reader',
-            'code_39_vin_reader',
-            'codabar_reader',
-            'upc_reader',
-            'upc_e_reader',
-            'i2of5_reader',
-            'i2of5_reader',
-            '2of5_reader',
-            'code_93_reader'
-          ]
+          readers: props.readers
         }
       },
       err => {
@@ -129,7 +116,7 @@ export default function Scanner(props){
   };
 
   return <div>
-    <h3>Barcode scanner in React - <a href="https://www.cluemediator.com/" target="_blank" rel="noopener">Clue Mediator</a></h3>
+    <h3>Barcode scanner in React - <a href="https://www.cluemediator.com/" target="_blank">Clue Mediator</a></h3>
     <button onClick={() => setIsStart(prevStart => !prevStart)} style={{ marginBottom: 20 }}>{isStart ? 'Stop' : 'Start'}</button>
     {isStart && <React.Fragment>
       <div id="scanner-container" />
@@ -137,3 +124,5 @@ export default function Scanner(props){
     </React.Fragment>}
   </div>
 }
+
+export default Scanner;

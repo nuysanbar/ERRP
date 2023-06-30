@@ -1,6 +1,7 @@
 import { Form,redirect,Outlet } from "react-router-dom";
 import axios from "axios";
 import Scanner from "./barcodeScanner";
+import { useState } from "react";
 const access_token=window.localStorage.getItem('access_token')
 export async function loader(){
   const apiUrl='http://localhost:3500/home/products'
@@ -36,11 +37,13 @@ export async function action({request}){
     return 0;
 }
 export default function Products(){
+  const [value,setValue]=useState(null)
+  console.log(value)
     return (
         <>
         {/* <Scanner /> */}
         <Form method="post">
-          <input type="text" name="barcode" placeholder="~ num ~"/>
+          <input type="number" hidden value={Math.floor((Math.random()*1000000)+1)}  name="barcode" placeholder="~ num ~"/>
           <button type="submit">add</button>
         </Form>
         <Outlet />

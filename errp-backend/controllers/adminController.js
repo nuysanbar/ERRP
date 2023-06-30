@@ -5,7 +5,8 @@ const Saved=require("../data/Saved")
 const Favorite=require("../data/Favorite")
 const Order=require("../data/order")
 const Merchant=require("../data/merchant")
-const bcrypt=require("bcrypt")
+const bcrypt=require("bcrypt");
+const PendingProducts = require("../data/PendingProducts");
 const getCustomers=async(req,res)=>{
     const results=await User.find({roles:2001},{password:false})
     return res.status(201).json(results)
@@ -118,23 +119,36 @@ const deleteUser=async(req,res)=>{
     console.log("delete operation progressing")
     if(!username||!role)return res.sendStatus(404)
     try{
-    if(role=="retailer"){ 
-        const allDelivered=await Order.findOne({"retailerUserName":username,"delivered":false})
+    if(role=="retailers"){ 
+        const allDelivered=await Order.findOne({status:"Paid","retailerUserName":username,"delivered":false})
         if(!allDelivered){
-        const deleteUser=await User.deleteOne({"username":username})
+        const deletedUser=await User.deleteOne({"username":username})
         const deleteProducts=await RetailerProduct.deleteMany({"retailerUserName":username})
         const deleteMerchant=await Merchant.deleteOne({"username":username})
         const deleteSaved=await Saved.deleteMany({"username":username})
+        const deleteSaved2=await Saved.deleteMany({"retailerUserName":username})
         const deleteFavorites=await Favorite.deleteOne({"username":username})
+        const deletePendingProducts=await PendingProducts.deleteMany({"retailerUserName":username})
         console.log("retailer deleted successfully")
         return res.status(201).json({"message":username+" deleted succesfully"})
-    }}else{
-        const deleteUser2=await User.deleteOne({"username":username})
-        const deleteSaved2=await Saved.deleteMany({"username":username})
-        const deleteFavorites2=await Favorite.deleteOne({"username":username})
+    }else{
+        return res.status(400).json({"message":username+"can't be deleted there is ongoing order"})
+    }
+    }else if(role=="deliverers"){
+        const allDeliveredByHim=await Order.findOne({status:"Paid","deliveredBy":username,isDeliveredTwo:false})
+        if(!allDeliveredByHim){
+            const deleteUser2=await User.deleteOne({"username":username})
+        }else{
+            return res.status(400).json({"message":username+"can't be deleted there is ongoing order"})
+        }
+    }
+    else{
+        const deleteUser3=await User.deleteOne({"username":username})
+        const deleteSaved4=await Saved.deleteMany({"username":username})
+        const deleteFavorites3=await Favorite.deleteOne({"username":username})
         return res.status(201).json({"message":username+" deleted succesfully"})
     }}catch(err){
-        return res.status(500).json({"message":"server problem"})
+        return res.status(404).json({"message":"user can't be deleted problem"})
     }
 }
 const editMember=async(req,res)=>{

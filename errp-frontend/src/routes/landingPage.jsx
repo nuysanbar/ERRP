@@ -29,6 +29,7 @@ export default function LandingPage({customPath}){
     const username=response1?response1.user.username:null
     const [isFavorite,setIsFavorite]=useState(response1?response1.isFavored:null)
     const access_token=window.localStorage.getItem("access_token")
+    
     const handleFavorite =async()=>{
         console.log("fav action is being called")
         const apiUrl=`http://localhost:3500/users/${username}/favorite`
@@ -41,6 +42,7 @@ export default function LandingPage({customPath}){
         console.log(res.data)
         return 0;
     }
+
     return (
         <div >
             {userRole && (<div className="personalInfoContainer">

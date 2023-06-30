@@ -14,10 +14,14 @@ var sellerCode,
     useSandbox = true,
     currency = "ETB";
 
-exports.CheckoutExpress =(req, res)=> {
+exports.CheckoutExpress =async(req, res)=> {
   const {barcode,retailer,merchantCode,pdToken,ItemName,UnitPrice,DeliveryFee,Discount,Tax1,Tax2,HandlingFee,Quantity,prime}=req.body;
   if(!barcode || !retailer || !merchantCode || !pdToken || !ItemName || !UnitPrice || !DeliveryFee || !Discount || !Tax1 || !Tax2 || !Quantity){
     return res.status(400).json({"message":"unfulfilled data"})}
+  const retailerInstance=await User.findOne({"username":retailer}).exec()
+  if(retailerInstance.suspended){
+    return res.status(201).json({"suspended":true})
+  }
   var status="unpaid", currency="ETB";
   sellerCode=merchantCode;
   const merchantOrderId = merchantCode+Date.now(); //"YOUR_UNIQUE_ID_FOR_THIS_ORDER";  //can also be set null

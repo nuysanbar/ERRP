@@ -19,7 +19,7 @@ export default function OrdersDetail(){
                         <div className="singlePurchase">
                             <div className="purchaseInfo">
                             <img src={`http://localhost:3500/products/${data.product.imgUrl[0]}`} alt="product img" style={{margin:"10px",height:"200px",width:"200px"}}/>
-                                <p> from: {`${data.retailer.firstname} ${data.retailer.lastname}`}</p>
+                                <p><NavLink to={`/admin/retailers/${data.result.retailerUserName}/status`}> from: {`${data.retailer.firstname} ${data.retailer.lastname}`}</NavLink></p> 
                                 <p>{`${data.retailer.subcity}, ${data.retailer.city}`}</p>
                             </div>
                             <div >

@@ -13,15 +13,28 @@ export async function loader({params}){
         }
     })
     const response=res.data
-    console.log(response)
     console.log("specific store loader is being called")
-    return response
+    return {response}
 }
 export default function SpecificStore(){
-    const response=useLoaderData()
+    const {response}=useLoaderData()
+    console.log(response)
+    const customerInfoLat=parseFloat(response.costumerInfo.lat);
+    const customerInfoLon=parseFloat(response.costumerInfo.lon)
+    console.log(customerInfoLat)
     var markers=[]
     const product=response.product
     const retailers=response.retailers
+    console.log(retailers)
+    const DistanceCalculator=(retailerLat,retailerLon)=>{
+            var latT=(parseFloat(retailerLat)-parseFloat(customerInfoLat))
+            var latDiff=(parseFloat(retailerLat)-parseFloat(customerInfoLat))*110.574;
+            var lonDiff=(parseFloat(retailerLon)-parseFloat(customerInfoLon))*111.320*Math.cos(latT);
+            var distance=Math.sqrt(latDiff**2+lonDiff**2)
+            return distance
+        
+    }
+    const newRetailers=retailers.filter((retailer)=>DistanceCalculator(retailer.lat,retailer.lon)<15000)
     const details=product.details.split(",")
     const [imageUrl,setImageUrl]=useState(null)
     useEffect(()=>setImageUrl(`http://localhost:3500/products/${response.product.imgUrl[0]}`),[])
@@ -44,7 +57,7 @@ export default function SpecificStore(){
                     return <p key={detail} className='detail'><span><TiTick/></span>{detail}</p>
                 })}</div>
             <div>
-                {retailers.map((item)=>{
+                {newRetailers.map((item)=>{
                     markers.push({address:`${item.firstname} ${item.lastname}`, lat:parseFloat(item.lat), lng:parseFloat(item.lon)})
                     return ( <div  key={item.storeName} className='store'>
                                 <Store retailer={item} barcode={product.barcode} />

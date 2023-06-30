@@ -58,6 +58,7 @@ import { ProductStatus,ProductRetailers } from "./routes/Admin/pages/productDeta
 import OrdersPage from "./routes/Admin/pages/ordersPage";
 import OrdersDetail, {specificOrdersLoader,loader as ordersDetailLoader} from "./routes/Admin/pages/ordersDetail";
 import CustomerDetail from "./routes/Admin/pages/customerDetail";
+import RetailerIsBanned, {loader as bannedLoader} from "./routes/retailerIsBanned";
 const router=createBrowserRouter([
     {
         path:'/',
@@ -333,12 +334,16 @@ const router=createBrowserRouter([
                 errorElement:<ErrorPage><p>page is not available</p></ErrorPage>,
                 loader:recommendationLoader,
             },
-         
             {
                 path:"/home/search",
                 element:<Search/>,
                 errorElement:<ErrorPage><p>page not available</p></ErrorPage>,
                 loader:searchLoader,
+            },
+            {
+                path:"/home/retailerIsBanned/:id",
+                element: <RetailerIsBanned />,
+                loader:bannedLoader
             },
             {
                 path:'/home/search/:barcode',

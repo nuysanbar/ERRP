@@ -10,11 +10,11 @@ export async function loader({params}){
     })
     var response2=res2.data
     console.log(response2);
-    return response2
+    return {response2}
 }
 
 export default function LandingPageProducts({customPath}){
-    const response2=useLoaderData()
+    const {response2}=useLoaderData()
     const displayProducts=()=>{
         const row=[]
         for(let i=0; i<response2.products.length; i++){

@@ -29,6 +29,7 @@ const getBrandStores=async(req,res)=>{
     var isFavored;
     const retailers=[]
     const product=await Product.findOne({"barcode":barcode}).exec()
+    const costumerInfo=await User.findOne({"username":req.username}).exec()
     const retailersProducts=await RetailerProduct.find({"barcode":barcode})
     const storeNumbers=retailersProducts.length
     for(let i=0; i<storeNumbers; i++){
@@ -67,7 +68,7 @@ const getBrandStores=async(req,res)=>{
         }
         retailers.push(storeProductInfo)
     }
-   return  res.status(200).json({product,retailers})
+   return  res.status(200).json({costumerInfo,product,retailers})
 }
 
 module.exports={getType,getBrands,getSpecificBrand,getBrandStores,getTypeProducts}
