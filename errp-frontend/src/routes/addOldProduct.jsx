@@ -18,6 +18,7 @@ export async function action({request}){
     })
     return redirect("/home/products");
 }
+//to add already existing product into inventory
 export default function AddOldProduct(){
     const barcode=window.localStorage.getItem('barcode');
     return(
