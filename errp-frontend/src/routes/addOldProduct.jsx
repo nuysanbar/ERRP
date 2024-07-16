@@ -20,6 +20,7 @@ export async function action({request}){
 }
 //to add already existing product into inventory
 export default function AddOldProduct(){
+    //get barcode from local storage fixed
     const barcode=window.localStorage.getItem('barcode');
     return(
         <div style={{margin:"20px 0 20px 50px"}}>
