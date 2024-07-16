@@ -3,7 +3,7 @@ import Alert from '@mui/material/Alert';
 export default function ErrorPage({children}) {
   const error = useRouteError();
   console.error(error);
-
+ //output error messages
 
   return (
     <div id="error-page">
