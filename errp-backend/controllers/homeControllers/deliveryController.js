@@ -1,5 +1,4 @@
-const Order=require('../../data/order');
-// crud for order accept and refund
+const Order=require('../../data/order')
 const accepted=async(req,res)=>{
     const {id}=req.body;
     if(!id){
