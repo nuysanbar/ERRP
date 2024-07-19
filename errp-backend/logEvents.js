@@ -5,7 +5,7 @@ const fsPromises=require('fs').promises;
 const path=require('path');
 
 const logEvents=async(message)=>{
-    //review completed in log events
+    //review completed in log
     const dateTime=`${format(new Date(),'yyyy MM dd\t HH:mm:ss')}`;
     const logItem=`${dateTime}\t${uuid()}\t${message}`
     console.log(logItem);
