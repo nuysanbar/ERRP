@@ -5,7 +5,7 @@ const Saved=require('../data/Saved')
 const Favorite=require('../data/Favorite')
 const Merchant=require('../data/merchant')
 const pendingProduct=require('../data/PendingProducts')
-
+// user management 
 const getUser=async (req,res)=>{
     var isFavored;
     if(!req?.params?.username){
