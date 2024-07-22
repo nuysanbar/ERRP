@@ -3,9 +3,11 @@ const Product=require("../../data/Product")
 const RetailerProduct=require("../../data/RetailerProduct")
 const User=require("../../data/User")
 const Saved=require("../../data/Saved")
+//all brands 
 const getBrands=async(req,res)=>{
     return res.status(200).json(Brands)
 }
+//all brand types
 const getType=async(req,res)=>{
     const type=req.params.type
     const types= Brands.find((item)=>item.type===type)
