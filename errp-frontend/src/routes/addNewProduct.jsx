@@ -10,7 +10,7 @@ import { styled } from '@mui/system';
 import Select  from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 const access_token=window.localStorage.getItem('access_token')
-
+// loader function 
 export async function loader(){
     const apiUrl='http://localhost:3500/home/products/brands'
     const res= await axios.get(apiUrl,{
