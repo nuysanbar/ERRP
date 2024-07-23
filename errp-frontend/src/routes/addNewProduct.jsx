@@ -23,7 +23,7 @@ export async function loader(){
     console.log("brands loader is being called")
     return response
 }
-
+// formData  from action
 export async function action({request}){
     const formData = await request.formData();
     const apiUrl='http://localhost:3500/home/products/addNew'
