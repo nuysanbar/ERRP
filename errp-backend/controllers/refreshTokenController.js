@@ -2,6 +2,7 @@ const jwt=require('jsonwebtoken');
 const User=require('../data/User');
 
 const handleRefreshToken= async (req,res)=>{
+    //later used for production
     const cookie=req.cookies;
     if(!cookie?.jwt) return res.sendStatus(401);
     const refreshToken=cookie.jwt;
