@@ -12,6 +12,7 @@ export async function dashboardDataLoader(){
   return res.data
 }
 export async function usersLoader(){
+  // optimize this apiurl 
     const apiUrl=`http://localhost:3500/admin/getCustomers`
     const res = await axios.get(apiUrl,{
         headers: {
