@@ -27,9 +27,8 @@ import Label from '../Admin/components/label';
 import Iconify from '../Admin/components/iconify';
 import Scrollbar from '../Admin/components/scrollbar';
 import axios from 'axios'
-// sections 
+
 import { UserListHead, UserListToolbar } from '../Admin/sections/@dashboard/user';
-// mock
 // import USERLIST from '../_mock/user';
 
 // ----------------------------------------------------------------------
