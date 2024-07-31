@@ -27,7 +27,7 @@ import Label from '../Admin/components/label';
 import Iconify from '../Admin/components/iconify';
 import Scrollbar from '../Admin/components/scrollbar';
 import axios from 'axios'
-// sections
+// sections 
 import { UserListHead, UserListToolbar } from '../Admin/sections/@dashboard/user';
 // mock
 // import USERLIST from '../_mock/user';
@@ -44,6 +44,7 @@ const TABLE_HEAD = [
   { id: '' },
 ];
 export async function loader(){
+  // generalized apiurl is more efficient 
     const apiUrl=`http://localhost:3500/delivery/getHistory`
     const res = await axios.get(apiUrl,{
         headers: {
