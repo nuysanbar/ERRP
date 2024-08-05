@@ -14,7 +14,6 @@ var client = new recombee.ApiClient("astu-dev",privateToken,{region:'us-west'})
 
 const getRetailer=async(req,res)=>{
     const result=await User.findOne({"username":req.params.id}).exec()
-    console.log(result)
     res.status(201).json(result)
 }
 const getDeliverer=async(req,res)=>{
