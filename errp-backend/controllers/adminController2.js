@@ -21,7 +21,6 @@ const getDeliverer=async(req,res)=>{
     res.status(201).json(result)
 }
 const getRetailerProducts=async(req,res)=>{
-    console.log(req.params.id)
     var data=[]
     const results=await RetailerProduct.find({"retailerUserName":req.params.id})
     if(!results)return res.status(201).json(data)
