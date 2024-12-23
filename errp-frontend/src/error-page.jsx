@@ -1,7 +1,7 @@
 import { useRouteError } from "react-router-dom";
 import Alert from '@mui/material/Alert';
 export default function ErrorPage({children}) {
-  // useRouterError 
+  
   const error = useRouteError();
   return (
     <div id="error-page">
